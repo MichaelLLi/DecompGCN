@@ -6,18 +6,22 @@ from tensorboardX import SummaryWriter
 import shutil
 
 from Graph import Graph
-from GraphDataset import GraphDataset
+from GraphDataset import RandomConnectedGraph, RandomCliqueGraph
 from config import Config
 from GCNClassification import GCNClassification
-
+from random import shuffle
 
 def get_device():
     return torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 def load_data(config):
-    dataset = GraphDataset(config.dataset_path, config=config)
-    dataset.max_neighbors()
-
+    if config.ytype=="connected":
+        dataset = RandomConnectedGraph()
+    elif config.ytype=="clique":
+        dataset = RandomCliqueGraph()
+    dataset=shuffle(dataset)
+    
+    
     train_idx = int(config.num_graphs * (1 - config.test_split - 
                                             config.validation_split))
     valid_idx = int(config.num_graphs * (1 - config.test_split))
@@ -30,8 +34,7 @@ def load_data(config):
     valid_loader = DataLoader(dataset=valid_dataset, batch_size=1, shuffle=False)
     test_loader = DataLoader(dataset=test_dataset, batch_size=1, shuffle=False)
 
-    return train_dataset, valid_dataset, iter(train_loader), \
-            iter(valid_loader), iter(test_loader)
+    return train_dataset, valid_dataset, iter(train_loader), iter(valid_loader), iter(test_loader)
 
 def load_model(device, config):
     model = GCNClassification(config)
