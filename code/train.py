@@ -37,7 +37,10 @@ def load_data(config):
     return train_dataset, valid_dataset, iter(train_loader), iter(valid_loader), iter(test_loader)
 
 def load_model(device, config):
-    model = GCNClassification(config)
+    if config.task == 'cycle':
+        model = GCNClassification(config, 2)
+    elif config.task == 'connectivity':
+        model = GCNClassification(config, 2)
     model = model.to(device)
 
     return model

@@ -3,15 +3,16 @@ import torch.nn.functional as F
 from torch_geometric.nn import GCNConv
 
 class GCNClassification(torch.nn.Module):
-    def __init__(self, config):
+    def __init__(self, config, num_classes, graph=True):
         super(GCNClassification, self).__init__()
         # GCNConv(in_channels, out_channels, improved=False, cached=False, bias=True)
         self.num_features = config.num_features
         self.hidden = config.hidden_units
-        self.num_classes = config.max_neighbors
+        self.num_classes = num_classes
+        self.graph = graph
 
         self.conv1 = GCNConv(self.num_features, self.hidden)
-        self.conv2 = GCNConv(self.hidden, self.num_classes+1)
+        self.conv2 = GCNConv(self.hidden, self.num_classes)
 
     # forward(x, edge_index, edge_weight=None)
     def forward(self, data):
@@ -19,8 +20,11 @@ class GCNClassification(torch.nn.Module):
 
         x = self.conv1(x, edge_index)
         x = F.relu(x)
-        x = F.dropout(x, training=self.training)
+        #x = F.dropout(x, training=self.training)
         x = self.conv2(x, edge_index)
+
+        if self.graph == True:
+            x = torch.mean(x, dim=0)
 
         return F.log_softmax(x, dim=1)
 
@@ -43,3 +47,6 @@ class GCNClassification(torch.nn.Module):
 
     def predictions_to_list(self, predictions):
         return predictions.tolist()
+
+
+        
