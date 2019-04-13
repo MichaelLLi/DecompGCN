@@ -26,7 +26,7 @@ class Config():
                                  default='model', help='relative directory to save temporary model, for both training and inference')
 
 
-         self.parser.add_argument('--model', type=str,
+        self.parser.add_argument('--model', type=str,
                                  default='GmmConvClassification', help='GcnRegression | GcnClassification | GmmConvClassification')
         self.parser.add_argument('--training_epochs', type=int,
                                  default=100, help='number of training epochs')
@@ -35,12 +35,11 @@ class Config():
         self.parser.add_argument('--test_split', type=float,
                                  default=0.1, help='define size of test set, 0 <= ... <= 1')
         self.parser.add_argument('--batch_size_train', type=int,
-                                 default=1, help='batch size for training')
+                                 default=32, help='batch size for training')
         self.parser.add_argument('--batch_size_eval', type=int,
-                                 default=1, help='batch size for evaluation')
-
+                                 default=32, help='batch size for evaluation')
         self.parser.add_argument('--task', type=str,
-                                 default='cycle', help='cycle | connectivity')
+                                 default='clique', help='clique | connectivity')
 
 
         # self.parser.add_argument('--euclidian_dimensionality', type=int,

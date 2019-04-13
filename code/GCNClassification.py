@@ -1,5 +1,6 @@
 import torch
 import torch.nn.functional as F
+from torch_scatter import scatter_mean
 from torch_geometric.nn import GCNConv
 
 class GCNClassification(torch.nn.Module):
@@ -24,7 +25,7 @@ class GCNClassification(torch.nn.Module):
         x = self.conv2(x, edge_index)
 
         if self.graph == True:
-            x = torch.mean(x, dim=0)
+            x = scatter_mean(x, data.batch, dim=0)
 
         return F.log_softmax(x, dim=1)
 

@@ -15,29 +15,29 @@ def get_device():
     return torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 def load_data(config):
-    if config.ytype=="connected":
+    if config.task=="connectivity":
         dataset = RandomConnectedGraph()
-    elif config.ytype=="clique":
+    elif config.task=="clique":
         dataset = RandomCliqueGraph()
-    dataset=shuffle(dataset)
-    
-    
+    data_list=[]
+    for i in range(dataset.__len__()):
+        data_list.append(dataset[i])
     train_idx = int(config.num_graphs * (1 - config.test_split - 
                                             config.validation_split))
     valid_idx = int(config.num_graphs * (1 - config.test_split))
-    
-    train_dataset = dataset[:train_idx]
-    valid_dataset = dataset[train_idx:valid_idx]
-    test_dataset = dataset[valid_idx:]
+    shuffle(data_list)
+    train_dataset = data_list[:train_idx]
+    valid_dataset = data_list[train_idx:valid_idx]
+    test_dataset = data_list[valid_idx:]
 
-    train_loader = DataLoader(dataset=train_dataset, batch_size=1, shuffle=False)
-    valid_loader = DataLoader(dataset=valid_dataset, batch_size=1, shuffle=False)
-    test_loader = DataLoader(dataset=test_dataset, batch_size=1, shuffle=False)
+    train_loader = DataLoader(dataset=train_dataset, batch_size=config.batch_size_train, shuffle=True)
+    valid_loader = DataLoader(dataset=valid_dataset, batch_size=config.batch_size_train, shuffle=True)
+    test_loader = DataLoader(dataset=test_dataset, batch_size=config.batch_size_eval, shuffle=True)
 
     return train_dataset, valid_dataset, iter(train_loader), iter(valid_loader), iter(test_loader)
 
 def load_model(device, config):
-    if config.task == 'cycle':
+    if config.task == 'clique':
         model = GCNClassification(config, 2)
     elif config.task == 'connectivity':
         model = GCNClassification(config, 2)
@@ -79,20 +79,20 @@ def train(model, train_iter, valid_iter, device, config, train_writer, val_write
 
         train_writer.add_scalar('per_epoch/loss', epoch_loss, e)
         
-        g = Graph(config, train_dataset[0])
-        fig = g.plot_predictions(model.predictions_to_list( \
-                model.out_to_predictions(model(train_dataset[0].to(device)))))
-        train_writer.add_figure('per_epoch/graph', fig, e)
+#        g = Graph(config, train_dataset[0])
+#        fig = g.plot_predictions(model.predictions_to_list( \
+#                model.out_to_predictions(model(train_dataset[0].to(device)))))
+#        train_writer.add_figure('per_epoch/graph', fig, e)
 
         # validation
         eval(model, valid_iter, device)
 
         val_writer.add_scalar('per_epoch/loss', epoch_loss, e)
         
-        g = Graph(config, valid_dataset[0])
-        fig = g.plot_predictions(model.predictions_to_list( \
-                model.out_to_predictions(model(valid_dataset[0].to(device)))))
-        val_writer.add_figure('per_epoch/graph', fig, e)
+#        g = Graph(config, valid_dataset[0])
+#        fig = g.plot_predictions(model.predictions_to_list( \
+#                model.out_to_predictions(model(valid_dataset[0].to(device)))))
+#        val_writer.add_figure('per_epoch/graph', fig, e)
         
 
 def main():
