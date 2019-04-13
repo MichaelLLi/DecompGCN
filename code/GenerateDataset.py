@@ -43,7 +43,7 @@ for m in range(1,3):
         TS1=to_sparse(T1)
         connect=nx.edge_connectivity(G1)
         if connect==m:
-            data=Data(x=torch.ones((100,1)),edge_index=TS1._indices(),y=torch.ones(1).long()*connect)
+            data=Data(x=torch.ones((100,1)),edge_index=TS1._indices(),y=torch.ones(1).long()*(connect-1))
             torch.save(data,"./.data/connected/connect_" + str(m) + "_" + str(i) + ".pt")
             i+=1
 for m in range(3,5):
@@ -56,6 +56,6 @@ for m in range(3,5):
         connect=nx.edge_connectivity(G1)
         clique=nx.graph_clique_number(G1)
         if connect>0 and clique==m:
-            data=Data(x=torch.ones((100,1)),edge_index=TS1._indices(),y=torch.ones(1).long()*m)
+            data=Data(x=torch.ones((100,1)),edge_index=TS1._indices(),y=torch.ones(1).long()*(m-3))
             torch.save(data,"./.data/clique/clique_" + str(m) + "_" + str(i) + ".pt")
             i+=1

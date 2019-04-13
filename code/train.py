@@ -59,8 +59,8 @@ def eval(model, eval_iter, device):
 
 
 def train(model, train_iter, valid_iter, device, config, train_writer, val_writer,
-            train_dataset, valid_dataset, epochs=10, lr=0.1):
-    optim = torch.optim.SGD(model.parameters(), lr=lr)
+            train_dataset, valid_dataset, epochs=300, lr=0.01):
+    optim = torch.optim.Adam(model.parameters(), lr=lr)
 
     for e in range(epochs):
         print("Epoch %d" % (e))
@@ -89,7 +89,7 @@ def train(model, train_iter, valid_iter, device, config, train_writer, val_write
         # validation
         eval_loss = eval(model, valid_iter, device)
 
-        val_writer.add_scalar('per_epoch/loss', eval_epoch_loss, e)
+        val_writer.add_scalar('per_epoch/loss', eval_loss, e)
 
 #        g = Graph(config, valid_dataset[0])
 #        fig = g.plot_predictions(model.predictions_to_list( \
