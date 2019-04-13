@@ -5,7 +5,7 @@ import os
 from tensorboardX import SummaryWriter
 import shutil
 
-from Graph import Graph
+#from Graph import Graph
 from GraphDataset import RandomConnectedGraph, RandomCliqueGraph
 from config import Config
 from GCNClassification import GCNClassification
@@ -22,7 +22,7 @@ def load_data(config):
     data_list=[]
     for i in range(dataset.__len__()):
         data_list.append(dataset[i])
-    train_idx = int(config.num_graphs * (1 - config.test_split - 
+    train_idx = int(config.num_graphs * (1 - config.test_split -
                                             config.validation_split))
     valid_idx = int(config.num_graphs * (1 - config.test_split))
     shuffle(data_list)
@@ -51,12 +51,14 @@ def eval(model, eval_iter, device):
     for batch_idx, data in enumerate(eval_iter):
         data = data.to(device)
         out = model(data)
-        
+
         loss = model.loss(out, data.y)
-        eval_loss += loss.item() 
+        eval_loss += loss.item()
+
+    return eval_loss
 
 
-def train(model, train_iter, valid_iter, device, config, train_writer, val_writer, 
+def train(model, train_iter, valid_iter, device, config, train_writer, val_writer,
             train_dataset, valid_dataset, epochs=10, lr=0.1):
     optim = torch.optim.SGD(model.parameters(), lr=lr)
 
@@ -78,22 +80,22 @@ def train(model, train_iter, valid_iter, device, config, train_writer, val_write
             optim.step()
 
         train_writer.add_scalar('per_epoch/loss', epoch_loss, e)
-        
+
 #        g = Graph(config, train_dataset[0])
 #        fig = g.plot_predictions(model.predictions_to_list( \
 #                model.out_to_predictions(model(train_dataset[0].to(device)))))
 #        train_writer.add_figure('per_epoch/graph', fig, e)
 
         # validation
-        eval(model, valid_iter, device)
+        eval_loss = eval(model, valid_iter, device)
 
-        val_writer.add_scalar('per_epoch/loss', epoch_loss, e)
-        
+        val_writer.add_scalar('per_epoch/loss', eval_epoch_loss, e)
+
 #        g = Graph(config, valid_dataset[0])
 #        fig = g.plot_predictions(model.predictions_to_list( \
 #                model.out_to_predictions(model(valid_dataset[0].to(device)))))
 #        val_writer.add_figure('per_epoch/graph', fig, e)
-        
+
 
 def main():
     config = Config().parse_args()
@@ -117,7 +119,7 @@ def main():
     train_writer = SummaryWriter(os.path.join(config.temp_dir, 'summary', 'training'))
     val_writer = SummaryWriter(os.path.join(config.temp_dir, 'summary', 'validation'))
 
-    # train 
+    # train
     print("start training...")
     train(model, train_iter, valid_iter, device, config, train_writer, val_writer,
             train_dataset, valid_dataset)

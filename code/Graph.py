@@ -3,6 +3,8 @@ from torch_geometric.data import Data
 
 import networkx as nx
 import matplotlib.pyplot as plt
+import matplotlib as mpl
+mpl.use('TkAgg')
 import os
 
 class Graph():

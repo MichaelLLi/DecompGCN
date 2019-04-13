@@ -12,9 +12,9 @@ class RandomConnectedGraph(Dataset):
     def get(self, idx):
         lev=int(idx/500)+1
         idt=idx % 500
-        data = torch.load(self.root + '\\connect_{}_{}.pt'.format(lev,idt))
+        data = torch.load(self.root + '/connect_{}_{}.pt'.format(lev,idt))
         return data
-        
+
     @property
     def raw_file_names(self):
         return []
@@ -24,11 +24,11 @@ class RandomConnectedGraph(Dataset):
 
     def _download(self):
         pass
-        
+
     def _process(self):
         pass
-    
-    
+
+
 class RandomCliqueGraph(Dataset):
     def __init__(self, root="../data/clique/", transform=None, pre_transform=None):
         super(RandomCliqueGraph, self).__init__(root, transform, pre_transform)
@@ -38,9 +38,9 @@ class RandomCliqueGraph(Dataset):
     def get(self, idx):
         lev=int(idx/500)+3
         idt=idx % 500
-        data = torch.load(self.root + '\\clique_{}_{}.pt'.format(lev,idt))
+        data = torch.load(self.root + '/clique_{}_{}.pt'.format(lev,idt))
         return data
-        
+
     @property
     def raw_file_names(self):
         return []
@@ -50,6 +50,6 @@ class RandomCliqueGraph(Dataset):
 
     def _download(self):
         pass
-        
+
     def _process(self):
         pass
