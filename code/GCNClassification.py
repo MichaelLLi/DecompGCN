@@ -26,6 +26,7 @@ class GCNClassification(torch.nn.Module):
 
         if self.graph == True:
             x = scatter_mean(x, data.batch, dim=0)
+
         return F.log_softmax(x, dim=1)
 
     def loss(self, inputs, targets):
@@ -49,4 +50,4 @@ class GCNClassification(torch.nn.Module):
         return predictions.tolist()
 
 
-        
+

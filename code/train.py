@@ -34,7 +34,7 @@ def load_data(config):
     valid_loader = DataLoader(dataset=valid_dataset, batch_size=config.batch_size_train, shuffle=True)
     test_loader = DataLoader(dataset=test_dataset, batch_size=config.batch_size_eval, shuffle=True)
 
-    return train_dataset, valid_dataset, iter(train_loader), iter(valid_loader), iter(test_loader)
+    return train_dataset, valid_dataset, train_loader, valid_loader, test_loader
 
 def load_model(device, config):
     if config.task == 'clique':
@@ -58,7 +58,7 @@ def eval(model, eval_iter, device):
     return eval_loss
 
 
-def train(model, train_iter, valid_iter, device, config, train_writer, val_writer,
+def train(model, train_loader, valid_loader, device, config, train_writer, val_writer,
             train_dataset, valid_dataset, epochs=300, lr=0.01):
     optim = torch.optim.Adam(model.parameters(), lr=lr)
 
@@ -67,6 +67,7 @@ def train(model, train_iter, valid_iter, device, config, train_writer, val_write
         # training
         model.train()
         epoch_loss = 0.0
+        train_iter = iter(train_loader)
         for batch_idx, data in enumerate(train_iter):
             optim.zero_grad()
 
@@ -79,6 +80,7 @@ def train(model, train_iter, valid_iter, device, config, train_writer, val_write
             loss.backward()
             optim.step()
 
+        print("loss: %f" % (epoch_loss))
         train_writer.add_scalar('per_epoch/loss', epoch_loss, e)
 
 #        g = Graph(config, train_dataset[0])
@@ -87,7 +89,7 @@ def train(model, train_iter, valid_iter, device, config, train_writer, val_write
 #        train_writer.add_figure('per_epoch/graph', fig, e)
 
         # validation
-        eval_loss = eval(model, valid_iter, device)
+        eval_loss = eval(model, iter(valid_loader), device)
 
         val_writer.add_scalar('per_epoch/loss', eval_loss, e)
 
@@ -105,7 +107,7 @@ def main():
     # load data
     print("loading data...")
     data_dir = '../data'
-    train_dataset, valid_dataset, train_iter, valid_iter, test_iter = load_data(config)
+    train_dataset, valid_dataset, train_loader, valid_loader, test_loader = load_data(config)
 
     # load model
     print("loading model...")
@@ -121,7 +123,7 @@ def main():
 
     # train
     print("start training...")
-    train(model, train_iter, valid_iter, device, config, train_writer, val_writer,
+    train(model, train_loader, valid_loader, device, config, train_writer, val_writer,
             train_dataset, valid_dataset)
 
     # predict
