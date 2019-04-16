@@ -42,7 +42,7 @@ class GCNClassification(torch.nn.Module):
 
         _, pred = self.forward(data).max(dim=1)
         correct = pred.eq(data.y).sum().item()
-        acc = correct / data.num_nodes
+        acc = correct / len(data.y)
 
         return acc
 
@@ -84,7 +84,7 @@ class SGConvClassification(torch.nn.Module):
 
         _, pred = self.forward(data).max(dim=1)
         correct = pred.eq(data.y).sum().item()
-        acc = correct / data.num_nodes
+        acc = correct / len(data.y)
 
         return acc
 
@@ -133,7 +133,7 @@ class SGINClassification(torch.nn.Module):
 
         _, pred = self.forward(data).max(dim=1)
         correct = pred.eq(data.y).sum().item()
-        acc = correct / data.num_nodes
+        acc = correct / len(data.y)
 
         return acc
 

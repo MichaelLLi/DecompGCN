@@ -3,3 +3,5 @@ code/.DS_Store
 *.pyc
 *.txt
 results/~$results.xlsx
+*.pyc
+*.pyc

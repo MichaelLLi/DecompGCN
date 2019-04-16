@@ -82,7 +82,7 @@ def evalacc(model, eval_iter, device):
     return eval_acc / len(eval_iter)
 
 def train(model, train_loader, valid_loader, device, config, train_writer, val_writer,
-            train_dataset, valid_dataset, epochs=300, lr=0.001):
+            train_dataset, valid_dataset, epochs=300, lr=0.005):
     optim = torch.optim.Adam(model.parameters(), lr=lr)
 
     for e in range(epochs):
