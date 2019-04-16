@@ -3,16 +3,16 @@ import argparse
 class Config():
     def __init__(self):
         self.parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-
-        self.parser.add_argument('--num_graphs', type=int,
-                                 default=1000, help='Number of random graphs to create, if a new dataset is created')
         self.parser.add_argument('--num_nodes', type=int,
                                  default=100, help='Number of nodes in the graph')
         self.parser.add_argument('--num_features',type=int,
                                  default=1, help='Dimension of the feature space, used in data.x')
         self.parser.add_argument('--hidden_units', type=int,
                                  default=32, help='number of units per hidden layer in the GNN')
-        
+        self.parser.add_argument('--n_layers', type=int,
+                                 default=2, help='Number of layers in the GNN')
+        self.parser.add_argument('--dropout_p', type=float,
+                                 default=0.1, help='Dropout percentage in GNN layers')
 
         self.parser.add_argument('--dataset_path', type=str,
                                  default='../data/neighbor100', help='the directory to read the Dataset from')
@@ -27,7 +27,7 @@ class Config():
 
 
         self.parser.add_argument('--model', type=str,
-                                 default='GmmConvClassification', help='GcnRegression | GcnClassification | GmmConvClassification')
+                                 default='SGIN', help='GIN | GCN | SGConv | SGIN')
         self.parser.add_argument('--training_epochs', type=int,
                                  default=100, help='number of training epochs')
         self.parser.add_argument('--validation_split', type=float,
@@ -39,7 +39,7 @@ class Config():
         self.parser.add_argument('--batch_size_eval', type=int,
                                  default=32, help='batch size for evaluation')
         self.parser.add_argument('--task', type=str,
-                                 default='clique', help='clique | connectivity')
+                                 default='clique', help='clique | connectivity | reddit-b')
 
 
         # self.parser.add_argument('--euclidian_dimensionality', type=int,

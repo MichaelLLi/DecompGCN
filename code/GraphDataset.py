@@ -1,5 +1,5 @@
 import torch
-from torch_geometric.data import InMemoryDataset, Dataset
+from torch_geometric.data import Dataset
 import torch_geometric.transforms as T
 import os
 
