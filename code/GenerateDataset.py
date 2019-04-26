@@ -66,46 +66,6 @@ def generate_clique():
                 i+=1
 
 # tree and cycle
-# def generate_tree_cycle():
-#     num_tree, num_cycle = 0, 0
-#     i = 0
-#     while num_tree < 500:
-#         if i % 1000 == 0:
-#             print(i, num_tree, num_cycle)
-#         G = nx.fast_gnp_random_graph(100,0.01)
-#         S = to_numpy_array(G)
-#         T = torch.from_numpy(S)
-#         TS = to_sparse(T)
-#         connect = nx.edge_connectivity(G)
-
-#         tree = nx.is_forest(G)
-#         if tree == True:
-#             data=Data(x=torch.ones((100,1)),edge_index=TS._indices(),y=torch.zeros(1).long())
-#             torch.save(data,"../data/tree_cycle/tree_" + str(num_tree) + ".pt")
-#             num_tree += 1
-
-#         elif num_cycle < 500:
-#             data=Data(x=torch.ones((100,1)),edge_index=TS._indices(),y=torch.ones(1).long())
-#             torch.save(data,"../data/tree_cycle/cycle_" + str(num_cycle) + ".pt")
-#             num_cycle += 1
-#         i += 1
-
-#     while num_cycle < 500:
-#         if i % 1000 == 0:
-#             print(i, num_tree, num_cycle)
-#         G = nx.fast_gnp_random_graph(100,0.07)
-#         S = to_numpy_array(G)
-#         T = torch.from_numpy(S)
-#         TS = to_sparse(T)
-#         connect = nx.edge_connectivity(G)
-
-#         tree = nx.is_forest(G)
-#         if connect > 0 and tree == False:
-#             data=Data(x=torch.ones((100,1)),edge_index=TS._indices(),y=torch.ones(1).long())
-#             torch.save(data,"../data/tree_cycle/cycle_" + str(num_cycle) + ".pt")
-#             num_cycle += 1
-#         i += 1
-
 def generate_tree_cycle():
     num_tree, num_cycle = 0, 0
     i = 0
