@@ -34,28 +34,127 @@ def to_sparse(x):
     values = x[tuple(indices[i] for i in range(indices.shape[0]))]
     return sparse_tensortype(indices, values, x.size())
 
-for m in range(1,3):
-    i=0
-    while i<500:
-        G1=nx.fast_gnp_random_graph(100,0.07)
-        S1=to_numpy_array(G1)
-        T1=torch.from_numpy(S1)
-        TS1=to_sparse(T1)
-        connect=nx.edge_connectivity(G1)
-        if connect==m:
-            data=Data(x=torch.ones((100,1)),edge_index=TS1._indices(),y=torch.ones(1).long()*(connect-1))
-            torch.save(data,"./.data/connected/connect_" + str(m) + "_" + str(i) + ".pt")
-            i+=1
-for m in range(3,5):
-    i=0
-    while i<500:
-        G1=nx.fast_gnp_random_graph(100,0.07)
-        S1=to_numpy_array(G1)
-        T1=torch.from_numpy(S1)
-        TS1=to_sparse(T1)
-        connect=nx.edge_connectivity(G1)
-        clique=nx.graph_clique_number(G1)
-        if connect>0 and clique==m:
-            data=Data(x=torch.ones((100,1)),edge_index=TS1._indices(),y=torch.ones(1).long()*(m-3))
-            torch.save(data,"./.data/clique/clique_" + str(m) + "_" + str(i) + ".pt")
-            i+=1
+# connectivity
+def generate_connectivity():
+    for m in range(1,3):
+        i=0
+        while i<500:
+            G1=nx.fast_gnp_random_graph(100,0.07)
+            S1=to_numpy_array(G1)
+            T1=torch.from_numpy(S1)
+            TS1=to_sparse(T1)
+            connect=nx.edge_connectivity(G1)
+            if connect==m:
+                data=Data(x=torch.ones((100,1)),edge_index=TS1._indices(),y=torch.ones(1).long()*(connect-1))
+                torch.save(data,"./.data/connected/connect_" + str(m) + "_" + str(i) + ".pt")
+                i+=1
+
+# clique
+def generate_clique():
+    for m in range(3,5):
+        i=0
+        while i<500:
+            G1=nx.fast_gnp_random_graph(100,0.07)
+            S1=to_numpy_array(G1)
+            T1=torch.from_numpy(S1)
+            TS1=to_sparse(T1)
+            connect=nx.edge_connectivity(G1)
+            clique=nx.graph_clique_number(G1)
+            if connect>0 and clique==m:
+                data=Data(x=torch.ones((100,1)),edge_index=TS1._indices(),y=torch.ones(1).long()*(m-3))
+                torch.save(data,"./.data/clique/clique_" + str(m) + "_" + str(i) + ".pt")
+                i+=1
+
+# tree and cycle
+# def generate_tree_cycle():
+#     num_tree, num_cycle = 0, 0
+#     i = 0
+#     while num_tree < 500:
+#         if i % 1000 == 0:
+#             print(i, num_tree, num_cycle)
+#         G = nx.fast_gnp_random_graph(100,0.01)
+#         S = to_numpy_array(G)
+#         T = torch.from_numpy(S)
+#         TS = to_sparse(T)
+#         connect = nx.edge_connectivity(G)
+
+#         tree = nx.is_forest(G)
+#         if tree == True:
+#             data=Data(x=torch.ones((100,1)),edge_index=TS._indices(),y=torch.zeros(1).long())
+#             torch.save(data,"../data/tree_cycle/tree_" + str(num_tree) + ".pt")
+#             num_tree += 1
+
+#         elif num_cycle < 500:
+#             data=Data(x=torch.ones((100,1)),edge_index=TS._indices(),y=torch.ones(1).long())
+#             torch.save(data,"../data/tree_cycle/cycle_" + str(num_cycle) + ".pt")
+#             num_cycle += 1
+#         i += 1
+
+#     while num_cycle < 500:
+#         if i % 1000 == 0:
+#             print(i, num_tree, num_cycle)
+#         G = nx.fast_gnp_random_graph(100,0.07)
+#         S = to_numpy_array(G)
+#         T = torch.from_numpy(S)
+#         TS = to_sparse(T)
+#         connect = nx.edge_connectivity(G)
+
+#         tree = nx.is_forest(G)
+#         if connect > 0 and tree == False:
+#             data=Data(x=torch.ones((100,1)),edge_index=TS._indices(),y=torch.ones(1).long())
+#             torch.save(data,"../data/tree_cycle/cycle_" + str(num_cycle) + ".pt")
+#             num_cycle += 1
+#         i += 1
+
+def generate_tree_cycle():
+    num_tree, num_cycle = 0, 0
+    i = 0
+    while num_tree < 500:
+        if i % 1000 == 0:
+            print(i, num_tree, num_cycle)
+        G = nx.random_powerlaw_tree(100, seed=i, tries=10000)
+        S = to_numpy_array(G)
+        T = torch.from_numpy(S)
+        TS = to_sparse(T)
+
+        data=Data(x=torch.ones((100,1)),edge_index=TS._indices(),y=torch.zeros(1).long())
+        torch.save(data,"../data/tree_cycle/tree_" + str(num_tree) + ".pt")
+        num_tree += 1
+        i += 1
+
+    while num_cycle < 500:
+        if i % 1000 == 0:
+            print(i, num_tree, num_cycle)
+        G = nx.fast_gnp_random_graph(100,0.07)
+        S = to_numpy_array(G)
+        T = torch.from_numpy(S)
+        TS = to_sparse(T)
+        connect = nx.edge_connectivity(G)
+
+        tree = nx.is_forest(G)
+        if connect > 0 and tree == False:
+            data=Data(x=torch.ones((100,1)),edge_index=TS._indices(),y=torch.ones(1).long())
+            torch.save(data,"../data/tree_cycle/cycle_" + str(num_cycle) + ".pt")
+            num_cycle += 1
+        i += 1
+
+generate_tree_cycle()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

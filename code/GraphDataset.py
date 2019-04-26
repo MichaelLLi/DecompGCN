@@ -53,3 +53,29 @@ class RandomCliqueGraph(Dataset):
 
     def _process(self):
         pass
+
+
+class RandomTreeCycleGraph(Dataset):
+    def __init__(self, root="../data/tree_cycle/", transform=None, pre_transform=None):
+        super(RandomTreeCycleGraph, self).__init__(root, transform, pre_transform)
+    def __len__(self):
+        return 1000
+
+    def get(self, idx):
+        data = torch.load(self.root + '/' + os.listdir(self.root)[idx])
+        return data
+
+    @property
+    def raw_file_names(self):
+        return []
+    @property
+    def processed_file_names(self):
+        return []
+
+    def _download(self):
+        pass
+
+    def _process(self):
+        pass
+
+

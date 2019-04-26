@@ -27,7 +27,7 @@ class Config():
 
 
         self.parser.add_argument('--model', type=str,
-                                 default='SGIN', help='GIN | GCN | SGConv | SGIN')
+                                 default='GAT', help='GIN | GCN | SGConv | SGIN | GAT')
         self.parser.add_argument('--training_epochs', type=int,
                                  default=100, help='number of training epochs')
         self.parser.add_argument('--validation_split', type=float,
@@ -39,7 +39,7 @@ class Config():
         self.parser.add_argument('--batch_size_eval', type=int,
                                  default=32, help='batch size for evaluation')
         self.parser.add_argument('--task', type=str,
-                                 default='clique', help='clique | connectivity | reddit-b')
+                                 default='tree_cycle', help='clique | connectivity | reddit-b | tree_cycle')
 
 
         # self.parser.add_argument('--euclidian_dimensionality', type=int,

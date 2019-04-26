@@ -6,9 +6,10 @@ from tensorboardX import SummaryWriter
 import shutil
 
 #from Graph import Graph
-from GraphDataset import RandomConnectedGraph, RandomCliqueGraph
+from GraphDataset import RandomConnectedGraph, RandomCliqueGraph, RandomTreeCycleGraph
 from config import Config
-from GCNClassification import GCNClassification, GINClassification, SGConvClassification, SGINClassification
+from GCNClassification import GCNClassification, GINClassification, \
+        SGConvClassification, SGINClassification, GATClassification
 from random import shuffle
 from torch_geometric.datasets import TUDataset
 
@@ -16,10 +17,13 @@ def get_device():
     return torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 def load_data(config):
+    print("Task: ", config.task)
     if config.task=="connectivity":
         dataset = RandomConnectedGraph()
     elif config.task=="clique":
         dataset = RandomCliqueGraph()
+    elif config.task=="tree_cycle":
+        dataset = RandomTreeCycleGraph()
     elif config.task=="reddit-b":
         dataset = TUDataset(root="/tmp/redditb",name="REDDIT-BINARY")
     if config.task!="reddit-b":
@@ -28,6 +32,7 @@ def load_data(config):
             data_list.append(dataset[i])
     else:
         data_list=dataset
+    
     train_idx = int(len(data_list) * (1 - config.test_split -
                                             config.validation_split))
     valid_idx = int(len(data_list) * (1 - config.test_split))
@@ -35,6 +40,7 @@ def load_data(config):
         shuffle(data_list)
     else:
         data_list = data_list.shuffle()
+    
     train_dataset = data_list[:train_idx]
     valid_dataset = data_list[train_idx:valid_idx]
     test_dataset = data_list[valid_idx:]
@@ -46,7 +52,8 @@ def load_data(config):
     return train_dataset, valid_dataset, train_loader, valid_loader, test_loader
 
 def load_model(device, config):
-    if config.task in ['clique','connectivity','reddit-b']:
+    print("Model: ", config.model)
+    if config.task in ['clique','connectivity','reddit-b', 'tree_cycle']:
         if config.model == "GIN":
             model = GINClassification(config, 2)
         elif config.model == "GCN":
@@ -55,6 +62,8 @@ def load_model(device, config):
             model = SGConvClassification(config, 2)
         elif config.model == "SGIN":
             model = SGINClassification(config, 2)
+        elif config.model == "GAT":
+            model = GATClassification(config, 2)
     model = model.to(device)
 
     return model
@@ -82,7 +91,7 @@ def evalacc(model, eval_iter, device):
     return eval_acc / len(eval_iter)
 
 def train(model, train_loader, valid_loader, device, config, train_writer, val_writer,
-            train_dataset, valid_dataset, epochs=300, lr=0.005):
+            train_dataset, valid_dataset, epochs=300, lr=0.001):
     optim = torch.optim.Adam(model.parameters(), lr=lr)
 
     for e in range(epochs):
