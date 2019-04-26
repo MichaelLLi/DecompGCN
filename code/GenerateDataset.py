@@ -98,4 +98,18 @@ def generate_tree_cycle():
             num_cycle += 1
         i += 1
 
+def generate_triangles():
+    i=0
+    while i<500:
+        G1=nx.fast_gnp_random_graph(100,0.07)
+        A = nx.adjacency_matrix(G1)
+        triangles = (A*A*A).diagonal().sum()/6
+        S1=to_numpy_array(G1)
+        T1=torch.from_numpy(S1)
+        TS1=to_sparse(T1)
+        connect=nx.edge_connectivity(G1)
+        if connect>0:
+            data=Data(x=torch.ones((100,1)),edge_index=TS1._indices(),y=torch.ones(1).long()*triangles)
+            torch.save(data,"../data/triangle/triangle_" + str(i) + ".pt")
+            i+=1
 generate_tree_cycle()
