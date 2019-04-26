@@ -1,7 +1,4 @@
-.DS_Store
-code/.DS_Store
+*.DS_Store
 *.pyc
 *.txt
 results/~$results.xlsx
-*.pyc
-*.pyc
