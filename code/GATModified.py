@@ -65,7 +65,7 @@ class GATConv(MessagePassing):
         if self.concat is True:
             aggr_out = aggr_out.view(-1, self.heads * self.out_channels)
         else:
-            aggr_out = aggr_out.mean(dim=1)
+            aggr_out = aggr_out.sum(dim=1)
 
         if self.bias is not None:
             aggr_out = aggr_out + self.bias

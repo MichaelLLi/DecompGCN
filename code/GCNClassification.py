@@ -351,6 +351,7 @@ class GATClassification(torch.nn.Module):
 
     def predictions_to_list(self, predictions):
         return predictions.tolist()
+    
 class GATRegression(torch.nn.Module):
     def __init__(self, config, graph=True):
         super(GATRegression, self).__init__()
@@ -362,9 +363,9 @@ class GATRegression(torch.nn.Module):
         self.linear_preds = Linear(self.hidden, 1)
 
         # GATConv(in_channels, out_channels, heads=1, concat=True, negative_slope=0.2, dropout=0, bias=True)
-        setattr(self, "conv%d" % 0, GATConv(self.num_features, self.hidden, dropout=self.dropout_p))
+        setattr(self, "conv%d" % 0, GATConv(self.num_features, self.hidden, heads=8, concat=False, dropout=self.dropout_p))
         for i in range(1,config.n_layers):
-            setattr(self, "conv%d" % i, GATConv(self.hidden, self.hidden, dropout=self.dropout_p))
+            setattr(self, "conv%d" % i, GATConv(self.hidden, self.hidden, heads=8, concat=False, dropout=self.dropout_p))
     def forward(self, data):
         x, edge_index = torch.ones((len(data.batch),1)).cuda(), data.edge_index
         for i in range(self.n_layers):
