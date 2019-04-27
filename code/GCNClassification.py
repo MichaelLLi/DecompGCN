@@ -1,7 +1,9 @@
 import torch
 import torch.nn.functional as F
 from torch_scatter import scatter_mean, scatter_add
-from torch_geometric.nn import GCNConv, GINConv, SGConv, GATConv
+from torch_geometric.nn import GCNConv, GINConv, SGConv#, GATConv
+from GAT_Modified import GATConv
+from SGConv_Modified import SGConv_Modified
 from torch.nn import Linear
 import torch.nn as nn
 
@@ -144,7 +146,7 @@ class SGConvRegression(torch.nn.Module):
         self.linear_preds = Linear(self.hidden, 1)
         setattr(self, "conv%d" % 0, SGConv(self.num_features, 1,K=config.n_layers))
     def forward(self, data):
-        x, edge_index = torch.ones((len(data.batch),1)).cuda(), data.edge_index
+        x, edge_index = torch.ones((len(data.batch),1)), data.edge_index
         x = getattr(self, "conv%d" % 0)(x,edge_index)
 
         if self.graph == True:
@@ -163,7 +165,40 @@ class SGConvRegression(torch.nn.Module):
         pred = self.forward(data)
         mse = self.loss(pred,data.y)
         acc = -mse
-        return acc         
+        return acc  
+
+class SGConvModifiedRegression(torch.nn.Module):
+    def __init__(self, config, graph=True):
+        super(SGConvModifiedRegression, self).__init__()
+        self.num_features = config.num_features
+        self.hidden = config.hidden_units
+        self.n_layers=config.n_layers
+        self.dropout_p=config.dropout_p
+        self.graph = graph
+        self.linear_preds = Linear(self.hidden, 1)
+        setattr(self, "conv%d" % 0, SGConv_Modified(self.num_features, 1,K=config.n_layers))
+    def forward(self, data):
+        x, edge_index = torch.ones((len(data.batch),1)), data.edge_index
+        x = getattr(self, "conv%d" % 0)(x,edge_index)
+
+        if self.graph == True:
+            x = scatter_mean(x, data.batch, dim=0)
+        return x
+
+    def loss(self, inputs, targets):
+        inputs=inputs.float()
+        targets=targets.float()
+        self.current_loss = F.mse_loss(inputs, targets)
+        return self.current_loss
+
+    def eval_metric(self, data):
+        self.eval()
+
+        pred = self.forward(data)
+        mse = self.loss(pred,data.y)
+        acc = -mse
+        return acc  
+
 class SGINClassification(torch.nn.Module):
     def __init__(self, config, num_classes, graph=True):
         super(SGINClassification, self).__init__()
@@ -367,11 +402,10 @@ class GATRegression(torch.nn.Module):
         for i in range(1,config.n_layers):
             setattr(self, "conv%d" % i, GATConv(self.hidden, self.hidden, heads=8, concat=False, dropout=self.dropout_p))
     def forward(self, data):
-        x, edge_index = torch.ones((len(data.batch),1)).cuda(), data.edge_index
+        x, edge_index = torch.ones((len(data.batch),1)), data.edge_index
         for i in range(self.n_layers):
             x = getattr(self, "conv%d" % i)(x,edge_index)
             x = F.relu(x)
-            x = F.dropout(x,p=self.dropout_p)
 
         if self.graph == True:
             x = scatter_mean(x, data.batch, dim=0)

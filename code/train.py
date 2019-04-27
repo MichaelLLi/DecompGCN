@@ -8,7 +8,9 @@ import shutil
 #from Graph import Graph
 from GraphDataset import RandomConnectedGraph, RandomCliqueGraph, RandomTreeCycleGraph, RandomTriangleGraph
 from config import Config
-from GCNClassification import GCNClassification, GINClassification, SGConvClassification, SGINClassification, GATClassification, GINRegression, GCNRegression, GATRegression,SGConvRegression
+from GCNClassification import GCNClassification, GINClassification, SGConvClassification, \
+        SGINClassification, GATClassification, GINRegression, GCNRegression, GATRegression,SGConvRegression, \
+        SGConvModifiedRegression
 from random import shuffle
 from torch_geometric.datasets import TUDataset
 
@@ -72,6 +74,8 @@ def load_model(device, config):
             model = GCNRegression(config)
         elif config.model == "SGConv":
             model = SGConvRegression(config)
+        elif config.model == "SGConv_Modified":
+            model = SGConvModifiedRegression(config)
         elif config.model == "GAT":
             model = GATRegression(config)        
     model = model.to(device)
