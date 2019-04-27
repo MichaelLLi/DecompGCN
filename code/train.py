@@ -6,10 +6,9 @@ from tensorboardX import SummaryWriter
 import shutil
 
 #from Graph import Graph
-from GraphDataset import RandomConnectedGraph, RandomCliqueGraph, RandomTreeCycleGraph
+from GraphDataset import RandomConnectedGraph, RandomCliqueGraph, RandomTreeCycleGraph, RandomTriangleGraph
 from config import Config
-from GCNClassification import GCNClassification, GINClassification, \
-        SGConvClassification, SGINClassification, GATClassification
+from GCNClassification import GCNClassification, GINClassification, SGConvClassification, SGINClassification, GATClassification, GINRegression, GCNRegression, GATRegression,SGConvRegression
 from random import shuffle
 from torch_geometric.datasets import TUDataset
 
@@ -26,6 +25,8 @@ def load_data(config):
         dataset = RandomTreeCycleGraph()
     elif config.task=="reddit-b":
         dataset = TUDataset(root="/tmp/redditb",name="REDDIT-BINARY")
+    elif config.task=="triangle":
+        dataset = RandomTriangleGraph()        
     if config.task!="reddit-b":
         data_list=[]
         for i in range(dataset.__len__()):
@@ -64,6 +65,15 @@ def load_model(device, config):
             model = SGINClassification(config, 2)
         elif config.model == "GAT":
             model = GATClassification(config, 2)
+    elif config.task in ['triangle']:
+        if config.model == "GIN":
+            model = GINRegression(config)
+        elif config.model == "GCN":
+            model = GCNRegression(config)
+        elif config.model == "SGConv":
+            model = SGConvRegression(config)
+        elif config.model == "GAT":
+            model = GATRegression(config)        
     model = model.to(device)
 
     return model

@@ -78,4 +78,25 @@ class RandomTreeCycleGraph(Dataset):
     def _process(self):
         pass
 
+class RandomTriangleGraph(Dataset):
+    def __init__(self, root="../data/triangle/", transform=None, pre_transform=None):
+        super(RandomTriangleGraph, self).__init__(root, transform, pre_transform)
+    def __len__(self):
+        return 500
 
+    def get(self, idx):
+        data = torch.load(self.root + '/' + os.listdir(self.root)[idx])
+        return data
+
+    @property
+    def raw_file_names(self):
+        return []
+    @property
+    def processed_file_names(self):
+        return []
+
+    def _download(self):
+        pass
+
+    def _process(self):
+        pass

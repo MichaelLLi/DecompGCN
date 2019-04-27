@@ -21,7 +21,7 @@ class GCNClassification(torch.nn.Module):
             setattr(self, "conv%d" % i, GCNConv(self.hidden, self.hidden))
     # forward(x, edge_index, edge_weight=None)
     def forward(self, data):
-        x, edge_index = torch.ones((len(data.batch),1)), data.edge_index
+        x, edge_index = torch.ones((len(data.batch),1)).cuda(), data.edge_index
         for i in range(self.n_layers):
             x = getattr(self, "conv%d" % i)(x,edge_index)
             x = F.relu(x)
@@ -51,6 +51,46 @@ class GCNClassification(torch.nn.Module):
 
     def predictions_to_list(self, predictions):
         return predictions.tolist()
+        
+class GCNRegression(torch.nn.Module):
+    def __init__(self, config, graph=True):
+        super(GCNRegression, self).__init__()
+        # GCNConv(in_channels, out_channels, improved=False, cached=False, bias=True)
+        self.num_features = config.num_features
+        self.hidden = config.hidden_units
+        self.n_layers=config.n_layers
+        self.dropout_p=config.dropout_p
+        self.graph = graph
+        self.linear_preds = Linear(self.hidden, 1)
+        setattr(self, "conv%d" % 0, GCNConv(self.num_features, self.hidden))
+        for i in range(1,config.n_layers):
+            setattr(self, "conv%d" % i, GCNConv(self.hidden, self.hidden))
+    # forward(x, edge_index, edge_weight=None)
+    def forward(self, data):
+        x, edge_index = torch.ones((len(data.batch),1)).cuda(), data.edge_index
+        for i in range(self.n_layers):
+            x = getattr(self, "conv%d" % i)(x,edge_index)
+            x = F.relu(x)
+            x = F.dropout(x,p=self.dropout_p)
+
+        if self.graph == True:
+            x = scatter_mean(x, data.batch, dim=0)
+        x = self.linear_preds(x)
+        return x
+
+    def loss(self, inputs, targets):
+        inputs=inputs.float()
+        targets=targets.float()
+        self.current_loss = F.mse_loss(inputs, targets)
+        return self.current_loss
+
+    def eval_metric(self, data):
+        self.eval()
+
+        pred = self.forward(data)
+        mse = self.loss(pred,data.y)
+        acc = -mse
+        return acc     
 
 class SGConvClassification(torch.nn.Module):
     def __init__(self, config, num_classes, graph=True):
@@ -67,7 +107,7 @@ class SGConvClassification(torch.nn.Module):
     # forward(x, edge_index, edge_weight=None)
     def forward(self, data):
         
-        x, edge_index = torch.ones((len(data.batch),1)), data.edge_index
+        x, edge_index = torch.ones((len(data.batch),1)).cuda(), data.edge_index
         x = getattr(self, "conv%d" % 0)(x,edge_index)
 
         if self.graph == True:
@@ -93,7 +133,37 @@ class SGConvClassification(torch.nn.Module):
 
     def predictions_to_list(self, predictions):
         return predictions.tolist()
-        
+class SGConvRegression(torch.nn.Module):
+    def __init__(self, config, graph=True):
+        super(SGConvRegression, self).__init__()
+        self.num_features = config.num_features
+        self.hidden = config.hidden_units
+        self.n_layers=config.n_layers
+        self.dropout_p=config.dropout_p
+        self.graph = graph
+        self.linear_preds = Linear(self.hidden, 1)
+        setattr(self, "conv%d" % 0, SGConv(self.num_features, 1,K=config.n_layers))
+    def forward(self, data):
+        x, edge_index = torch.ones((len(data.batch),1)).cuda(), data.edge_index
+        x = getattr(self, "conv%d" % 0)(x,edge_index)
+
+        if self.graph == True:
+            x = scatter_mean(x, data.batch, dim=0)
+        return x
+
+    def loss(self, inputs, targets):
+        inputs=inputs.float()
+        targets=targets.float()
+        self.current_loss = F.mse_loss(inputs, targets)
+        return self.current_loss
+
+    def eval_metric(self, data):
+        self.eval()
+
+        pred = self.forward(data)
+        mse = self.loss(pred,data.y)
+        acc = -mse
+        return acc         
 class SGINClassification(torch.nn.Module):
     def __init__(self, config, num_classes, graph=True):
         super(SGINClassification, self).__init__()
@@ -160,7 +230,7 @@ class GINClassification(torch.nn.Module):
     # forward(x, edge_index, edge_weight=None)
     def forward(self, data):
         hidden_reps=[]
-        x, edge_index = torch.ones((len(data.batch),1)), data.edge_index
+        x, edge_index = torch.ones((len(data.batch),1)).cuda(), data.edge_index
         for i in range(self.n_layers):
             x = getattr(self, "conv%d" % i)(x,edge_index)
             x = F.relu(x)
@@ -193,7 +263,47 @@ class GINClassification(torch.nn.Module):
 
     def predictions_to_list(self, predictions):
         return predictions.tolist()
+class GINRegression(torch.nn.Module):
+    def __init__(self, config, graph=True):
+        super(GINRegression, self).__init__()
+        self.num_features = config.num_features
+        self.hidden = config.hidden_units
+        self.n_layers=config.n_layers
+        self.dropout_p=config.dropout_p
+        self.graph = graph
+        self.linear_preds = Linear(self.hidden, 1)
+        setattr(self, "conv%d" % 0, GINConv(MLP(2,self.num_features, self.hidden, self.hidden)))
+        for i in range(1,config.n_layers):
+            setattr(self, "conv%d" % i, GINConv(MLP(2,self.hidden, self.hidden, self.hidden)))
+    def forward(self, data):
+        hidden_reps=[]
+        x, edge_index = torch.ones((len(data.batch),1)).cuda(), data.edge_index
+        for i in range(self.n_layers):
+            x = getattr(self, "conv%d" % i)(x,edge_index)
+            x = F.relu(x)
+            hidden_reps.append(x)
+#            x = F.dropout(x,p=self.dropout_p)
+        output_score = 0
+        for i in range(self.n_layers):
+            if self.graph == True:
+                x = scatter_mean(hidden_reps[i], data.batch, dim=0)
+                x = self.linear_preds(x)
+                output_score += x
+        return output_score
 
+    def loss(self, inputs, targets):
+        inputs=inputs.float()
+        targets=targets.float()
+        self.current_loss = F.mse_loss(inputs, targets)
+        return self.current_loss
+
+    def eval_metric(self, data):
+        self.eval()
+
+        pred = self.forward(data)
+        mse = self.loss(pred,data.y)
+        acc = -mse
+        return acc  
 class GATClassification(torch.nn.Module):
     def __init__(self, config, num_classes, graph=True):
         super(GATClassification, self).__init__()
@@ -211,7 +321,7 @@ class GATClassification(torch.nn.Module):
             setattr(self, "conv%d" % i, GATConv(self.hidden, self.hidden, dropout=self.dropout_p))
 
     def forward(self, data):
-        x, edge_index = torch.ones((len(data.batch),1)), data.edge_index
+        x, edge_index = torch.ones((len(data.batch),1)).cuda(), data.edge_index
         for i in range(self.n_layers):
             x = getattr(self, "conv%d" % i)(x,edge_index)
             x = F.relu(x)
@@ -241,7 +351,45 @@ class GATClassification(torch.nn.Module):
 
     def predictions_to_list(self, predictions):
         return predictions.tolist()
+class GATRegression(torch.nn.Module):
+    def __init__(self, config, graph=True):
+        super(GATRegression, self).__init__()
+        self.num_features = config.num_features
+        self.hidden = config.hidden_units
+        self.n_layers=config.n_layers
+        self.dropout_p=config.dropout_p
+        self.graph = graph
+        self.linear_preds = Linear(self.hidden, 1)
 
+        # GATConv(in_channels, out_channels, heads=1, concat=True, negative_slope=0.2, dropout=0, bias=True)
+        setattr(self, "conv%d" % 0, GATConv(self.num_features, self.hidden, dropout=self.dropout_p))
+        for i in range(1,config.n_layers):
+            setattr(self, "conv%d" % i, GATConv(self.hidden, self.hidden, dropout=self.dropout_p))
+    def forward(self, data):
+        x, edge_index = torch.ones((len(data.batch),1)).cuda(), data.edge_index
+        for i in range(self.n_layers):
+            x = getattr(self, "conv%d" % i)(x,edge_index)
+            x = F.relu(x)
+            x = F.dropout(x,p=self.dropout_p)
+
+        if self.graph == True:
+            x = scatter_mean(x, data.batch, dim=0)
+        x = self.linear_preds(x)
+        return x
+
+    def loss(self, inputs, targets):
+        inputs=inputs.float()
+        targets=targets.float()
+        self.current_loss = F.mse_loss(inputs, targets)
+        return self.current_loss
+
+    def eval_metric(self, data):
+        self.eval()
+
+        pred = self.forward(data)
+        mse = self.loss(pred,data.y)
+        acc = -mse
+        return acc 
 
 class MLP(torch.nn.Module):
     def __init__(self, num_layers, input_dim, hidden_dim, output_dim):
