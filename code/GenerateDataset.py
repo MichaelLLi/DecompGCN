@@ -112,4 +112,30 @@ def generate_triangles():
             data=Data(x=torch.ones((100,1)),edge_index=TS1._indices(),y=torch.ones(1).long()*triangles)
             torch.save(data,"../data/triangle/triangle_" + str(i) + ".pt")
             i+=1
-generate_tree_cycle()
+            
+def generate_planar():
+    original_graphs=nx.read_graph6('../data/planar/list_2040_graphs.g6')
+    i=0
+    for graph in original_graphs:
+        if nx.edge_connectivity(graph)>0 and graph.number_of_nodes()>30 and graph.number_of_nodes()<100 and graph.number_of_edges()>graph.number_of_nodes()*1.3:
+            nnode=graph.number_of_nodes()
+            nedges=graph.number_of_edges()
+            a=True
+            connect=0
+            while a or (connect==0):
+                G1=nx.gnm_random_graph(nnode,nedges)
+                a, _ = nx.check_planarity(G1)
+                connect=nx.edge_connectivity(G1)
+            S1=to_numpy_array(G1)
+            T1=torch.from_numpy(S1)
+            TS1=to_sparse(T1)
+            S0=to_numpy_array(graph)
+            T0=torch.from_numpy(S0)
+            TS0=to_sparse(T0)        
+            data=Data(x=torch.ones((nnode,1)),edge_index=TS1._indices(),y=torch.ones(1).long())
+            data1=Data(x=torch.ones((nnode,1)),edge_index=TS0._indices(),y=torch.zeros(1).long())
+            torch.save(data,"../data/planar/planar_" + str(i) + ".pt")
+            i+=1
+            torch.save(data1,"../data/planar/planar_" + str(i) + ".pt")
+            i+=1        
+generate_planar()
