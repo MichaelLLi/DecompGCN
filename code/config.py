@@ -39,7 +39,7 @@ class Config():
         self.parser.add_argument('--batch_size_eval', type=int,
                                  default=32, help='batch size for evaluation')
         self.parser.add_argument('--task', type=str,
-                                 default='triangle', help='clique | connectivity | reddit-b | tree_cycle | triangle')
+                                 default='triangle', help='clique | connectivity | reddit-b | tree_cycle | triangle | planar')
 
 
         # self.parser.add_argument('--euclidian_dimensionality', type=int,

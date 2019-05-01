@@ -114,7 +114,7 @@ def generate_triangles():
             i+=1
             
 def generate_planar():
-    original_graphs=nx.read_graph6('../data/planar/list_2040_graphs.g6')
+    original_graphs=nx.read_graph6('../data/list_2040_graphs.g6')
     i=0
     for graph in original_graphs:
         if nx.edge_connectivity(graph)>0 and graph.number_of_nodes()>30 and graph.number_of_nodes()<100 and graph.number_of_edges()>graph.number_of_nodes()*1.3:

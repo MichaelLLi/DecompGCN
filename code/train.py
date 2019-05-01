@@ -6,7 +6,7 @@ from tensorboardX import SummaryWriter
 import shutil
 
 #from Graph import Graph
-from GraphDataset import RandomConnectedGraph, RandomCliqueGraph, RandomTreeCycleGraph, RandomTriangleGraph
+from GraphDataset import RandomConnectedGraph, RandomCliqueGraph, RandomTreeCycleGraph, RandomTriangleGraph, RandomPlanarGraph
 from config import Config
 from GCNClassification import GCNClassification, GINClassification, SGConvClassification, \
         SGINClassification, GATClassification, GINRegression, GCNRegression, GATRegression,SGConvRegression, \
@@ -28,7 +28,9 @@ def load_data(config):
     elif config.task=="reddit-b":
         dataset = TUDataset(root="/tmp/redditb",name="REDDIT-BINARY")
     elif config.task=="triangle":
-        dataset = RandomTriangleGraph()        
+        dataset = RandomTriangleGraph()
+    elif config.task=="planar":
+        dataset = RandomPlanarGraph()        
     if config.task!="reddit-b":
         data_list=[]
         for i in range(dataset.__len__()):
@@ -56,7 +58,7 @@ def load_data(config):
 
 def load_model(device, config):
     print("Model: ", config.model)
-    if config.task in ['clique','connectivity','reddit-b', 'tree_cycle']:
+    if config.task in ['clique','connectivity','reddit-b', 'tree_cycle', 'planar']:
         if config.model == "GIN":
             model = GINClassification(config, 2)
         elif config.model == "GCN":
