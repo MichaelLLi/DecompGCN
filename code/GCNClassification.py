@@ -1,7 +1,8 @@
 import torch
 import torch.nn.functional as F
 from torch_scatter import scatter_mean, scatter_add
-from torch_geometric.nn import GCNConv, GINConv, SGConv#, GATConv
+from torch_geometric.nn import GINConv, SGConv#, GATConv, GCNConv
+from GCNConv_Modified import GCNConv
 from GAT_Modified import GATConv
 from SGConv_Modified import SGConv_Modified
 from torch.nn import Linear
@@ -23,7 +24,7 @@ class GCNClassification(torch.nn.Module):
             setattr(self, "conv%d" % i, GCNConv(self.hidden, self.hidden))
     # forward(x, edge_index, edge_weight=None)
     def forward(self, data):
-        x, edge_index = torch.ones((len(data.batch),1)).cuda(), data.edge_index
+        x, edge_index = torch.ones((len(data.batch),1)), data.edge_index
         for i in range(self.n_layers):
             x = getattr(self, "conv%d" % i)(x,edge_index)
             x = F.relu(x)
@@ -69,7 +70,7 @@ class GCNRegression(torch.nn.Module):
             setattr(self, "conv%d" % i, GCNConv(self.hidden, self.hidden))
     # forward(x, edge_index, edge_weight=None)
     def forward(self, data):
-        x, edge_index = torch.ones((len(data.batch),1)).cuda(), data.edge_index
+        x, edge_index = torch.ones((len(data.batch),1)), data.edge_index
         for i in range(self.n_layers):
             x = getattr(self, "conv%d" % i)(x,edge_index)
             x = F.relu(x)

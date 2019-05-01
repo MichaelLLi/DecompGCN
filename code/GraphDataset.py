@@ -104,6 +104,7 @@ class RandomTriangleGraph(Dataset):
 class RandomPlanarGraph(Dataset):
     def __init__(self, root="../data/planar/", transform=None, pre_transform=None):
         super(RandomPlanarGraph, self).__init__(root, transform, pre_transform)
+    
     def __len__(self):
         return 2102
 
@@ -123,3 +124,4 @@ class RandomPlanarGraph(Dataset):
 
     def _process(self):
         pass
+
