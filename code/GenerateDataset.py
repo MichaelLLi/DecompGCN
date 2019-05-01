@@ -103,7 +103,7 @@ def generate_triangles():
     while i<500:
         G1=nx.fast_gnp_random_graph(100,0.07)
         A = nx.adjacency_matrix(G1)
-        triangles = (A*A*A).diagonal().sum()/6
+        triangles = (A@A@A).diagonal().sum()/6
         S1=to_numpy_array(G1)
         T1=torch.from_numpy(S1)
         TS1=to_sparse(T1)
