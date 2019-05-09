@@ -6,80 +6,164 @@ from tensorboardX import SummaryWriter
 import shutil
 
 #from Graph import Graph
-from GraphDataset import RandomConnectedGraph, RandomCliqueGraph, RandomTreeCycleGraph, RandomTriangleGraph, RandomPlanarGraph
+from graph_dataset import RandomConnectedGraph, RandomCliqueGraph, \
+        RandomTreeCycleGraph, RandomTriangleGraph, RandomPlanarGraph,\
+        redditDataset, imdbDataset, proteinDataset, CoraDataset, CiteSeerDataset, PubMedDataset
 from config import Config
-from GCNClassification import GCNClassification, GINClassification, SGConvClassification, \
-        SGINClassification, GATClassification, GINRegression, GCNRegression, GATRegression,SGConvRegression, \
-        SGConvModifiedRegression
+from graph_classification_models import GINClassification, SGConvClassification, \
+         GINRegression,  SGConvRegression#, SGConvModifiedRegression
+from graph_classification_models import GCNConvModel
 from random import shuffle
-from torch_geometric.datasets import TUDataset
+from torch_geometric.datasets import KarateClub
 
 def get_device():
     return torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
+task_dict = {
+    'clique': {
+        'classification': True,
+        'graph': True,
+        'num_classes': 2,
+        'dataset': RandomCliqueGraph
+    },
+    'connectivity': {
+        'classification': True,
+        'graph': True,
+        'num_classes': 2,
+        'dataset': RandomConnectedGraph
+    },
+    'tree_cycle': {
+        'classification': True,
+        'graph': True,
+        'num_classes': 2,
+        'dataset': RandomCliqueGraph
+    },
+    'planar': {
+        'classification': True,
+        'graph': True,
+        'num_classes': 2,
+        'dataset': RandomPlanarGraph
+    },
+    'triangle': {
+        'classification': False,
+        'graph': True,
+        'num_classes': 1,
+        'dataset': RandomTriangleGraph
+    },
+    'imdb-b': {
+        'classification': True,
+        'graph': False,
+        'num_classes': 2,
+        'dataset': imdbDataset
+    },
+    'proteins': {
+        'classification': True,
+        'graph': True,
+        'num_classes': 2,
+        'dataset': proteinDataset
+    },
+    'reddit-b': {
+        'classification': True,
+        'graph': True,
+        'num_classes': 2,
+        'dataset': redditDataset
+    },
+    'karate': {
+        'classification': True,
+        'graph': False,
+        'num_classes': 2,
+        'dataset': KarateClub
+    },
+    'cora': {
+        'classification': True,
+        'graph': False,
+        'num_classes': 7,
+        'dataset': CoraDataset
+    },
+    'citeseer': {
+        'classification': True,
+        'graph': False,
+        'num_classes': 6,
+        'dataset': CiteSeerDataset
+    },
+    'pubmed': {
+        'classification': True,
+        'graph': False,
+        'num_classes': 3,
+        'dataset': PubMedDataset
+    }
+}
+
 def load_data(config):
     print("Task: ", config.task)
-    if config.task=="connectivity":
-        dataset = RandomConnectedGraph()
-    elif config.task=="clique":
-        dataset = RandomCliqueGraph()
-    elif config.task=="tree_cycle":
-        dataset = RandomTreeCycleGraph()
-    elif config.task=="reddit-b":
-        dataset = TUDataset(root="/tmp/redditb",name="REDDIT-BINARY")
-    elif config.task=="triangle":
-        dataset = RandomTriangleGraph()
-    elif config.task=="planar":
-        dataset = RandomPlanarGraph()        
-    if config.task!="reddit-b":
+
+    task = config.task
+    dataset = task_dict[task]['dataset']()
+    graph = task_dict[task]['graph']
+
+    if task not in  ['reddit-b', 'proteins', 'imdb-b', \
+                        'cora', 'citeseer', 'pubmed']:
         data_list=[]
         for i in range(dataset.__len__()):
             data_list.append(dataset[i])
     else:
         data_list=dataset
     
-    train_idx = int(len(data_list) * (1 - config.test_split -
+    if graph == True:
+        train_idx = int(len(data_list) * (1 - config.test_split -
                                             config.validation_split))
-    valid_idx = int(len(data_list) * (1 - config.test_split))
-    if config.task!="reddit-b":
-        shuffle(data_list)
+        valid_idx = int(len(data_list) * (1 - config.test_split))
+        if task not in  ['reddit-b', 'proteins', 'imdb-b', \
+                             'cora', 'citeseer', 'pubmed']:
+            shuffle(data_list)
+        else:
+            data_list = data_list.shuffle()
+        
+        train_dataset = data_list[:train_idx]
+        valid_dataset = data_list[train_idx:valid_idx]
+        test_dataset = data_list[valid_idx:]
+
+        train_loader = DataLoader(dataset=train_dataset, batch_size=config.batch_size_train, shuffle=True)
+        valid_loader = DataLoader(dataset=valid_dataset, batch_size=config.batch_size_train, shuffle=True)
+        test_loader = DataLoader(dataset=test_dataset, batch_size=config.batch_size_eval, shuffle=True)
+
+        return train_dataset, valid_dataset, train_loader, valid_loader, test_loader
     else:
-        data_list = data_list.shuffle()
-    
-    train_dataset = data_list[:train_idx]
-    valid_dataset = data_list[train_idx:valid_idx]
-    test_dataset = data_list[valid_idx:]
-
-    train_loader = DataLoader(dataset=train_dataset, batch_size=config.batch_size_train, shuffle=True)
-    valid_loader = DataLoader(dataset=valid_dataset, batch_size=config.batch_size_train, shuffle=True)
-    test_loader = DataLoader(dataset=test_dataset, batch_size=config.batch_size_eval, shuffle=True)
-
-    return train_dataset, valid_dataset, train_loader, valid_loader, test_loader
+        data = dataset[0]
+        
+        data.train_mask = torch.zeros(data.num_nodes, dtype=torch.uint8)
+        data.train_mask[:data.num_nodes - 1000] = 1
+        data.val_mask = None
+        data.test_mask = torch.zeros(data.num_nodes, dtype=torch.uint8)
+        data.test_mask[data.num_nodes - 500:] = 1
+        
+        return data, None, None, None, None
 
 def load_model(device, config):
     print("Model: ", config.model)
-    if config.task in ['clique','connectivity','reddit-b', 'tree_cycle', 'planar']:
-        if config.model == "GIN":
+
+    task = config.task
+    graph = task_dict[task]['graph']
+    num_classes = task_dict[task]['num_classes']
+    classification = task_dict[task]['classification']
+
+    if config.model == 'GCN':
+        model = GCNConvModel(config, num_classes, graph=graph, classification=classification, residual=config.residual)
+    elif config.model == "GIN":
+        if classification == True:
             model = GINClassification(config, 2)
-        elif config.model == "GCN":
-            model = GCNClassification(config,2)
-        elif config.model == "SGConv":
+        else:
+            model = GINRegression(config, 1)
+    elif config.model == "SGConv":
+        if classification == True:
             model = SGConvClassification(config, 2)
-        elif config.model == "SGIN":
-            model = SGINClassification(config, 2)
-        elif config.model == "GAT":
-            model = GATClassification(config, 2)
-    elif config.task in ['triangle']:
-        if config.model == "GIN":
-            model = GINRegression(config)
-        elif config.model == "GCN":
-            model = GCNRegression(config)
-        elif config.model == "SGConv":
-            model = SGConvRegression(config)
-        elif config.model == "SGConv_Modified":
-            model = SGConvModifiedRegression(config)
-        elif config.model == "GAT":
-            model = GATRegression(config)        
+        else:
+            model = SGConvRegression(config, 1)
+    # elif config.model == "SGIN":
+    #     model = SGINClassification(config, 2)
+    # elif config.model == "GAT":
+    #     model = GATClassification(config, 2)
+       
     model = model.to(device)
 
     return model
@@ -89,27 +173,63 @@ def eval(model, eval_iter, device):
     eval_loss = 0.0
     for batch_idx, data in enumerate(eval_iter):
         data = data.to(device)
-        out = model(data)
+        x = torch.ones((len(data.batch),1)).to(device)
+        out = model(data, x)
 
         loss = model.loss(out, data.y)
         eval_loss += loss.item()
 
     return eval_loss
 
+
 def evalacc(model, eval_iter, device):
     model.eval()
     eval_acc = 0.0
     for batch_idx, data in enumerate(eval_iter):
         data = data.to(device)
-        acc = model.eval_metric(data)
+        x = torch.ones((len(data.batch),1)).to(device)
+        acc = model.eval_metric(data, x)
         eval_acc += acc
 
     return eval_acc / len(eval_iter)
 
-def train(model, train_loader, valid_loader, device, config, train_writer, val_writer,
-            train_dataset, valid_dataset, lr=0.001):
+def train_node(model, data, device, config, lr=0.001):
     epochs = config.training_epochs
     optim = torch.optim.Adam(model.parameters(), lr=lr)
+
+    for e in range(epochs):
+        print("Epoch %d" % (e))
+        
+        model.train()
+        epoch_loss = 0.0
+        
+        optim.zero_grad()
+        data = data.to(device)
+        out = model(data, data.x)
+        loss = model.loss(out[data.train_mask], data.y[data.train_mask])
+        epoch_loss = loss.item()
+        loss.backward()
+        optim.step()
+        print("loss: %f" % (epoch_loss))
+        
+        model.eval()
+        eval_loss = 0.0
+        out = model(data, data.x)
+        eval_loss = model.loss(out[data.test_mask], data.y[data.test_mask])
+        
+        logits, accs = out, []
+        for _, mask in data('train_mask', 'test_mask'):
+            pred = logits[mask].max(1)[1]
+            acc = pred.eq(data.y[mask]).sum().item() / mask.sum().item()
+            accs.append(acc)
+        print("validation loss: %f" % (eval_loss))
+        print("validation acc:",  accs)
+
+def train(model, train_loader, valid_loader, device, config, train_writer, val_writer,
+            train_dataset, valid_dataset, lr=0.0001):
+    epochs = config.training_epochs
+    optim = torch.optim.Adam(model.parameters(), lr=lr)
+    #optim = torch.optim.SGD(model.parameters(), lr=lr)
 
     for e in range(epochs):
         print("Epoch %d" % (e))
@@ -121,7 +241,8 @@ def train(model, train_loader, valid_loader, device, config, train_writer, val_w
             optim.zero_grad()
             
             data = data.to(device)
-            out = model(data)
+            x = torch.ones((len(data.batch),1)).to(device)
+            out = model(data, x)
 
             loss = model.loss(out, data.y)
             epoch_loss += loss.item()
@@ -176,6 +297,8 @@ def main():
     print("start training...")
     train(model, train_loader, valid_loader, device, config, train_writer, val_writer,
             train_dataset, valid_dataset)
+
+    #train_node(model, train_dataset, device, config, lr=0.001)
 
     # predict
 

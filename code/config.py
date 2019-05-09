@@ -40,7 +40,8 @@ class Config():
                                  default=32, help='batch size for evaluation')
         self.parser.add_argument('--task', type=str,
                                  default='triangle', help='clique | connectivity | reddit-b | tree_cycle | triangle | planar')
-
+        self.parser.add_argument('--residual', type=bool,
+                                      default=True, help='residual connections')
 
         # self.parser.add_argument('--euclidian_dimensionality', type=int,
         #                          default=2, help='Dimension of the Euclidian space, used in data.pos')

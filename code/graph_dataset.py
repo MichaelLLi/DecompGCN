@@ -1,6 +1,7 @@
 import torch
 from torch_geometric.data import Dataset
 import torch_geometric.transforms as T
+from torch_geometric.datasets import TUDataset, Planetoid
 import os
 
 class RandomConnectedGraph(Dataset):
@@ -124,4 +125,24 @@ class RandomPlanarGraph(Dataset):
 
     def _process(self):
         pass
+
+def redditDataset():
+    return TUDataset(root="/tmp/redditb",name="REDDIT-BINARY")
+
+def imdbDataset():
+    return TUDataset(root="/tmp/imdbb",name="IMDB-BINARY")
+
+def proteinDataset():
+    return TUDataset(root="/tmp/proteins",name="PROTEINS")
+
+def CoraDataset():
+    return Planetoid(root="/tmp/cora", name='Cora')
+
+def CiteSeerDataset():
+    return Planetoid(root="/tmp/citeseer", name='CiteSeer')
+
+def PubMedDataset():
+    return Planetoid(root="/tmp/pubmed", name='PubMed')
+
+
 
