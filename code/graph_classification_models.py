@@ -6,7 +6,7 @@ import torch.nn as nn
 from torch_scatter import scatter_mean, scatter_add
 
 from torch_geometric.nn import GINConv, SGConv#, GATConv, GCNConv
-from gcnconv_modified import GCNConvModified, GCNConvModified_2
+from gcnconv_modified import GCNConvModified
 from GAT_Modified import GATConv
 from SGConv_Modified import SGConv_Modified
 #from GraphSage import SAGEConv
@@ -16,6 +16,27 @@ from torch_sparse import spmm, spspmm
 
 from base import GraphClassification
 
+
+class LConfig:
+    pass
+
+def layerconfig(x):
+    major_type=x[0]
+    level=x[1]
+    config=LConfig()
+    if major_type=="V":
+        config.order=int(level)
+        config.normalize=False
+        config.edge=False
+        config.diag=False
+    elif major_type=="E":
+        config.order=int(level)
+        config.normalize=False
+        config.edge=True
+        config.diag=True        
+    return config
+        
+
 class GCNConvModel(GraphClassification):
     def __init__(self, config, num_classes, graph=True, classification=True, residual=False):
         super(GCNConvModel, self).__init__(config, num_classes, graph, classification)
@@ -24,38 +45,42 @@ class GCNConvModel(GraphClassification):
         
         self.residual = False
         self.linear_preds = Linear(self.hidden, self.num_classes)
-
-        setattr(self, "conv%d" % 0, GCNConvModified(self.num_features, self.hidden))
-        setattr(self, "conv_1%d" % 0, GCNConvModified_2(self.num_features, self.hidden))
-        for i in range(1,config.n_layers):
-            setattr(self, "conv%d" % i, GCNConvModified(self.hidden, self.hidden))
-            setattr(self, "conv_1%d" % i, GCNConvModified_2(self.hidden, self.hidden))
+        layertypes=config.layertype.split(",")
+        configs=[layerconfig(x) for x in layertypes]
+        self.num_layer_types=len(configs)
+        for i in range(len(configs)):
+            setattr(self, "conv%d%d" % (0,i), GCNConvModified(self.num_features, self.hidden,configs[i]))
+            setattr(self, "param%d" % i, torch.nn.Parameter(torch.randn(1)).cuda())           
+        for j in range(1,config.n_layers):
+            for i in range(len(configs)):
+                setattr(self, "conv%d%d" % (j,i), GCNConvModified(self.hidden, self.hidden,configs[i]))
 
     def forward(self, data, x):
         edge_index = data.edge_index
         #residual_x = torch.zeros((x.shape[0], self.hidden)).to(self.device)
         xs = []
-        x1s, x2s = [], []
-        x1, x2 = x, x
+        #x1s, x2s = [], []
+        #x1, x2 = x, x
         for i in range(self.n_layers):
-            #x = getattr(self, "conv_1%d" % i)(x, edge_index)
-            x1 = getattr(self, "conv%d" % i)(x1, edge_index)
-            x2 = getattr(self, "conv_1%d" % i)(x2, edge_index)
-            #x = x1 + x2
-            #x = F.leaky_relu(x, 0.1)
-            x1 = F.leaky_relu(x1, 0.1)
-            x2 = F.leaky_relu(x2, 0.1)
+#            x = getattr(self, "conv%d" % i)(x, edge_index)
+            xo = 0
+            for j in range(self.num_layer_types):
+                xo = xo + getattr(self, "param%d" % j)*getattr(self, "conv%d%d" % (i,j))(x, edge_index)
+                xo = F.leaky_relu(xo, 0.1)
+            #x1 = F.leaky_relu(x1, 0.1)
+            #x2 = F.leaky_relu(x2, 0.1)
 
-            x1s.append(x1)
-            x2s.append(x2)
-            #xs.append(x)
+            #x1s.append(x1)
+            #x2s.append(x2)
+            xs.append(xo)
+            x = xo
             #if self.residual == True:
             #    if i == 0:
             #        residual_x = x.clone()
             #    else:
             #        residual_x += x
             #x = F.dropout(x,p=self.dropout_p)
-        x = sum(x1s) + sum(x2s)
+#        x = sum(xs)
         if self.residual == True:
             #x = residual_x.clone()
             x = sum(xs)

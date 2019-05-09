@@ -15,7 +15,7 @@ from graph_classification_models import GINClassification, SGConvClassification,
 from graph_classification_models import GCNConvModel
 from random import shuffle
 from torch_geometric.datasets import KarateClub
-
+from torch.optim.lr_scheduler import ReduceLROnPlateau
 def get_device():
     return torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -133,7 +133,8 @@ def load_data(config):
         
         data.train_mask = torch.zeros(data.num_nodes, dtype=torch.uint8)
         data.train_mask[:data.num_nodes - 1000] = 1
-        data.val_mask = None
+        data.val_mask = torch.zeros(data.num_nodes, dtype=torch.uint8)
+        data.val_mask[data.num_nodes - 1000:data.num_nodes - 500] = 1        
         data.test_mask = torch.zeros(data.num_nodes, dtype=torch.uint8)
         data.test_mask[data.num_nodes - 500:] = 1
         
@@ -196,7 +197,7 @@ def evalacc(model, eval_iter, device):
 def train_node(model, data, device, config, lr=0.001):
     epochs = config.training_epochs
     optim = torch.optim.Adam(model.parameters(), lr=lr)
-
+    scheduler = ReduceLROnPlateau(optim, 'max',factor=0.5,patience=config.lrd)
     for e in range(epochs):
         print("Epoch %d" % (e))
         
@@ -218,19 +219,21 @@ def train_node(model, data, device, config, lr=0.001):
         eval_loss = model.loss(out[data.test_mask], data.y[data.test_mask])
         
         logits, accs = out, []
-        for _, mask in data('train_mask', 'test_mask'):
+        for _, mask in data('train_mask', 'val_mask', 'test_mask'):
             pred = logits[mask].max(1)[1]
             acc = pred.eq(data.y[mask]).sum().item() / mask.sum().item()
             accs.append(acc)
         print("validation loss: %f" % (eval_loss))
         print("validation acc:",  accs)
+        scheduler.step(accs[1])
+        
 
 def train(model, train_loader, valid_loader, device, config, train_writer, val_writer,
             train_dataset, valid_dataset, lr=0.0001):
     epochs = config.training_epochs
     optim = torch.optim.Adam(model.parameters(), lr=lr)
     #optim = torch.optim.SGD(model.parameters(), lr=lr)
-
+    scheduler = ReduceLROnPlateau(optim, 'max',factor=0.5,patience=config.lrd)
     for e in range(epochs):
         print("Epoch %d" % (e))
         # training
@@ -264,6 +267,7 @@ def train(model, train_loader, valid_loader, device, config, train_writer, val_w
         print("validation loss: %f" % (eval_loss))
         print("validation acc: %f" % (eval_acc))
         val_writer.add_scalar('per_epoch/loss', eval_loss, e)
+        scheduler.step(eval_acc)
 
 #        g = Graph(config, valid_dataset[0])
 #        fig = g.plot_predictions(model.predictions_to_list( \
@@ -280,7 +284,7 @@ def main():
     print("loading data...")
     data_dir = '../data'
     train_dataset, valid_dataset, train_loader, valid_loader, test_loader = load_data(config)
-
+    
     # load model
     print("loading model...")
     model = load_model(device, config)
@@ -295,10 +299,11 @@ def main():
 
     # train
     print("start training...")
-    train(model, train_loader, valid_loader, device, config, train_writer, val_writer,
-            train_dataset, valid_dataset)
-
-    #train_node(model, train_dataset, device, config, lr=0.001)
+    if task_dict[config.task]['graph']:    
+        train(model, train_loader, valid_loader, device, config, train_writer, val_writer,
+              train_dataset, valid_dataset,lr=config.lr)
+    else:
+        train_node(model, train_dataset, device, config,lr=config.lr)
 
     # predict
 

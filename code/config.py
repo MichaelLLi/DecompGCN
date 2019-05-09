@@ -29,7 +29,7 @@ class Config():
         self.parser.add_argument('--model', type=str,
                                  default='GCN', help='GIN | GCN | SGConv | SGIN | GAT | SGConv_Modified')
         self.parser.add_argument('--training_epochs', type=int,
-                                 default=100, help='number of training epochs')
+                                 default=1000, help='number of training epochs')
         self.parser.add_argument('--validation_split', type=float,
                                  default=0.1, help='define size of validation set, 0 <= ... <= 1')
         self.parser.add_argument('--test_split', type=float,
@@ -39,9 +39,15 @@ class Config():
         self.parser.add_argument('--batch_size_eval', type=int,
                                  default=32, help='batch size for evaluation')
         self.parser.add_argument('--task', type=str,
-                                 default='triangle', help='clique | connectivity | reddit-b | tree_cycle | triangle | planar')
+                                 default='cora', help='clique | connectivity | reddit-b | tree_cycle | triangle | planar')
         self.parser.add_argument('--residual', type=bool,
                                       default=True, help='residual connections')
+        self.parser.add_argument('--lr', type=float,
+                                      default=0.0001, help='learning rate')
+        self.parser.add_argument('--lrd', type=int,
+                                      default=100, help='learning rate decay patience')
+        self.parser.add_argument('--layertype', type=str,
+                                      default="V1,V2", help='type of connections you want to use')
 
         # self.parser.add_argument('--euclidian_dimensionality', type=int,
         #                          default=2, help='Dimension of the Euclidian space, used in data.pos')
