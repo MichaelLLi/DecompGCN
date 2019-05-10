@@ -1,7 +1,7 @@
 import torch
 from torch_geometric.data import Dataset
 import torch_geometric.transforms as T
-from torch_geometric.datasets import TUDataset, Planetoid
+from torch_geometric.datasets import TUDataset, Planetoid, KarateClub
 import os
 
 class RandomConnectedGraph(Dataset):
@@ -143,6 +143,9 @@ def CiteSeerDataset():
 
 def PubMedDataset():
     return Planetoid(root="/tmp/pubmed", name='PubMed')
+    
+def Karate():
+    return KarateClub()
 
 
 

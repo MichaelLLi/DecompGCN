@@ -6,7 +6,7 @@ import torch.nn as nn
 from torch_scatter import scatter_mean, scatter_add
 from torch_sparse import spmm, spspmm
 
-from torch_geometric.nn import GINConv, SGConv, GATConv, GCNConv
+from torch_geometric.nn import GINConv, SGConv
 from gcnconv_modified import GCNConvModified
 from GAT_Modified import GATConv
 from SGConv_Modified import SGConv_Modified
@@ -14,7 +14,6 @@ from SGConv_Modified import SGConv_Modified
 from base import GraphClassification
 from utils import LayerConfig
 
-import copy
 
 class GCNConvModel(GraphClassification):
     def __init__(self, config, num_classes, graph=True, classification=True, residual=False):
@@ -29,15 +28,15 @@ class GCNConvModel(GraphClassification):
         self.num_layer_types = len(layer_configs)
         
         for i in range(len(layer_configs)):
-            setattr(self, "conv%d%d" % (0,i), GCNConvModified(self.num_features, self.hidden,configs[i]))
+            setattr(self, "conv%d%d" % (0,i), GCNConvModified(self.num_features, self.hidden,layer_configs[i]))
             setattr(self, "param%d" % i, torch.nn.Parameter(torch.randn(1)).cuda())           
         
         for j in range(1,config.n_layers-1):
             for i in range(len(layer_configs)):
-                setattr(self, "conv%d%d" % (j,i), GCNConvModified(self.hidden, self.hidden,configs[i]))
+                setattr(self, "conv%d%d" % (j,i), GCNConvModified(self.hidden, self.hidden,layer_configs[i]))
         
         for i in range(len(layer_configs)):
-            setattr(self, "conv%d%d" % (config.n_layers-1,i), GCNConvModified(self.hidden, self.num_classes,configs[i]))        
+            setattr(self, "conv%d%d" % (config.n_layers-1,i), GCNConvModified(self.hidden, self.num_classes,layer_configs[i]))        
         
         self.dropout=torch.nn.Dropout(p=self.dropout_p)
         #self.linear_preds = Linear(self.hidden, self.num_classes)
@@ -174,7 +173,7 @@ class GATConvModel(GraphClassification):
         for i in range(1,config.n_layers):
             setattr(self, "conv%d" % i, GATConv(self.hidden, self.hidden, heads=8, concat=False, dropout=self.dropout_p))
 
-    ddf forward(self, data, x):
+    def forward(self, data, x):
         edge_index = data.edge_index
         for i in range(self.n_layers):
             x = getattr(self, "conv%d" % i)(x,edge_index)

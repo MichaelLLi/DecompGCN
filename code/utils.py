@@ -4,7 +4,7 @@ from graph_dataset import RandomConnectedGraph, \
         				  RandomTriangleGraph, \
         				  RandomPlanarGraph,\
         				  redditDataset, imdbDataset, proteinDataset, \
-        				  CoraDataset, CiteSeerDataset, PubMedDataset
+        				  CoraDataset, CiteSeerDataset, PubMedDataset, Karate
 
 
 task_dict = {
@@ -60,7 +60,7 @@ task_dict = {
         'classification': True,
         'graph': False,
         'num_classes': 2,
-        'dataset': KarateClub
+        'dataset': Karate
     },
     'cora': {
         'classification': True,
