@@ -8,6 +8,7 @@ import torch.nn as nn
 class GraphClassification(torch.nn.Module):
     def __init__(self, config, num_classes, graph=True, classification=True):
         super(GraphClassification, self).__init__()
+        
         self.num_features = config.num_features
         self.num_classes = num_classes
         self.hidden = config.hidden_units
@@ -39,16 +40,17 @@ class GraphClassification(torch.nn.Module):
     def eval_metric(self, data, x):
         self.eval()
 
+        out = self.forward(data, x)
+        loss = self.loss(out, data.y)
+
         if self.classification == True:
-            _, pred = self.forward(data, x).max(dim=1)
+            _, pred =out.max(dim=1)
             correct = pred.eq(data.y).sum().item()
             acc = correct / len(data.y)
         else:
-            pred = self.forward(data, x)
-            mse = self.loss(pred,data.y)
-            acc = -mse
+            acc = -loss
 
-        return acc
+        return loss, acc
 
 
     def out_to_predictions(self, out):

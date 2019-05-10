@@ -4,38 +4,17 @@ from torch.nn import Linear
 import torch.nn as nn
 
 from torch_scatter import scatter_mean, scatter_add
+from torch_sparse import spmm, spspmm
 
 from torch_geometric.nn import GINConv, SGConv, GATConv, GCNConv
 from gcnconv_modified import GCNConvModified
 from GAT_Modified import GATConv
 from SGConv_Modified import SGConv_Modified
 #from GraphSage import SAGEConv
+from base import GraphClassification
+from utils import LayerConfig
 
 import copy
-from torch_sparse import spmm, spspmm
-
-from base import GraphClassification
-
-
-class LConfig:
-    pass
-
-def layerconfig(x,normalize=False):
-    major_type=x[0]
-    level=x[1]
-    config=LConfig()
-    if major_type=="V":
-        config.order=int(level)
-        config.normalize=normalize
-        config.edge=False
-        config.diag=False
-    elif major_type=="E":
-        config.order=int(level)
-        config.normalize=normalize
-        config.edge=True
-        config.diag=True        
-    return config
-        
 
 class GCNConvModel(GraphClassification):
     def __init__(self, config, num_classes, graph=True, classification=True, residual=False):
@@ -44,33 +23,56 @@ class GCNConvModel(GraphClassification):
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         
         self.residual = config.residual
-#        self.linear_preds = Linear(self.hidden, self.num_classes)
-        layertypes=config.layertype.split(",")
-        configs=[layerconfig(x,normalize=config.normalize) for x in layertypes]
-        self.num_layer_types=len(configs)
-        for i in range(len(configs)):
+        self.normalize = config.normalize
+        layertypes = config.layertype.split(",")
+        layer_configs = [self.set_layer_config(layer_type) for layer_type in layertypes]
+        self.num_layer_types = len(layer_configs)
+        
+        for i in range(len(layer_configs)):
             setattr(self, "conv%d%d" % (0,i), GCNConvModified(self.num_features, self.hidden,configs[i]))
             setattr(self, "param%d" % i, torch.nn.Parameter(torch.randn(1)).cuda())           
+        
         for j in range(1,config.n_layers-1):
-            for i in range(len(configs)):
+            for i in range(len(layer_configs)):
                 setattr(self, "conv%d%d" % (j,i), GCNConvModified(self.hidden, self.hidden,configs[i]))
-        for i in range(len(configs)):
+        
+        for i in range(len(layer_configs)):
             setattr(self, "conv%d%d" % (config.n_layers-1,i), GCNConvModified(self.hidden, self.num_classes,configs[i]))        
+        
         self.dropout=torch.nn.Dropout(p=self.dropout_p)
+        #self.linear_preds = Linear(self.hidden, self.num_classes)
+
+    def set_layer_config(self, layer_type):
+        major_type, level = layer_type[0], layer_type[1]
+
+        layer_config=LayerConfig()
+        layer_config.normalize = self.normalize
+        layer_config.order=int(level)
+        
+        if major_type=="V":
+            layer_config.edge=False
+            layer_config.diag=False
+        elif major_type=="E":
+            layer_config.edge=True
+            layer_config.diag=True        
+        
+        return layer_config
+    
     def forward(self, data, x):
         edge_index = data.edge_index
         #residual_x = torch.zeros((x.shape[0], self.hidden)).to(self.device)
         xs = []
-        xstemp = []
+        layer_xs = []
         #x1s, x2s = [], []
         #x1, x2 = x, x
         for i in range(self.n_layers):
 #            x = getattr(self, "conv%d" % i)(x, edge_index)
 #            xo = 0
-            xstemp = []
+            layer_xs = []
             for j in range(self.num_layer_types):
-                xstemp.append(getattr(self, "param%d" % j)*self.dropout(getattr(self, "conv%d%d" % (i,j))(x, edge_index)))
-            x = sum(xstemp)
+                weight = getattr(self, "param%d" % j)
+                layer_xs.append(weight * self.dropout(getattr(self, "conv%d%d" % (i,j))(x, edge_index)))
+            x = sum(layer_xs)
             x = F.relu(x)
 #            x1 = getattr(self, "conv%d%d" % (i,0))(x, edge_index)
 #            x2 = getattr(self, "conv%d%d" % (i,1))(x, edge_index)
@@ -101,21 +103,14 @@ class GCNConvModel(GraphClassification):
             x = F.log_softmax(x, dim=1)
 
         return x
-       
-class SGConvClassification(torch.nn.Module):
-    def __init__(self, config, num_classes, graph=True, classification=True, residual=True):
-        super(SGConvClassification, self).__init__()
-       
-        self.num_features = config.num_features
-        self.hidden = config.hidden_units
-        self.num_classes = num_classes
-        self.n_layers=config.n_layers
-        self.dropout_p=config.dropout_p
-        self.graph = graph
-        
+
+
+class SGConvModel(GraphClassification):
+    def __init__(self, config, num_classes, graph=True, classification=True):
+        super(SGConvModel, self).__init__(config, num_classes, graph, classification)
+
         setattr(self, "conv%d" % 0, SGConv(self.num_features, self.num_classes,K=config.n_layers))
-  
-    # forward(x, edge_index, edge_weight=None)
+
     def forward(self, data, x):
        
         edge_index = data.edge_index
@@ -123,205 +118,23 @@ class SGConvClassification(torch.nn.Module):
 
         if self.graph == True:
             x = scatter_mean(x, data.batch, dim=0)
-        return F.log_softmax(x, dim=1)
 
-    def loss(self, inputs, targets):
-        self.current_loss = F.nll_loss(inputs, targets, reduction='mean')
-        return self.current_loss
 
-    def eval_metric(self, data, x):
-        self.eval()
+        if self.classification == True:
+            x = F.log_softmax(x, dim=1)
 
-        _, pred = self.forward(data, x).max(dim=1)
-        correct = pred.eq(data.y).sum().item()
-        acc = correct / len(data.y)
-
-        return acc
-
-    def out_to_predictions(self, out):
-        _, pred = out.max(dim=1)
-        return pred
-
-    def predictions_to_list(self, predictions):
-        return predictions.tolist()
-
-class SGConvRegression(torch.nn.Module):
-    def __init__(self, config, graph=True):
-         super(SGConvRegression, self).__init__()
-         self.num_features = config.num_features
-         self.hidden = config.hidden_units
-         self.n_layers=config.n_layers
-         self.dropout_p=config.dropout_p
-         self.graph = graph
-         self.linear_preds = Linear(self.hidden, 1)
-         setattr(self, "conv%d" % 0, SGConv(self.num_features, 1,K=config.n_layers))
-    
-    def forward(self, data, x):
-        edge_index = data.edge_index
-        x = getattr(self, "conv%d" % 0)(x,edge_index)
-
-        if self.graph == True:
-            x = scatter_mean(x, data.batch, dim=0)
         return x
 
-    def loss(self, inputs, targets):
-        inputs=inputs.float()
-        targets=targets.float()
-        self.current_loss = F.mse_loss(inputs, targets)
-        return self.current_loss
 
-    def eval_metric(self, data, x):
-        self.eval()
+class GINConvModel(GraphClassification):
+    def __init__(self, config, num_classes, graph=True, classification=True):
+        super(GINConvModel, self).__init__(config, num_classes, graph, classification)
 
-        pred = self.forward(data, x)
-        mse = self.loss(pred,data.y)
-        acc = -mse
-        return acc  
-
-# class SGConvModifiedRegression(torch.nn.Module):
-#     def __init__(self, config, graph=True):
-#         super(SGConvModifiedRegression, self).__init__()
-#         self.num_features = config.num_features
-#         self.hidden = config.hidden_units
-#         self.n_layers=config.n_layers
-#         self.dropout_p=config.dropout_p
-#         self.graph = graph
-#         self.linear_preds = Linear(self.hidden, 1)
-#         setattr(self, "conv%d" % 0, SGConv_Modified(self.num_features, 1,K=config.n_layers))
-#     def forward(self, data):
-#         x, edge_index = torch.ones((len(data.batch),1)), data.edge_index
-#         x = getattr(self, "conv%d" % 0)(x,edge_index)
-
-#         if self.graph == True:
-#             x = scatter_mean(x, data.batch, dim=0)
-#         return x
-
-#     def loss(self, inputs, targets):
-#         inputs=inputs.float()
-#         targets=targets.float()
-#         self.current_loss = F.mse_loss(inputs, targets)
-#         return self.current_loss
-
-#     def eval_metric(self, data):
-#         self.eval()
-
-#         pred = self.forward(data)
-#         mse = self.loss(pred,data.y)
-#         acc = -mse
-#         return acc  
-
-# class SGINClassification(torch.nn.Module):
-#     def __init__(self, config, num_classes, graph=True):
-#         super(SGINClassification, self).__init__()
-#         # GCNConv(in_channels, out_channels, improved=False, cached=False, bias=True)
-#         self.num_features = config.num_features
-#         self.hidden = config.hidden_units
-#         self.num_classes = num_classes
-#         self.n_layers=config.n_layers
-#         self.dropout_p=config.dropout_p
-#         self.graph = graph
-        
-#         for i in range(config.n_layers):
-#             setattr(self, "conv%d" % i, SGConv(self.num_features, self.num_classes,K=i+1))
-#     # forward(x, edge_index, edge_weight=None)
-#     def forward(self, data):
-        
-#         hidden_reps=[]
-#         x0, edge_index = torch.ones((len(data.batch),1)).cuda(), data.edge_index
-#         for i in range(self.n_layers):
-#             x = getattr(self, "conv%d" % i)(x0,edge_index)
-#             hidden_reps.append(x)
-
-#         output_score = 0
-#         for i in range(self.n_layers):
-#             if self.graph == True:
-#                 x = scatter_mean(hidden_reps[i], data.batch, dim=0)
-#                 output_score += x
-#         return F.log_softmax(output_score, dim=1)
-
-#     def loss(self, inputs, targets):
-#         self.current_loss = F.nll_loss(inputs, targets, reduction='mean')
-#         return self.current_loss
-
-#     def eval_metric(self, data):
-#         self.eval()
-
-#         _, pred = self.forward(data).max(dim=1)
-#         correct = pred.eq(data.y).sum().item()
-#         acc = correct / len(data.y)
-
-#         return acc
-
-#     def out_to_predictions(self, out):
-#         _, pred = out.max(dim=1)
-#         return pred
-
-#     def predictions_to_list(self, predictions):
-#         return predictions.tolist()        
-
-class GINClassification(torch.nn.Module):
-    def __init__(self, config, num_classes, graph=True):
-        super(GINClassification, self).__init__()
-        # GCNConv(in_channels, out_channels, improved=False, cached=False, bias=True)
-        self.num_features = config.num_features
-        self.hidden = config.hidden_units
-        self.num_classes = num_classes
-        self.n_layers=config.n_layers
-        self.dropout_p=config.dropout_p
-        self.graph = graph
         self.linear_preds = Linear(self.hidden, self.num_classes)
         setattr(self, "conv%d" % 0, GINConv(MLP(2,self.num_features, self.hidden, self.hidden)))
         for i in range(1,config.n_layers):
             setattr(self, "conv%d" % i, GINConv(MLP(2,self.hidden, self.hidden, self.hidden)))
-    # forward(x, edge_index, edge_weight=None)
-    def forward(self, data, x):
-        hidden_reps=[]
-        edge_index = data.edge_index
-        for i in range(self.n_layers):
-            x = getattr(self, "conv%d" % i)(x,edge_index)
-            x = F.relu(x)
-            hidden_reps.append(x)
-#            x = F.dropout(x,p=self.dropout_p)
-        output_score = 0
-        for i in range(self.n_layers):
-            if self.graph == True:
-                x = scatter_mean(hidden_reps[i], data.batch, dim=0)
-                x = self.linear_preds(x)
-                output_score += x
-        return F.log_softmax(output_score, dim=1)
 
-    def loss(self, inputs, targets):
-        self.current_loss = F.nll_loss(inputs, targets, reduction='mean')
-        return self.current_loss
-
-    def eval_metric(self, data, x):
-        self.eval()
-
-        _, pred = self.forward(data, x).max(dim=1)
-        correct = pred.eq(data.y).sum().item()
-        acc = correct / len(data.y)
-
-        return acc
-
-    def out_to_predictions(self, out):
-        _, pred = out.max(dim=1)
-        return pred
-
-    def predictions_to_list(self, predictions):
-        return predictions.tolist()
-
-class GINRegression(torch.nn.Module):
-    def __init__(self, config, graph=True):
-        super(GINRegression, self).__init__()
-        self.num_features = config.num_features
-        self.hidden = config.hidden_units
-        self.n_layers=config.n_layers
-        self.dropout_p=config.dropout_p
-        self.graph = graph
-        self.linear_preds = Linear(self.hidden, 1)
-        setattr(self, "conv%d" % 0, GINConv(MLP(2,self.num_features, self.hidden, self.hidden)))
-        for i in range(1,config.n_layers):
-            setattr(self, "conv%d" % i, GINConv(MLP(2,self.hidden, self.hidden, self.hidden)))
     def forward(self, data, x):
         hidden_reps=[]
         edge_index = data.edge_index
@@ -329,156 +142,70 @@ class GINRegression(torch.nn.Module):
             x = getattr(self, "conv%d" % i)(x,edge_index)
             #x = F.relu(x)
             hidden_reps.append(x)
-#            x = F.dropout(x,p=self.dropout_p)
+#           x = F.dropout(x,p=self.dropout_p)
         output_score = 0
         for i in range(self.n_layers):
             if self.graph == True:
-                #x = scatter_mean(hidden_reps[i], data.batch, dim=0)
                 x = scatter_add(hidden_reps[i], data.batch, dim=0)
                 x = self.linear_preds(x)
                 output_score += x
+
+        if self.classification == True:
+            output_score = F.log_softmax(output_score, dim=1)
+
         return output_score
 
-    def loss(self, inputs, targets):
-        inputs=inputs.float()
-        targets=targets.float()
-        self.current_loss = F.mse_loss(inputs[:, 0], targets)
-        return self.current_loss
 
-    def eval_metric(self, data, x):
-        self.eval()
+class SGINConvModel(GraphClassification):
+    def __init__(self, config, num_classes, graph=True, classification=True):
+        super(SGINConvModel, self).__init__(config, num_classes, graph, classification)
 
-        pred = self.forward(data, x)
-        mse = self.loss(pred,data.y)
-        acc = -mse
-        return acc  
-# class GATClassification(torch.nn.Module):
-#     def __init__(self, config, num_classes, graph=True):
-#         super(GATClassification, self).__init__()
-#         self.num_features = config.num_features
-#         self.hidden = config.hidden_units
-#         self.num_classes = num_classes
-#         self.n_layers=config.n_layers
-#         self.dropout_p=config.dropout_p
-#         self.graph = graph
-#         self.linear_preds = Linear(self.hidden, self.num_classes)
+        for i in range(config.n_layers):
+            setattr(self, "conv%d" % i, SGConv(self.num_features, self.num_classes,K=i+1))
 
-#         # GATConv(in_channels, out_channels, heads=1, concat=True, negative_slope=0.2, dropout=0, bias=True)
-#         setattr(self, "conv%d" % 0, GATConv(self.num_features, self.hidden, heads=8, concat=False, dropout=self.dropout_p))
-#         for i in range(1,config.n_layers):
-#             setattr(self, "conv%d" % i, GATConv(self.hidden, self.hidden, heads=8, concat=False, dropout=self.dropout_p))
+    def forward(self, data, x):       
+        hidden_reps=[]
+        edge_index = data.edge_index
+        for i in range(self.n_layers):
+            x = getattr(self, "conv%d" % i)(x,edge_index)
+            hidden_reps.append(x)
 
-#     def forward(self, data):
-#         x, edge_index = torch.ones((len(data.batch),1)).cuda(), data.edge_index
-#         for i in range(self.n_layers):
-#             x = getattr(self, "conv%d" % i)(x,edge_index)
-#             x = F.relu(x)
+        output_score = 0
+        for i in range(self.n_layers):
+            if self.graph == True:
+                x = scatter_mean(hidden_reps[i], data.batch, dim=0)
+                output_score += x
+        
+        if self.classification == True:
+            output_score = F.log_softmax(output_score, dim=1)
 
-#         if self.graph == True:
-#             x = scatter_mean(x, data.batch, dim=0)
-
-#         x = self.linear_preds(x)
-#         return F.log_softmax(x, dim=1)
-
-#     def loss(self, inputs, targets):
-#         self.current_loss = F.nll_loss(inputs, targets, reduction='mean')
-#         return self.current_loss
-
-#     def eval_metric(self, data):
-#         self.eval()
-
-#         _, pred = self.forward(data).max(dim=1)
-#         correct = pred.eq(data.y).sum().item()
-#         acc = correct / len(data.y)
-
-#         return acc
-
-#     def out_to_predictions(self, out):
-#         _, pred = out.max(dim=1)
-#         return pred
-
-#     def predictions_to_list(self, predictions):
-#         return predictions.tolist()
-    
-# class GATRegression(torch.nn.Module):
-#     def __init__(self, config, graph=True):
-#         super(GATRegression, self).__init__()
-#         self.num_features = config.num_features
-#         self.hidden = config.hidden_units
-#         self.n_layers=config.n_layers
-#         self.dropout_p=config.dropout_p
-#         self.graph = graph
-#         self.linear_preds = Linear(self.hidden, 1)
-
-#         # GATConv(in_channels, out_channels, heads=1, concat=True, negative_slope=0.2, dropout=0, bias=True)
-#         setattr(self, "conv%d" % 0, GATConv(self.num_features, self.hidden, heads=8, concat=False, dropout=self.dropout_p))
-#         for i in range(1,config.n_layers):
-#             setattr(self, "conv%d" % i, GATConv(self.hidden, self.hidden, heads=8, concat=False, dropout=self.dropout_p))
-#     def forward(self, data):
-#         x, edge_index = torch.ones((len(data.batch),1)), data.edge_index
-#         for i in range(self.n_layers):
-#             x = getattr(self, "conv%d" % i)(x,edge_index)
-#             x = F.relu(x)
-
-#         if self.graph == True:
-#             x = scatter_mean(x, data.batch, dim=0)
-#         x = self.linear_preds(x)
-#         return x
-
-#     def loss(self, inputs, targets):
-#         inputs=inputs.float()
-#         targets=targets.float()
-#         self.current_loss = F.mse_loss(inputs, targets)
-#         return self.current_loss
-
-#     def eval_metric(self, data):
-#         self.eval()
-
-#         pred = self.forward(data)
-#         mse = self.loss(pred,data.y)
-#         acc = -mse
-#         return acc 
+        return output_score
 
 
-# class GraphSageRegression(torch.nn.Module):
-#     def __init__(self, config, graph=True):
-#         super(GraphSageRegression, self).__init__()
-#         self.num_features = config.num_features
-#         self.hidden = config.hidden_units
-#         self.n_layers=config.n_layers
-#         self.dropout_p=config.dropout_p
-#         self.graph = graph
-#         self.linear_preds = Linear(self.hidden, 1)
+class GATConvModel(GraphClassification):
+    def __init__(self, config, num_classes, graph=True, classification=True):
+        super(GATConvModel, self).__init__(config, num_classes, graph, classification)
 
-#         # GATConv(in_channels, out_channels, heads=1, concat=True, negative_slope=0.2, dropout=0, bias=True)
-#         setattr(self, "conv%d" % 0, SAGEConv(self.num_features, self.hidden))
-#         for i in range(1,config.n_layers):
-#             setattr(self, "conv%d" % i, SAGEConv(self.hidden, self.hidden))
-#     def forward(self, data):
-#         x, edge_index = torch.randn((len(data.batch),1)), data.edge_index
-#         for i in range(self.n_layers):
-#             x = getattr(self, "conv%d" % i)(x,edge_index)
-#             x = F.leaky_relu(x, 0.1)
-#             #x = F.dropout(x,p=self.dropout_p)
+        self.linear_preds = Linear(self.hidden, self.num_classes)
+        setattr(self, "conv%d" % 0, GATConv(self.num_features, self.hidden, heads=8, concat=False, dropout=self.dropout_p))
+        for i in range(1,config.n_layers):
+            setattr(self, "conv%d" % i, GATConv(self.hidden, self.hidden, heads=8, concat=False, dropout=self.dropout_p))
 
-#         if self.graph == True:
-#             x = scatter_mean(x, data.batch, dim=0)
-#         x = self.linear_preds(x)
-#         return x
+    ddf forward(self, data, x):
+        edge_index = data.edge_index
+        for i in range(self.n_layers):
+            x = getattr(self, "conv%d" % i)(x,edge_index)
+            x = F.relu(x)
 
-#     def loss(self, inputs, targets):
-#         inputs=inputs.float()
-#         targets=targets.float()
-#         self.current_loss = F.mse_loss(inputs.transpose(0, 1), targets)
-#         return self.current_loss
+        if self.graph == True:
+            x = scatter_mean(x, data.batch, dim=0)
 
-#     def eval_metric(self, data):
-#         self.eval()
+        x = self.linear_preds(x)
 
-#         pred = self.forward(data)
-#         mse = self.loss(pred,data.y)
-#         acc = -mse
-#         return acc 
+        if self.classification == True:
+            x = F.log_softmax(x, dim=1)
+
+        return x
 
 
 class MLP(torch.nn.Module):
@@ -527,3 +254,42 @@ class MLP(torch.nn.Module):
             return self.linears[self.num_layers - 1](h)
 
 
+# class GraphSageRegression(torch.nn.Module):
+#     def __init__(self, config, graph=True):
+#         super(GraphSageRegression, self).__init__()
+#         self.num_features = config.num_features
+#         self.hidden = config.hidden_units
+#         self.n_layers=config.n_layers
+#         self.dropout_p=config.dropout_p
+#         self.graph = graph
+#         self.linear_preds = Linear(self.hidden, 1)
+
+#         # GATConv(in_channels, out_channels, heads=1, concat=True, negative_slope=0.2, dropout=0, bias=True)
+#         setattr(self, "conv%d" % 0, SAGEConv(self.num_features, self.hidden))
+#         for i in range(1,config.n_layers):
+#             setattr(self, "conv%d" % i, SAGEConv(self.hidden, self.hidden))
+#     def forward(self, data):
+#         x, edge_index = torch.randn((len(data.batch),1)), data.edge_index
+#         for i in range(self.n_layers):
+#             x = getattr(self, "conv%d" % i)(x,edge_index)
+#             x = F.leaky_relu(x, 0.1)
+#             #x = F.dropout(x,p=self.dropout_p)
+
+#         if self.graph == True:
+#             x = scatter_mean(x, data.batch, dim=0)
+#         x = self.linear_preds(x)
+#         return x
+
+#     def loss(self, inputs, targets):
+#         inputs=inputs.float()
+#         targets=targets.float()
+#         self.current_loss = F.mse_loss(inputs.transpose(0, 1), targets)
+#         return self.current_loss
+
+#     def eval_metric(self, data):
+#         self.eval()
+
+#         pred = self.forward(data)
+#         mse = self.loss(pred,data.y)
+#         acc = -mse
+#         return acc 

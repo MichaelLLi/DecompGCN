@@ -5,6 +5,7 @@ from torch_geometric.nn import GCNConv
 class GCNConvModified(GCNConv):
     def __init__(self, in_channels, out_channels,config):
         super(GCNConvModified, self).__init__(in_channels, out_channels)
+        
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.normalize = config.normalize
         self.order = config.order

@@ -1,98 +1,24 @@
 import torch
 from torch_geometric.data import DataLoader
+from torch_geometric.datasets import KarateClub
+from torch.optim.lr_scheduler import ReduceLROnPlateau
 
 import os
 from tensorboardX import SummaryWriter
 import shutil
 
 #from Graph import Graph
-from graph_dataset import RandomConnectedGraph, RandomCliqueGraph, \
-        RandomTreeCycleGraph, RandomTriangleGraph, RandomPlanarGraph,\
-        redditDataset, imdbDataset, proteinDataset, CoraDataset, CiteSeerDataset, PubMedDataset
 from config import Config
-from graph_classification_models import GINClassification, SGConvClassification, \
-         GINRegression,  SGConvRegression#, SGConvModifiedRegression
-from graph_classification_models import GCNConvModel
+from utils import task_dict
+from graph_classification_models import GCNConvModel, \
+                                        SGConvModel, \
+                                        GINConvModel, \
+                                        SGINConvModel, \
+                                        GATConvModel
 from random import shuffle
-from torch_geometric.datasets import KarateClub
-from torch.optim.lr_scheduler import ReduceLROnPlateau
+
 def get_device():
     return torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
-task_dict = {
-    'clique': {
-        'classification': True,
-        'graph': True,
-        'num_classes': 2,
-        'dataset': RandomCliqueGraph
-    },
-    'connectivity': {
-        'classification': True,
-        'graph': True,
-        'num_classes': 2,
-        'dataset': RandomConnectedGraph
-    },
-    'tree_cycle': {
-        'classification': True,
-        'graph': True,
-        'num_classes': 2,
-        'dataset': RandomCliqueGraph
-    },
-    'planar': {
-        'classification': True,
-        'graph': True,
-        'num_classes': 2,
-        'dataset': RandomPlanarGraph
-    },
-    'triangle': {
-        'classification': False,
-        'graph': True,
-        'num_classes': 1,
-        'dataset': RandomTriangleGraph
-    },
-    'imdb-b': {
-        'classification': True,
-        'graph': False,
-        'num_classes': 2,
-        'dataset': imdbDataset
-    },
-    'proteins': {
-        'classification': True,
-        'graph': True,
-        'num_classes': 2,
-        'dataset': proteinDataset
-    },
-    'reddit-b': {
-        'classification': True,
-        'graph': True,
-        'num_classes': 2,
-        'dataset': redditDataset
-    },
-    'karate': {
-        'classification': True,
-        'graph': False,
-        'num_classes': 2,
-        'dataset': KarateClub
-    },
-    'cora': {
-        'classification': True,
-        'graph': False,
-        'num_classes': 7,
-        'dataset': CoraDataset
-    },
-    'citeseer': {
-        'classification': True,
-        'graph': False,
-        'num_classes': 6,
-        'dataset': CiteSeerDataset
-    },
-    'pubmed': {
-        'classification': True,
-        'graph': False,
-        'num_classes': 3,
-        'dataset': PubMedDataset
-    }
-}
 
 def load_data(config):
     print("Task: ", config.task)
@@ -151,48 +77,18 @@ def load_model(device, config):
     if config.model == 'GCN':
         model = GCNConvModel(config, num_classes, graph=graph, classification=classification, residual=config.residual)
     elif config.model == "GIN":
-        if classification == True:
-            model = GINClassification(config, 2)
-        else:
-            model = GINRegression(config, 1)
+        model = GINConvModel(config, num_classes, graph=graph, classification=classification)
     elif config.model == "SGConv":
-        if classification == True:
-            model = SGConvClassification(config, 2)
-        else:
-            model = SGConvRegression(config, 1)
-    # elif config.model == "SGIN":
-    #     model = SGINClassification(config, 2)
-    # elif config.model == "GAT":
-    #     model = GATClassification(config, 2)
+        model = SGConvModel(config, num_classes, graph=graph, classification=classification)
+    elif config.model == "SGIN":
+        model = SGINConvModel(config, num_classes, graph=graph, classification=classification)
+    elif config.model == "GAT":
+        model = GATConvModel(config, num_classes, graph=graph, classification=classification)
        
     model = model.to(device)
 
     return model
 
-def eval(model, eval_iter, device):
-    model.eval()
-    eval_loss = 0.0
-    for batch_idx, data in enumerate(eval_iter):
-        data = data.to(device)
-        x = torch.ones((len(data.batch),1)).to(device)
-        out = model(data, x)
-
-        loss = model.loss(out, data.y)
-        eval_loss += loss.item()
-
-    return eval_loss
-
-
-def evalacc(model, eval_iter, device):
-    model.eval()
-    eval_acc = 0.0
-    for batch_idx, data in enumerate(eval_iter):
-        data = data.to(device)
-        x = torch.ones((len(data.batch),1)).to(device)
-        acc = model.eval_metric(data, x)
-        eval_acc += acc
-
-    return eval_acc / len(eval_iter)
 
 def train_node(model, data, device, config, lr=0.001):
     epochs = config.training_epochs
@@ -223,16 +119,30 @@ def train_node(model, data, device, config, lr=0.001):
             pred = logits[mask].max(1)[1]
             acc = pred.eq(data.y[mask]).sum().item() / mask.sum().item()
             accs.append(acc)
+
         print("validation loss: %f" % (eval_loss))
         print("validation acc:",  accs)
         scheduler.step(accs[1])
-        
+
+
+def eval(model, eval_iter, device):
+    model.eval()
+    eval_loss, eval_acc = 0.0, 0.0
+    for batch_idx, data in enumerate(eval_iter):
+        data = data.to(device)
+        x = torch.ones((len(data.batch),1)).to(device)
+        loss, acc = model.eval_metric(data, x)
+
+        eval_loss += loss.item()
+        eval_acc += acc
+
+    return eval_loss, eval_acc / len(eval_iter)
+
 
 def train(model, train_loader, valid_loader, device, config, train_writer, val_writer,
             train_dataset, valid_dataset, lr=0.0001):
     epochs = config.training_epochs
     optim = torch.optim.Adam(model.parameters(), lr=lr)
-    #optim = torch.optim.SGD(model.parameters(), lr=lr)
     scheduler = ReduceLROnPlateau(optim, 'max',factor=0.5,patience=config.lrd)
     for e in range(epochs):
         print("Epoch %d" % (e))
@@ -262,8 +172,7 @@ def train(model, train_loader, valid_loader, device, config, train_writer, val_w
 #        train_writer.add_figure('per_epoch/graph', fig, e)
 
         # validation
-        eval_loss = eval(model, iter(valid_loader), device)
-        eval_acc = evalacc(model, iter(valid_loader), device)
+        eval_loss, eval_acc = eval(model, iter(valid_loader), device)
         print("validation loss: %f" % (eval_loss))
         print("validation acc: %f" % (eval_acc))
         val_writer.add_scalar('per_epoch/loss', eval_loss, e)

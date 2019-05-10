@@ -1,4 +1,5 @@
 import argparse
+
 def str2bool(v):
     if v.lower() in ('yes', 'true', 't', 'y', '1'):
         return True
@@ -6,6 +7,8 @@ def str2bool(v):
         return False
     else:
         raise argparse.ArgumentTypeError('Boolean value expected.')
+
+        
 class Config():
     def __init__(self):
         self.parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
@@ -56,37 +59,6 @@ class Config():
                                       default="V1,V2", help='type of connections you want to use')
         self.parser.add_argument('--normalize', type=str2bool,
                                       default=False, help='If normalize')
-
-        # self.parser.add_argument('--euclidian_dimensionality', type=int,
-        #                          default=2, help='Dimension of the Euclidian space, used in data.pos')
-        
-        # self.parser.add_argument('--pseudo_dimensionality', type=int,
-        #                          default=2, help='Dimension of the pseudo coordinates for GmmConv')
-        # self.parser.add_argument('--data_transform', type=str,
-        #                          default='Polar', help='define the edge attributes of the graphs e.g. Cartesian | Distance | LocalCartesian | Polar')
-
-        # self.parser.add_argument('--theta_max', type=float,
-        #                          default=0.2, help='nodes with lower euclidian distance will be connected')
-        # self.parser.add_argument('--theta_pred', type=float,
-        #                          default=0.1, help='euclidian neighborhood distance')    
-        # self.parser.add_argument('--hidden_layers', type=int,
-        #                          default=3, help='number of hidden layers in the n layer MoNet')
-          
-        # self.parser.add_argument('--non_linearity', type=str,
-        #                          default='sigmoid', help='Activation function from torch.nn.functional, used for hidden layers, e.g. relu | sigmoid | tanh')
-        
-        # self.parser.add_argument('--dropout_type', type=str,
-        #                          default='dropout', help='dropout | dropout2d')
-        # self.parser.add_argument('--dropout_prob', type=float,
-        #                          default=0.5, help='dropout probability during training')
-        # self.parser.add_argument('--adam_lr', type=float,
-        #                          default=0.01, help='Learning rate for ADAM optimizer')
-        # self.parser.add_argument('--adam_weight_decay', type=float,
-        #                          default=5e-4, help='Weight decay for ADAM optimizer')
-        # self.parser.add_argument('--load_model', type=str,
-        #                          default=None, help="Load model from file. 'latest' | relative/path/to/tarfile")
-        # self.parser.add_argument('--max_neighbors', type=int,
-        #                          default=0, help="Max num of neighbors")
 
 
     def parse_args(self):
