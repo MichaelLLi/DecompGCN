@@ -20,9 +20,9 @@ class GCNConvModel(GraphClassification):
     def __init__(self, config, num_classes, graph=True, classification=True, residual=False):
         super(GCNConvModel, self).__init__(config, num_classes, graph, classification)
         
-        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")        
         self.residual = config.residual
+        
         self.normalize = config.normalize
         layertypes = config.layertype.split(",")
         layer_configs = [self.set_layer_config(layer_type) for layer_type in layertypes]
@@ -60,41 +60,23 @@ class GCNConvModel(GraphClassification):
     
     def forward(self, data, x):
         edge_index = data.edge_index
-        #residual_x = torch.zeros((x.shape[0], self.hidden)).to(self.device)
+        
         xs = []
         layer_xs = []
-        #x1s, x2s = [], []
-        #x1, x2 = x, x
+
         for i in range(self.n_layers):
-#            x = getattr(self, "conv%d" % i)(x, edge_index)
-#            xo = 0
             layer_xs = []
             for j in range(self.num_layer_types):
                 weight = getattr(self, "param%d" % j)
                 layer_xs.append(weight * self.dropout(getattr(self, "conv%d%d" % (i,j))(x, edge_index)))
+            
             x = sum(layer_xs)
             x = F.relu(x)
-#            x1 = getattr(self, "conv%d%d" % (i,0))(x, edge_index)
-#            x2 = getattr(self, "conv%d%d" % (i,1))(x, edge_index)
-#            x = getattr(self, "param%d" % 0) * x1 + getattr(self, "param%d" % 1) * x2
-#            x = F.leaky_relu(x, 0.1)
-            
-            #x1 = F.leaky_relu(x1, 0.1)
-            #x2 = F.leaky_relu(x2, 0.1)
-
-            #x1s.append(x1)
-            #x2s.append(x2)
             xs.append(x)
-            #if self.residual == True:
-            #    if i == 0:
-            #        residual_x = x.clone()
-            #    else:
-            #        residual_x += x
-            #x = F.dropout(x,p=self.dropout_p)
-#        x = sum(xs)
+
         if self.residual == True:
-            #x = residual_x.clone()
             x = sum(xs)
+        
         if self.graph == True:
             x = scatter_add(x, data.batch, dim=0)
 #        out = self.linear_preds(x)
@@ -111,8 +93,7 @@ class SGConvModel(GraphClassification):
 
         setattr(self, "conv%d" % 0, SGConv(self.num_features, self.num_classes,K=config.n_layers))
 
-    def forward(self, data, x):
-       
+    def forward(self, data, x):    
         edge_index = data.edge_index
         x = getattr(self, "conv%d" % 0)(x,edge_index)
 
@@ -138,11 +119,13 @@ class GINConvModel(GraphClassification):
     def forward(self, data, x):
         hidden_reps=[]
         edge_index = data.edge_index
+
         for i in range(self.n_layers):
             x = getattr(self, "conv%d" % i)(x,edge_index)
             #x = F.relu(x)
             hidden_reps.append(x)
 #           x = F.dropout(x,p=self.dropout_p)
+        
         output_score = 0
         for i in range(self.n_layers):
             if self.graph == True:
