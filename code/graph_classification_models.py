@@ -5,7 +5,7 @@ import torch.nn as nn
 
 from torch_scatter import scatter_mean, scatter_add
 
-from torch_geometric.nn import GINConv, SGConv#, GATConv, GCNConv
+from torch_geometric.nn import GINConv, SGConv, GATConv, GCNConv
 from gcnconv_modified import GCNConvModified
 from GAT_Modified import GATConv
 from SGConv_Modified import SGConv_Modified
@@ -20,18 +20,18 @@ from base import GraphClassification
 class LConfig:
     pass
 
-def layerconfig(x):
+def layerconfig(x,normalize=False):
     major_type=x[0]
     level=x[1]
     config=LConfig()
     if major_type=="V":
         config.order=int(level)
-        config.normalize=False
+        config.normalize=normalize
         config.edge=False
         config.diag=False
     elif major_type=="E":
         config.order=int(level)
-        config.normalize=False
+        config.normalize=normalize
         config.edge=True
         config.diag=True        
     return config
@@ -43,37 +43,46 @@ class GCNConvModel(GraphClassification):
         
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         
-        self.residual = False
-        self.linear_preds = Linear(self.hidden, self.num_classes)
+        self.residual = config.residual
+#        self.linear_preds = Linear(self.hidden, self.num_classes)
         layertypes=config.layertype.split(",")
-        configs=[layerconfig(x) for x in layertypes]
+        configs=[layerconfig(x,normalize=config.normalize) for x in layertypes]
         self.num_layer_types=len(configs)
         for i in range(len(configs)):
             setattr(self, "conv%d%d" % (0,i), GCNConvModified(self.num_features, self.hidden,configs[i]))
             setattr(self, "param%d" % i, torch.nn.Parameter(torch.randn(1)).cuda())           
-        for j in range(1,config.n_layers):
+        for j in range(1,config.n_layers-1):
             for i in range(len(configs)):
                 setattr(self, "conv%d%d" % (j,i), GCNConvModified(self.hidden, self.hidden,configs[i]))
-
+        for i in range(len(configs)):
+            setattr(self, "conv%d%d" % (config.n_layers-1,i), GCNConvModified(self.hidden, self.num_classes,configs[i]))        
+        self.dropout=torch.nn.Dropout(p=self.dropout_p)
     def forward(self, data, x):
         edge_index = data.edge_index
         #residual_x = torch.zeros((x.shape[0], self.hidden)).to(self.device)
         xs = []
+        xstemp = []
         #x1s, x2s = [], []
         #x1, x2 = x, x
         for i in range(self.n_layers):
 #            x = getattr(self, "conv%d" % i)(x, edge_index)
-            xo = 0
+#            xo = 0
+            xstemp = []
             for j in range(self.num_layer_types):
-                xo = xo + getattr(self, "param%d" % j)*getattr(self, "conv%d%d" % (i,j))(x, edge_index)
-                xo = F.leaky_relu(xo, 0.1)
+                xstemp.append(getattr(self, "param%d" % j)*self.dropout(getattr(self, "conv%d%d" % (i,j))(x, edge_index)))
+            x = sum(xstemp)
+            x = F.relu(x)
+#            x1 = getattr(self, "conv%d%d" % (i,0))(x, edge_index)
+#            x2 = getattr(self, "conv%d%d" % (i,1))(x, edge_index)
+#            x = getattr(self, "param%d" % 0) * x1 + getattr(self, "param%d" % 1) * x2
+#            x = F.leaky_relu(x, 0.1)
+            
             #x1 = F.leaky_relu(x1, 0.1)
             #x2 = F.leaky_relu(x2, 0.1)
 
             #x1s.append(x1)
             #x2s.append(x2)
-            xs.append(xo)
-            x = xo
+            xs.append(x)
             #if self.residual == True:
             #    if i == 0:
             #        residual_x = x.clone()
@@ -86,12 +95,12 @@ class GCNConvModel(GraphClassification):
             x = sum(xs)
         if self.graph == True:
             x = scatter_add(x, data.batch, dim=0)
-        out = self.linear_preds(x)
+#        out = self.linear_preds(x)
         
         if self.classification == True:
-            out = F.log_softmax(out, dim=1)
+            x = F.log_softmax(x, dim=1)
 
-        return out
+        return x
        
 class SGConvClassification(torch.nn.Module):
     def __init__(self, config, num_classes, graph=True, classification=True, residual=True):
