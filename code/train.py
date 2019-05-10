@@ -14,7 +14,8 @@ from graph_classification_models import GCNConvModel, \
                                         SGConvModel, \
                                         GINConvModel, \
                                         SGINConvModel, \
-                                        GATConvModel
+                                        GATConvModel, \
+                                        GCNConvSimpModel
 from random import shuffle
 
 def get_device():
@@ -84,6 +85,8 @@ def load_model(device, config):
         model = SGINConvModel(config, num_classes, graph=graph, classification=classification)
     elif config.model == "GAT":
         model = GATConvModel(config, num_classes, graph=graph, classification=classification)
+    elif config.model == 'GCNSimp':
+        model = GCNConvSimpModel(config, num_classes, graph=graph, classification=classification, residual=config.residual)
        
     model = model.to(device)
 

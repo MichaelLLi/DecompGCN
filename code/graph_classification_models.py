@@ -6,7 +6,7 @@ import torch.nn as nn
 from torch_scatter import scatter_mean, scatter_add
 from torch_sparse import spmm, spspmm
 
-from torch_geometric.nn import GINConv, SGConv
+from torch_geometric.nn import GINConv, SGConv, GCNConv
 from gcnconv_modified import GCNConvModified
 from GAT_Modified import GATConv
 from SGConv_Modified import SGConv_Modified
@@ -70,6 +70,48 @@ class GCNConvModel(GraphClassification):
                 layer_xs.append(weight * self.dropout(getattr(self, "conv%d%d" % (i,j))(x, edge_index)))
             
             x = sum(layer_xs)
+            x = F.relu(x)
+            xs.append(x)
+
+        if self.residual == True:
+            x = sum(xs)
+        
+        if self.graph == True:
+            x = scatter_add(x, data.batch, dim=0)
+#        out = self.linear_preds(x)
+        
+        if self.classification == True:
+            x = F.log_softmax(x, dim=1)
+
+        return x
+        
+        
+class GCNConvSimpModel(GraphClassification):
+    def __init__(self, config, num_classes, graph=True, classification=True, residual=False):
+        super(GCNConvSimpModel, self).__init__(config, num_classes, graph, classification)
+        
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")        
+        self.residual = config.residual
+        
+        self.normalize = config.normalize
+        
+        setattr(self, "conv%d%d" % (0,0), GCNConv(self.num_features, self.hidden))
+    
+        for j in range(1,config.n_layers-1):
+                setattr(self, "conv%d%d" % (j,0), GCNConv(self.hidden, self.hidden))
+        
+        setattr(self, "conv%d%d" % (config.n_layers-1,0), GCNConv(self.hidden, self.num_classes))        
+        
+        self.dropout=torch.nn.Dropout(p=self.dropout_p)
+        #self.linear_preds = Linear(self.hidden, self.num_classes)
+    
+    def forward(self, data, x):
+        edge_index = data.edge_index
+        
+        xs = []
+
+        for i in range(self.n_layers):
+            x = self.dropout(getattr(self, "conv%d%d" % (i,0))(x, edge_index))
             x = F.relu(x)
             xs.append(x)
 
