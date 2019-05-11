@@ -2,7 +2,7 @@ import torch
 from torch_geometric.nn import GCNConv
 from torch_geometric.utils import scatter_
 from torch_scatter import scatter_add
-
+from torch_geometric.nn.inits import glorot
 
 def add_self_loops(edge_index, edge_weight=None, fill_value=1, num_nodes=None):
     loop_index = torch.arange(0,
@@ -73,7 +73,7 @@ class GCNConvAdvanced(GCNConv):
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.num_configs = len(configs)
         for i in range(self.num_configs):
-            setattr(self, "param%d" % i, torch.nn.Parameter(torch.randn(1)).cuda()) 
+            setattr(self, "param%d" % i, torch.nn.Parameter(torch.rand(1)).cuda()) 
         self.configs=configs
 
     def forward(self, x, edge_index, edge_weight=None):

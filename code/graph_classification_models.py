@@ -123,6 +123,8 @@ class GCNConvModel2(GraphClassification):
         return layer_config
     
     def forward(self, data, x):
+        if x is None:
+            x = torch.ones((data.num_nodes, 1)).to(self.device)
         edge_index = data.edge_index
         
         xs = []
@@ -138,9 +140,8 @@ class GCNConvModel2(GraphClassification):
         if self.graph == True:
             x = scatter_add(x, data.batch, dim=0)
 #        out = self.linear_preds(x)
-        
-        if self.classification == True:
-            x = F.log_softmax(x, dim=1)
+        #if self.classification == True:
+            #x = F.log_softmax(x, dim=1)
 
         return x
         
@@ -171,7 +172,7 @@ class GCNConvSimpModel(GraphClassification):
         for i in range(self.n_layers):
             x = getattr(self, "conv%d%d" % (i,0))(x, edge_index)
             #x = self.dropout(getattr(self, "conv%d%d" % (i,0))(x, edge_index))
-            x = F.leaky_relu(x,0.1)
+            #x = F.leaky_relu(x,0.1)
             xs.append(x)
 
         if self.residual == True:
@@ -181,8 +182,8 @@ class GCNConvSimpModel(GraphClassification):
             x = scatter_add(x, data.batch, dim=0)
 #        out = self.linear_preds(x)
         
-        if self.classification == True:
-            x = F.log_softmax(x, dim=1)
+        #if self.classification == True:
+            #x = F.log_softmax(x, dim=1)
         return x
 
 

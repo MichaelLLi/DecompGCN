@@ -97,7 +97,7 @@ def load_model(device, config):
 def train_node(model, data, device, config, lr=0.001):
     epochs = config.training_epochs
     optim = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=0.005)
-    scheduler = ReduceLROnPlateau(optim, 'max',factor=0.5,patience=config.lrd)
+    scheduler = ReduceLROnPlateau(optim, 'max',factor=0.4,patience=config.lrd)
     for e in range(epochs):
         print("Epoch %d" % (e))
         
@@ -146,7 +146,7 @@ def eval(model, eval_iter, device):
 def train(model, train_loader, valid_loader, device, config, train_writer, val_writer,
             train_dataset, valid_dataset, lr=0.0001):
     epochs = config.training_epochs
-    optim = torch.optim.Adam(model.parameters(), lr=lr,weight_decay=0.0001)
+    optim = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=0.0005)
     scheduler = ReduceLROnPlateau(optim, 'max',factor=0.5,patience=config.lrd)
     for e in range(epochs):
         print("Epoch %d" % (e))
@@ -160,7 +160,6 @@ def train(model, train_loader, valid_loader, device, config, train_writer, val_w
             data = data.to(device)
             x = torch.ones((len(data.batch),1)).to(device)
             out = model(data, x)
-
             loss = model.loss(out, data.y)
             epoch_loss += loss.item()
 

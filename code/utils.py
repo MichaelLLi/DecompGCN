@@ -40,7 +40,7 @@ task_dict = {
     },
     'imdb-b': {
         'classification': True,
-        'graph': False,
+        'graph': True,
         'num_classes': 2,
         'dataset': imdbDataset
     },
