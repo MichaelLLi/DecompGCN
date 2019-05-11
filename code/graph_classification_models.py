@@ -12,7 +12,7 @@ from GAT_Modified import GATConv
 from SGConv_Modified import SGConv_Modified
 #from GraphSage import SAGEConv
 from base import GraphClassification
-from utils import LayerConfig
+from utils import LayerConfig, MLP
 
 
 class GCNConvModel(GraphClassification):
@@ -180,7 +180,7 @@ class GCNConvSimpModel(GraphClassification):
         
         if self.graph == True:
             x = scatter_add(x, data.batch, dim=0)
-#        out = self.linear_preds(x)
+        #out = self.linear_preds(x)
         
         #if self.classification == True:
             #x = F.log_softmax(x, dim=1)
@@ -211,10 +211,17 @@ class GINConvModel(GraphClassification):
     def __init__(self, config, num_classes, graph=True, classification=True):
         super(GINConvModel, self).__init__(config, num_classes, graph, classification)
 
-        self.linear_preds = Linear(self.hidden, self.num_classes)
-        setattr(self, "conv%d" % 0, GINConv(MLP(2,self.num_features, self.hidden, self.hidden)))
+        #self.linear_preds = Linear(self.hidden, self.num_classes)
+        self.linears_prediction = torch.nn.ModuleList()
+        for layer in range(config.n_layers):
+            if layer == 0:
+                self.linears_prediction.append(nn.Linear(self.hidden, self.num_classes))
+            else:
+                self.linears_prediction.append(nn.Linear(self.hidden, self.num_classes))
+
+        setattr(self, "conv%d" % 0, GINConv(MLP(1,self.num_features, self.hidden, self.hidden)))
         for i in range(1,config.n_layers):
-            setattr(self, "conv%d" % i, GINConv(MLP(2,self.hidden, self.hidden, self.hidden)))
+            setattr(self, "conv%d" % i, GINConv(MLP(1,self.hidden, self.hidden, self.hidden)))
 
     def forward(self, data, x):
         hidden_reps=[]
@@ -225,12 +232,13 @@ class GINConvModel(GraphClassification):
             #x = F.relu(x)
             hidden_reps.append(x)
 #           x = F.dropout(x,p=self.dropout_p)
-        
+
         output_score = 0
         for i in range(self.n_layers):
             if self.graph == True:
                 x = scatter_add(hidden_reps[i], data.batch, dim=0)
-                x = self.linear_preds(x)
+                #x = self.linear_preds(x)
+                x = self.linears_prediction[i](x)
                 output_score += x
 
         if self.classification == True:
@@ -289,52 +297,6 @@ class GATConvModel(GraphClassification):
             x = F.log_softmax(x, dim=1)
 
         return x
-
-
-class MLP(torch.nn.Module):
-    def __init__(self, num_layers, input_dim, hidden_dim, output_dim):
-        '''
-            num_layers: number of layers in the neural networks (EXCLUDING the input layer). If num_layers=1, this reduces to linear model.
-            input_dim: dimensionality of input features
-            hidden_dim: dimensionality of hidden units at ALL layers
-            output_dim: number of classes for prediction
-            device: which device to use
-        '''
-    
-        super(MLP, self).__init__()
-
-        self.linear_or_not = True #default is linear model
-        self.num_layers = num_layers
-
-        if num_layers < 1:
-            raise ValueError("number of layers should be positive!")
-        elif num_layers == 1:
-            #Linear model
-            self.linear = nn.Linear(input_dim, output_dim)
-        else:
-            #Multi-layer model
-            self.linear_or_not = False
-            self.linears = torch.nn.ModuleList()
-            self.batch_norms = torch.nn.ModuleList()
-        
-            self.linears.append(nn.Linear(input_dim, hidden_dim))
-            for layer in range(num_layers - 2):
-                self.linears.append(nn.Linear(hidden_dim, hidden_dim))
-            self.linears.append(nn.Linear(hidden_dim, output_dim))
-
-            for layer in range(num_layers - 1):
-                self.batch_norms.append(nn.BatchNorm1d((hidden_dim)))
-
-    def forward(self, x):
-        if self.linear_or_not:
-            #If linear model
-            return self.linear(x)
-        else:
-            #If MLP
-            h = x
-            for layer in range(self.num_layers - 1):
-                h = F.relu(self.batch_norms[layer](self.linears[layer](h)))
-            return self.linears[self.num_layers - 1](h)
 
 
 # class GraphSageRegression(torch.nn.Module):

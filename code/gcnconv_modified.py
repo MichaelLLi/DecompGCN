@@ -3,6 +3,9 @@ from torch_geometric.nn import GCNConv
 from torch_geometric.utils import scatter_
 from torch_scatter import scatter_add
 from torch_geometric.nn.inits import glorot
+from torch.nn import Linear
+
+from utils import MLP
 
 def add_self_loops(edge_index, edge_weight=None, fill_value=1, num_nodes=None):
     loop_index = torch.arange(0,
@@ -90,7 +93,9 @@ class GCNConvAdvanced(GCNConv):
         order = config.order
         edge = config.edge
         diag = config.diag
-        x = torch.matmul(x, self.weight)
+        #x = torch.matmul(x, self.weight)
+        mlp = MLP(2, x.shape[1], 32, self.out_channels).to(self.device)        
+        x = mlp(x)        
 
         if normalize == True:
             if not self.cached or self.cached_result is None:
