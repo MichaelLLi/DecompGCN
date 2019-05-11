@@ -15,7 +15,8 @@ from graph_classification_models import GCNConvModel, \
                                         GINConvModel, \
                                         SGINConvModel, \
                                         GATConvModel, \
-                                        GCNConvSimpModel
+                                        GCNConvSimpModel, \
+                                        GCNConvModel2
 from random import shuffle
 
 def get_device():
@@ -76,7 +77,7 @@ def load_model(device, config):
     classification = task_dict[task]['classification']
 
     if config.model == 'GCN':
-        model = GCNConvModel(config, num_classes, graph=graph, classification=classification, residual=config.residual)
+        model = GCNConvModel2(config, num_classes, graph=graph, classification=classification, residual=config.residual)
     elif config.model == "GIN":
         model = GINConvModel(config, num_classes, graph=graph, classification=classification)
     elif config.model == "SGConv":
@@ -145,7 +146,7 @@ def eval(model, eval_iter, device):
 def train(model, train_loader, valid_loader, device, config, train_writer, val_writer,
             train_dataset, valid_dataset, lr=0.0001):
     epochs = config.training_epochs
-    optim = torch.optim.Adam(model.parameters(), lr=lr)
+    optim = torch.optim.Adam(model.parameters(), lr=lr,weight_decay=0.0001)
     scheduler = ReduceLROnPlateau(optim, 'max',factor=0.5,patience=config.lrd)
     for e in range(epochs):
         print("Epoch %d" % (e))

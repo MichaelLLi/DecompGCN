@@ -7,7 +7,7 @@ from torch_scatter import scatter_mean, scatter_add
 from torch_sparse import spmm, spspmm
 
 from torch_geometric.nn import GINConv, SGConv, GCNConv
-from gcnconv_modified import GCNConvModified
+from gcnconv_modified import GCNConvModified, GCNConvAdvanced
 from GAT_Modified import GATConv
 from SGConv_Modified import SGConv_Modified
 #from GraphSage import SAGEConv
@@ -70,6 +70,65 @@ class GCNConvModel(GraphClassification):
                 layer_xs.append(weight * self.dropout(getattr(self, "conv%d%d" % (i,j))(x, edge_index)))
             
             x = sum(layer_xs)
+            x = F.leaky_relu(x,0.1)
+            xs.append(x)
+
+        if self.residual == True:
+            x = sum(xs)
+        
+        if self.graph == True:
+            x = scatter_add(x, data.batch, dim=0)
+#        out = self.linear_preds(x)
+        
+        if self.classification == True:
+            x = F.log_softmax(x, dim=1)
+
+        return x
+
+class GCNConvModel2(GraphClassification):
+    def __init__(self, config, num_classes, graph=True, classification=True, residual=False):
+        super(GCNConvModel2, self).__init__(config, num_classes, graph, classification)
+        
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")        
+        self.residual = config.residual
+        
+        self.normalize = config.normalize
+        layertypes = config.layertype.split(",")
+        layer_configs = [self.set_layer_config(layer_type) for layer_type in layertypes]
+        
+        setattr(self, "conv%d%d" % (0,0), GCNConvAdvanced(self.num_features, self.hidden,layer_configs))
+        
+        for j in range(1,config.n_layers-1):
+                setattr(self, "conv%d%d" % (j,0), GCNConvAdvanced(self.hidden, self.hidden,layer_configs))
+        
+        setattr(self, "conv%d%d" % (config.n_layers-1,0), GCNConvAdvanced(self.hidden, self.num_classes,layer_configs))        
+        
+        self.dropout=torch.nn.Dropout(p=self.dropout_p)
+        #self.linear_preds = Linear(self.hidden, self.num_classes)
+
+    def set_layer_config(self, layer_type):
+        major_type, level = layer_type[0], layer_type[1]
+
+        layer_config=LayerConfig()
+        layer_config.normalize = self.normalize
+        layer_config.order=int(level)
+        
+        if major_type=="V":
+            layer_config.edge=False
+            layer_config.diag=False
+        elif major_type=="E":
+            layer_config.edge=True
+            layer_config.diag=True        
+        
+        return layer_config
+    
+    def forward(self, data, x):
+        edge_index = data.edge_index
+        
+        xs = []
+
+        for i in range(self.n_layers):
+            x = self.dropout(getattr(self, "conv%d%d" % (i,0))(x, edge_index))
             x = F.leaky_relu(x,0.1)
             xs.append(x)
 
