@@ -159,8 +159,7 @@ class GCNConvSimpModel(GraphClassification):
         for j in range(1,config.n_layers-1):
                 setattr(self, "conv%d%d" % (j,0), GCNConv(self.hidden, self.hidden))
         
-        setattr(self, "conv%d%d" % (config.n_layers-1,0), GCNConv(self.hidden, self.num_classes))        
-        
+        setattr(self, "conv%d%d" % (config.n_layers-1,0), GCNConv(self.hidden, self.num_classes))
         self.dropout=torch.nn.Dropout(p=self.dropout_p)
         #self.linear_preds = Linear(self.hidden, self.num_classes)
     
@@ -170,7 +169,8 @@ class GCNConvSimpModel(GraphClassification):
         xs = []
 
         for i in range(self.n_layers):
-            x = self.dropout(getattr(self, "conv%d%d" % (i,0))(x, edge_index))
+            x = getattr(self, "conv%d%d" % (i,0))(x, edge_index)
+            #x = self.dropout(getattr(self, "conv%d%d" % (i,0))(x, edge_index))
             x = F.leaky_relu(x,0.1)
             xs.append(x)
 
@@ -183,7 +183,6 @@ class GCNConvSimpModel(GraphClassification):
         
         if self.classification == True:
             x = F.log_softmax(x, dim=1)
-
         return x
 
 
