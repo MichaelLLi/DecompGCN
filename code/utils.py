@@ -7,7 +7,8 @@ from graph_dataset import RandomConnectedGraph, \
         				  RandomTriangleGraph, \
         				  RandomPlanarGraph,\
         				  redditDataset, imdbDataset, proteinDataset, \
-        				  CoraDataset, CiteSeerDataset, PubMedDataset, Karate
+        				  CoraDataset, CiteSeerDataset, PubMedDataset, Karate,\
+                              QM7bD, QM9D
 
 
 task_dict = {
@@ -82,7 +83,19 @@ task_dict = {
         'graph': False,
         'num_classes': 3,
         'dataset': PubMedDataset
-    }
+    },
+        'QM7b': {
+        'classification': False,
+        'graph': True,
+        'num_classes': 14,
+        'dataset': QM7bD
+    },
+        'QM9': {
+        'classification': False,
+        'graph': True,
+        'num_classes': 12,
+        'dataset': QM9D
+    }   
 }
 
 

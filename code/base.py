@@ -33,7 +33,10 @@ class GraphClassification(torch.nn.Module):
             #self.current_loss = F.nll_loss(inputs, targets.long(), reduction='mean')
             self.current_loss = F.cross_entropy(inputs, targets.long(), reduction='mean')
         else:
-            self.current_loss = F.mse_loss(inputs[:, 0], targets)
+            if len(targets.shape)==1:
+                self.current_loss = F.mse_loss(inputs[:, 0], targets)
+            else:
+                self.current_loss = F.mse_loss(inputs,targets)
         
         return self.current_loss
 

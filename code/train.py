@@ -36,7 +36,6 @@ def load_data(config):
             data_list.append(dataset[i])
     else:
         data_list=dataset
-    
     if graph == True:
         train_idx = int(len(data_list) * (1 - config.test_split -
                                             config.validation_split))
@@ -146,7 +145,7 @@ def eval(model, eval_iter, device):
 def train(model, train_loader, valid_loader, device, config, train_writer, val_writer,
             train_dataset, valid_dataset, lr=0.0001):
     epochs = config.training_epochs
-    optim = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=0.0005)
+    optim = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=0.01)
     scheduler = ReduceLROnPlateau(optim, 'max',factor=0.5,patience=config.lrd)
     for e in range(epochs):
         print("Epoch %d" % (e))
@@ -156,13 +155,12 @@ def train(model, train_loader, valid_loader, device, config, train_writer, val_w
         train_iter = iter(train_loader)
         for batch_idx, data in enumerate(train_iter):
             optim.zero_grad()
-            
             data = data.to(device)
             x = torch.ones((len(data.batch),1)).to(device)
             out = model(data, x)
             loss = model.loss(out, data.y)
             epoch_loss += loss.item()
-
+#            print(list(model.parameters()))
             loss.backward()
             optim.step()
 

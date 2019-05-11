@@ -1,7 +1,7 @@
 import torch
 from torch_geometric.data import Dataset
 import torch_geometric.transforms as T
-from torch_geometric.datasets import TUDataset, Planetoid, KarateClub
+from torch_geometric.datasets import TUDataset, Planetoid, KarateClub, QM7b, QM9
 import os
 
 class RandomConnectedGraph(Dataset):
@@ -147,5 +147,9 @@ def PubMedDataset():
 def Karate():
     return KarateClub()
 
-
+def QM7bD():
+    return QM7b(root="/tmp/QM7b")
+    
+def QM9D():
+    return QM9(root="/tmp/QM9")
 
