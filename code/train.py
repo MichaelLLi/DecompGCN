@@ -128,12 +128,15 @@ def train_node(model, data, device, config, lr=0.001):
         scheduler.step(accs[1])
 
 
-def eval(model, eval_iter, device):
+def eval(model, eval_iter, device, config):
     model.eval()
     eval_loss, eval_acc = 0.0, 0.0
     for batch_idx, data in enumerate(eval_iter):
         data = data.to(device)
-        x = torch.ones((len(data.batch),1)).to(device)
+        
+        x = data.x
+        if config.node_feature == False:
+            x = torch.ones((len(data.batch),1)).to(device)
         loss, acc = model.eval_metric(data, x)
 
         eval_loss += loss.item()
@@ -156,8 +159,12 @@ def train(model, train_loader, valid_loader, device, config, train_writer, val_w
         for batch_idx, data in enumerate(train_iter):
             optim.zero_grad()
             data = data.to(device)
-            x = torch.ones((len(data.batch),1)).to(device)
+            
+            x = data.x
+            if config.node_feature == False:
+                x = torch.ones((len(data.batch),1)).to(device)
             out = model(data, x)
+            
             loss = model.loss(out, data.y)
             epoch_loss += loss.item()
 #            print(list(model.parameters()))
@@ -173,7 +180,7 @@ def train(model, train_loader, valid_loader, device, config, train_writer, val_w
 #        train_writer.add_figure('per_epoch/graph', fig, e)
 
         # validation
-        eval_loss, eval_acc = eval(model, iter(valid_loader), device)
+        eval_loss, eval_acc = eval(model, iter(valid_loader), device, config)
         print("validation loss: %f" % (eval_loss))
         print("validation acc: %f" % (eval_acc))
         val_writer.add_scalar('per_epoch/loss', eval_loss, e)

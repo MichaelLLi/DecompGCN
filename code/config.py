@@ -59,7 +59,8 @@ class Config():
                                       default="V1,V2", help='type of connections you want to use')
         self.parser.add_argument('--normalize', type=str2bool,
                                       default=False, help='If normalize')
-
+        self.parser.add_argument('--node_feature', type=str2bool,
+                                        default=False, help='If use feature')
 
     def parse_args(self):
         return self.parser.parse_args()

@@ -93,9 +93,9 @@ class GCNConvAdvanced(GCNConv):
         order = config.order
         edge = config.edge
         diag = config.diag
-        #x = torch.matmul(x, self.weight)
-        mlp = MLP(2, x.shape[1], 32, self.out_channels).to(self.device)        
-        x = mlp(x)        
+        x = torch.matmul(x, self.weight)
+        #mlp = MLP(2, x.shape[1], 32, self.out_channels).to(self.device)        
+        #x = mlp(x)        
 
         if normalize == True:
             if not self.cached or self.cached_result is None:
