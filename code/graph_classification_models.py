@@ -128,15 +128,13 @@ class GCNConvModel2(GraphClassification):
         edge_index = data.edge_index
         
         xs = []
-
+        
         for i in range(self.n_layers):
             x = self.dropout(getattr(self, "conv%d%d" % (i,0))(x, edge_index))
             x = F.leaky_relu(x,0.1)
             xs.append(x)
-
         if self.residual == True:
             x = sum(xs)
-        
         if self.graph == True:
             x = scatter_add(x, data.batch, dim=0)
 #        out = self.linear_preds(x)
@@ -155,12 +153,12 @@ class GCNConvSimpModel(GraphClassification):
         
         self.normalize = config.normalize
         
-        setattr(self, "conv%d%d" % (0,0), GCNConv(self.num_features, self.hidden))
+        setattr(self, "conv%d%d" % (0,0), GCNConv(self.num_features, self.hidden,bias=False))
     
         for j in range(1,config.n_layers-1):
-                setattr(self, "conv%d%d" % (j,0), GCNConv(self.hidden, self.hidden))
+                setattr(self, "conv%d%d" % (j,0), GCNConv(self.hidden, self.hidden,bias=False))
         
-        setattr(self, "conv%d%d" % (config.n_layers-1,0), GCNConv(self.hidden, self.num_classes))
+        setattr(self, "conv%d%d" % (config.n_layers-1,0), GCNConv(self.hidden, self.num_classes,bias=False))
         self.dropout=torch.nn.Dropout(p=self.dropout_p)
         #self.linear_preds = Linear(self.hidden, self.num_classes)
     
@@ -171,15 +169,14 @@ class GCNConvSimpModel(GraphClassification):
 
         for i in range(self.n_layers):
             x = getattr(self, "conv%d%d" % (i,0))(x, edge_index)
-            #x = self.dropout(getattr(self, "conv%d%d" % (i,0))(x, edge_index))
-            #x = F.leaky_relu(x,0.1)
+            #x = self.dropout(getattr(self, "conv%d%d" % (i,0))(x, edge_index))  
+#            x = F.relu(x)
             xs.append(x)
 
         if self.residual == True:
-            x = sum(xs)
-        
+            x = sum(xs)    
         if self.graph == True:
-            x = scatter_add(x, data.batch, dim=0)
+            x = scatter_mean(x, data.batch, dim=0)
 #        out = self.linear_preds(x)
         
         #if self.classification == True:
