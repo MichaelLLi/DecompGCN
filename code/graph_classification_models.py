@@ -2,6 +2,7 @@ import torch
 import torch.nn.functional as F
 from torch.nn import Linear
 import torch.nn as nn
+from torch_geometric.nn.inits import glorot
 
 from torch_scatter import scatter_mean, scatter_add
 from torch_sparse import spmm, spspmm
@@ -215,17 +216,23 @@ class GINConvModel(GraphClassification):
                 self.linears_prediction.append(nn.Linear(self.hidden, self.num_classes))
             else:
                 self.linears_prediction.append(nn.Linear(self.hidden, self.num_classes))
+            glorot(self.linears_prediction[layer].weight)
 
-        setattr(self, "conv%d" % 0, GINConv(MLP(1,self.num_features, self.hidden, self.hidden)))
+        setattr(self, "conv%d" % 0, GINConv(MLP(2,self.num_features, self.hidden, self.hidden)))
         for i in range(1,config.n_layers):
-            setattr(self, "conv%d" % i, GINConv(MLP(1,self.hidden, self.hidden, self.hidden)))
+            setattr(self, "conv%d" % i, GINConv(MLP(2,self.hidden, self.hidden, self.hidden)))
 
     def forward(self, data, x):
+        if x is None:
+            x = torch.ones((data.num_nodes, 1)).to(self.device)
         hidden_reps=[]
         edge_index = data.edge_index
 
         for i in range(self.n_layers):
+            import pdb
+            pdb.set_trace()
             x = getattr(self, "conv%d" % i)(x,edge_index)
+            pdb.set_trace()
             #x = F.relu(x)
             hidden_reps.append(x)
 #           x = F.dropout(x,p=self.dropout_p)
@@ -235,12 +242,14 @@ class GINConvModel(GraphClassification):
             if self.graph == True:
                 x = scatter_add(hidden_reps[i], data.batch, dim=0)
                 #x = self.linear_preds(x)
-                x = self.linears_prediction[i](x)
-                output_score += x
+            else:
+                x = hidden_reps[i]
+            #x = self.linears_prediction[i](x)
+            #output_score += x
 
-        if self.classification == True:
-            output_score = F.log_softmax(output_score, dim=1)
-
+        #if self.classification == True:
+            #output_score = F.log_softmax(output_score, dim=1)
+        output_score = x
         return output_score
 
 

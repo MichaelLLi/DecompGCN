@@ -8,7 +8,7 @@ from graph_dataset import RandomConnectedGraph, \
         				  RandomPlanarGraph,\
         				  redditDataset, imdbDataset, proteinDataset, \
         				  CoraDataset, CiteSeerDataset, PubMedDataset, Karate,\
-                              QM7bD, QM9D
+                              QM7bD, QM9D, COLLAB
 
 
 task_dict = {
@@ -95,7 +95,13 @@ task_dict = {
         'graph': True,
         'num_classes': 12,
         'dataset': QM9D
-    }   
+    },
+    'collab': {
+        'classification': True,
+        'graph': True,
+        'num_classes': 3,
+        'dataset': COLLAB
+    }     
 }
 
 
@@ -140,7 +146,10 @@ class MLP(torch.nn.Module):
 
             for layer in range(num_layers - 1):
                 self.batch_norms.append(nn.BatchNorm1d((hidden_dim)))
-
+            
+            for layer in self.linears:
+                layer.weight = torch.nn.Parameter(torch.ones(layer.weight.shape).cuda())
+    
     def forward(self, x):
         if self.linear_or_not:
             #If linear model

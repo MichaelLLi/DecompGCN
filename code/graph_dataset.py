@@ -126,6 +126,30 @@ class RandomPlanarGraph(Dataset):
     def _process(self):
         pass
 
+class COLLAB(Dataset):
+    def __init__(self, root="../data/collab/", transform=None, pre_transform=None):
+        super(COLLAB, self).__init__(root, transform, pre_transform)
+    
+    def __len__(self):
+        return 5000
+
+    def get(self, idx):
+        data = torch.load(self.root + '/' + os.listdir(self.root)[idx])
+        return data
+
+    @property
+    def raw_file_names(self):
+        return []
+    @property
+    def processed_file_names(self):
+        return []
+
+    def _download(self):
+        pass
+
+    def _process(self):
+        pass
+
 def redditDataset():
     return TUDataset(root="/tmp/redditb",name="REDDIT-BINARY")
 
