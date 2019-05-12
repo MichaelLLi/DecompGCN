@@ -22,6 +22,8 @@ from networkx.convert_matrix import to_scipy_sparse_matrix, to_numpy_array
 from torch_geometric.nn import GCNConv
 from torch_geometric.data import Dataset
 
+from data_loader import node_labels_dic, graph_label_list, compute_adjency, graph_indicator
+from graph_new import Graph
 
 def to_sparse(x):
     x_typename = torch.typename(x).split('.')[-1]
@@ -138,4 +140,27 @@ def generate_planar():
             i+=1
             torch.save(data1,"../data/planar/planar_" + str(i) + ".pt")
             i+=1        
-generate_planar()
+
+def generate_COLLAB_dataset(path):
+    graphs=graph_label_list(path,'COLLAB_graph_labels.txt')
+    adjency=compute_adjency(path,'COLLAB_A.txt')
+    data_dict=graph_indicator(path,'COLLAB_graph_indicator.txt')
+    
+    for i in graphs:
+        g=Graph()
+        
+        for node in data_dict[i[0]]:
+            g.name=i[0]
+            g.add_vertex(node)
+            for node2 in adjency[node]:
+                g.add_edge((node,node2))
+
+        S1=to_numpy_array(g.nx_graph)
+        T1=torch.from_numpy(S1)
+        TS1=to_sparse(T1)
+        nnode = g.nx_graph.number_of_nodes()
+
+        data=Data(x=torch.ones((nnode, 1)), edge_index=TS1._indices(), y=torch.ones(1).long() * (i[1]-1))
+        torch.save(data,"../data/collab/collab_" + str(i[0]) + ".pt")
+
+generate_COLLAB_dataset("COLLAB/")

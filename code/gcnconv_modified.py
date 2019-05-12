@@ -146,7 +146,10 @@ class GCNConvAdvanced(GCNConv):
             if diag == True:
                 dense_adj_k2 = dense_adj_2k
                 return torch.mm(torch.eye(n).to(self.device) * dense_adj_k2, x)
-            
-            return  torch.mm(dense_adj_k, x)
+            import pdb
+            pdb.set_trace()
+            mlp = MLP(2, x.shape[1], 64, self.out_channels).to(self.device)
+            pdb.set_trace()
+            return  mlp(torch.mm(dense_adj_k, x))
 
 
