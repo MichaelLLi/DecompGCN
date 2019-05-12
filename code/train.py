@@ -6,7 +6,7 @@ from torch.optim.lr_scheduler import ReduceLROnPlateau
 import os
 from tensorboardX import SummaryWriter
 import shutil
-from early_stopping_pytorch.pytorchtools import EarlyStopping
+from pytorchtools import EarlyStopping
 
 #from Graph import Graph
 from config import Config
