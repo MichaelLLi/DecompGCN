@@ -232,7 +232,7 @@ class GINConvModel(GraphClassification):
             x = getattr(self, "conv%d" % i)(x,edge_index)
             x = F.relu(x)
             hidden_reps.append(x)
-           x = F.dropout(x,p=self.dropout_p)
+            x = F.dropout(x,p=self.dropout_p)
 
         output_score = 0
         for i in range(self.n_layers):
