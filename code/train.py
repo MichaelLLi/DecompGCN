@@ -6,6 +6,7 @@ from torch.optim.lr_scheduler import ReduceLROnPlateau
 import os
 from tensorboardX import SummaryWriter
 import shutil
+from early_stopping_pytorch.pytorchtools import EarlyStopping
 
 #from Graph import Graph
 from config import Config
@@ -95,8 +96,9 @@ def load_model(device, config):
 
 def train_node(model, data, device, config, lr=0.001):
     epochs = config.training_epochs
-    optim = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=0.005)
-    scheduler = ReduceLROnPlateau(optim, 'max',factor=0.4,patience=config.lrd)
+    optim = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=0.0005)
+    scheduler = ReduceLROnPlateau(optim, 'max',factor=0.5,patience=config.lrd)
+    early_stopping = EarlyStopping(patience=100, verbose=True)
     for e in range(epochs):
         print("Epoch %d" % (e))
         
@@ -126,6 +128,12 @@ def train_node(model, data, device, config, lr=0.001):
         print("validation loss: %f" % (eval_loss))
         print("validation acc:",  accs)
         scheduler.step(accs[1])
+        
+        early_stopping(eval_loss, model)
+        
+        if early_stopping.early_stop:
+            print("Early stopping")
+            break
 
 
 def eval(model, eval_iter, device, config):
@@ -150,6 +158,7 @@ def train(model, train_loader, valid_loader, device, config, train_writer, val_w
     epochs = config.training_epochs
     optim = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=0.01)
     scheduler = ReduceLROnPlateau(optim, 'max',factor=0.5,patience=config.lrd)
+    early_stopping = EarlyStopping(patience=10, verbose=True)
     for e in range(epochs):
         print("Epoch %d" % (e))
         # training
@@ -180,11 +189,16 @@ def train(model, train_loader, valid_loader, device, config, train_writer, val_w
 #        train_writer.add_figure('per_epoch/graph', fig, e)
 
         # validation
-        eval_loss, eval_acc = eval(model, iter(valid_loader), device, config)
+        eval_loss, eval_acc = eval(model, iter(valid_loader), device, config) 
         print("validation loss: %f" % (eval_loss))
         print("validation acc: %f" % (eval_acc))
         val_writer.add_scalar('per_epoch/loss', eval_loss, e)
         scheduler.step(eval_acc)
+        
+        early_stopping(eval_loss, model)
+        if early_stopping.early_stop:
+            print("Early stopping")
+            break
 
 #        g = Graph(config, valid_dataset[0])
 #        fig = g.plot_predictions(model.predictions_to_list( \

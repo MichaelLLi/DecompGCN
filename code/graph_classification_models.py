@@ -70,7 +70,7 @@ class GCNConvModel(GraphClassification):
                 layer_xs.append(weight * self.dropout(getattr(self, "conv%d%d" % (i,j))(x, edge_index)))
             
             x = sum(layer_xs)
-            x = F.leaky_relu(x,0.1)
+            x = F.leaky_relu(x,0.2)
             xs.append(x)
 
         if self.residual == True:
@@ -131,7 +131,7 @@ class GCNConvModel2(GraphClassification):
         
         for i in range(self.n_layers):
             x = self.dropout(getattr(self, "conv%d%d" % (i,0))(x, edge_index))
-            x = F.leaky_relu(x,0.1)
+            x = F.leaky_relu(x,0.2)
             xs.append(x)
         if self.residual == True:
             x = sum(xs)
@@ -286,7 +286,7 @@ class GATConvModel(GraphClassification):
             x = F.relu(x)
 
         if self.graph == True:
-            x = scatter_mean(x, data.batch, dim=0)
+            x = scatter_add(x, data.batch, dim=0)
 
         x = self.linear_preds(x)
 
