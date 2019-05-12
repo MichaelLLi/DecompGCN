@@ -92,7 +92,7 @@ class GCNConvModel2(GraphClassification):
         
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")        
         self.residual = config.residual
-        
+        self.n_mlp_layers = config.n_mlp_layers
         self.normalize = config.normalize
         layertypes = config.layertype.split(",")
         layer_configs = [self.set_layer_config(layer_type) for layer_type in layertypes]
@@ -113,7 +113,7 @@ class GCNConvModel2(GraphClassification):
         layer_config=LayerConfig()
         layer_config.normalize = self.normalize
         layer_config.order=int(level)
-        
+        layer_config.n_mlp_layers=self.n_mlp_layers
         if major_type=="V":
             layer_config.edge=False
             layer_config.diag=False
@@ -218,9 +218,9 @@ class GINConvModel(GraphClassification):
                 self.linears_prediction.append(nn.Linear(self.hidden, self.num_classes))
             glorot(self.linears_prediction[layer].weight)
 
-        setattr(self, "conv%d" % 0, GINConv(MLP(2,self.num_features, self.hidden, self.hidden)))
+        setattr(self, "conv%d" % 0, GINConv(MLP(config.n_mlp_layers,self.num_features, self.hidden, self.hidden)))
         for i in range(1,config.n_layers):
-            setattr(self, "conv%d" % i, GINConv(MLP(2,self.hidden, self.hidden, self.hidden)))
+            setattr(self, "conv%d" % i, GINConv(MLP(config.n_mlp_layers,self.hidden, self.hidden, self.hidden)))
 
     def forward(self, data, x):
         if x is None:
@@ -229,10 +229,7 @@ class GINConvModel(GraphClassification):
         edge_index = data.edge_index
 
         for i in range(self.n_layers):
-            import pdb
-            pdb.set_trace()
             x = getattr(self, "conv%d" % i)(x,edge_index)
-            pdb.set_trace()
             #x = F.relu(x)
             hidden_reps.append(x)
 #           x = F.dropout(x,p=self.dropout_p)

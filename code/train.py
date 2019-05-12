@@ -99,6 +99,10 @@ def train_node(model, data, device, config, lr=0.001):
     optim = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=0.001)
     scheduler = ReduceLROnPlateau(optim, 'max',factor=0.5,patience=config.lrd)
     early_stopping = EarlyStopping(patience=50, verbose=True)
+    if config.node_feature == True:
+        config.num_features = data.x.shape[1]
+    else:
+        config.num_features = 1
     for e in range(epochs):
         print("Epoch %d" % (e))
         
@@ -107,7 +111,11 @@ def train_node(model, data, device, config, lr=0.001):
         
         optim.zero_grad()
         data = data.to(device)
-        out = model(data, data.x)
+        if config.node_feature == False:
+            x = torch.ones((data.num_nodes,1)).to(device)
+        else:
+            x = data.x
+        out = model(data, x)
         loss = model.loss(out[data.train_mask], data.y[data.train_mask])
         epoch_loss = loss.item()
         loss.backward()
@@ -159,6 +167,10 @@ def train(model, train_loader, valid_loader, device, config, train_writer, val_w
     optim = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=0.005)
     scheduler = ReduceLROnPlateau(optim, 'max',factor=0.5,patience=config.lrd)
     early_stopping = EarlyStopping(patience=10, verbose=True)
+    if config.node_feature == True:
+        config.num_features = next(iter(train_loader)).x.shape[1]
+    else:
+        config.num_features = 1
     for e in range(epochs):
         print("Epoch %d" % (e))
         # training
@@ -220,10 +232,10 @@ def main():
     print("loading model...")
     model = load_model(device, config)
 
-    summary_dir = os.path.join(config.temp_dir, config.summary_dir)
-    if os.path.isdir(summary_dir):
-        shutil.rmtree(summary_dir)
-    os.makedirs(summary_dir)
+#    summary_dir = os.path.join(config.temp_dir, config.summary_dir)
+#    if os.path.isdir(summary_dir):
+#        shutil.rmtree(summary_dir)
+#    os.makedirs(summary_dir)
 
     train_writer = SummaryWriter(os.path.join(config.temp_dir, 'summary', 'training'))
     val_writer = SummaryWriter(os.path.join(config.temp_dir, 'summary', 'validation'))

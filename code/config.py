@@ -20,6 +20,8 @@ class Config():
                                  default=32, help='number of units per hidden layer in the GNN')
         self.parser.add_argument('--n_layers', type=int,
                                  default=2, help='Number of layers in the GNN')
+        self.parser.add_argument('--n_mlp_layers', type=int,
+                                 default=2, help='Number of layers in the GNN')
         self.parser.add_argument('--dropout_p', type=float,
                                  default=0.2, help='Dropout percentage in GNN layers')
 

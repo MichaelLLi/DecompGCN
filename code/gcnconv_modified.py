@@ -70,7 +70,7 @@ class GCNConvModified(GCNConv):
             
 
 class GCNConvAdvanced(GCNConv):
-    def __init__(self, in_channels, out_channels,configs):
+    def __init__(self, in_channels, out_channels, configs):
         super(GCNConvAdvanced, self).__init__(in_channels, out_channels)
         
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -78,6 +78,7 @@ class GCNConvAdvanced(GCNConv):
         for i in range(self.num_configs):
             setattr(self, "param%d" % i, torch.nn.Parameter(torch.rand(1)-0.5).cuda()) 
         self.configs=configs
+        self.mlp = MLP(configs[0].n_mlp_layers, self.in_channels, self.out_channels, self.out_channels).to(self.device)
 
     def forward(self, x, edge_index, edge_weight=None):
         xs = []
@@ -86,14 +87,14 @@ class GCNConvAdvanced(GCNConv):
             #xs.append(self.forward_layer(self.configs[i], x, edge_index)) 
         x = sum(xs)
         
-        return x
+        return self.mlp(x)
             
     def forward_layer(self, config, x, edge_index, edge_weight=None):
         normalize = config.normalize
         order = config.order
         edge = config.edge
         diag = config.diag
-        x = torch.matmul(x, self.weight)
+        #x = torch.matmul(x, self.weight)
         #mlp = MLP(2, x.shape[1], 32, self.out_channels).to(self.device)        
         #x = mlp(x)        
 
@@ -128,6 +129,7 @@ class GCNConvAdvanced(GCNConv):
             index = edge_index
             value = torch.ones(edge_index.shape[1]).to(self.device)
             dense_adj = torch.sparse.FloatTensor(index, value).to_dense()
+            dense_adj = dense_adj + torch.eye(dense_adj.shape[0]).cuda()
         dense_adj_k = dense_adj
 
         i = 1
@@ -146,10 +148,6 @@ class GCNConvAdvanced(GCNConv):
             if diag == True:
                 dense_adj_k2 = dense_adj_2k
                 return torch.mm(torch.eye(n).to(self.device) * dense_adj_k2, x)
-            import pdb
-            pdb.set_trace()
-            mlp = MLP(2, x.shape[1], 64, self.out_channels).to(self.device)
-            pdb.set_trace()
-            return  mlp(torch.mm(dense_adj_k, x))
+            return  torch.mm(dense_adj_k, x)
 
 
