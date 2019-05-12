@@ -76,7 +76,7 @@ class GCNConvAdvanced(GCNConv):
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.num_configs = len(configs)
         for i in range(self.num_configs):
-            setattr(self, "param%d" % i, torch.nn.Parameter(torch.rand(1)).cuda()) 
+            setattr(self, "param%d" % i, torch.nn.Parameter(torch.rand(1)-0.5).cuda()) 
         self.configs=configs
 
     def forward(self, x, edge_index, edge_weight=None):
