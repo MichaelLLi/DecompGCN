@@ -86,7 +86,8 @@ class GCNConvAdvanced(GCNConv):
             xs.append(getattr(self, "param%d" % i) * self.forward_layer(self.configs[i], x, edge_index))
             #xs.append(self.forward_layer(self.configs[i], x, edge_index)) 
         x = sum(xs)
-        
+#        import pdb
+#        pdb.set_trace()
         return self.mlp(x)
             
     def forward_layer(self, config, x, edge_index, edge_weight=None):

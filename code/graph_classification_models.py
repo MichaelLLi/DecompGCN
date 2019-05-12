@@ -230,9 +230,9 @@ class GINConvModel(GraphClassification):
 
         for i in range(self.n_layers):
             x = getattr(self, "conv%d" % i)(x,edge_index)
-            #x = F.relu(x)
+            x = F.relu(x)
             hidden_reps.append(x)
-#           x = F.dropout(x,p=self.dropout_p)
+           x = F.dropout(x,p=self.dropout_p)
 
         output_score = 0
         for i in range(self.n_layers):
@@ -241,12 +241,12 @@ class GINConvModel(GraphClassification):
                 #x = self.linear_preds(x)
             else:
                 x = hidden_reps[i]
-            #x = self.linears_prediction[i](x)
-            #output_score += x
+            x = self.linears_prediction[i](x)
+            output_score += x
 
         #if self.classification == True:
             #output_score = F.log_softmax(output_score, dim=1)
-        output_score = x
+#        output_score = x
         return output_score
 
 
