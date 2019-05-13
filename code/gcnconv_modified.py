@@ -90,14 +90,14 @@ class GCNConvAdvanced(GCNConv):
 #        import pdb
 #        pdb.set_trace()
         #return self.mlp(x)
-        #return x         
+        return x         
    
     def forward_layer(self, config, x, edge_index, edge_weight=None):
         normalize = config.normalize
         order = config.order
         edge = config.edge
         diag = config.diag
-        #x = torch.matmul(x, self.weight)
+        x = torch.matmul(x, self.weight)
         #mlp = MLP(2, x.shape[1], 32, self.out_channels).to(self.device)        
         #x = mlp(x)        
 

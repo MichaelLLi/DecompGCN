@@ -102,7 +102,7 @@ class GCNConvModel2(GraphClassification):
         for j in range(1,config.n_layers-1):
                 setattr(self, "conv%d%d" % (j,0), GCNConvAdvanced(self.hidden, self.hidden,layer_configs))
         
-        setattr(self, "conv%d%d" % (config.n_layers-1,0), GCNConvAdvanced(self.hidden, self.hidden,layer_configs))        
+        setattr(self, "conv%d%d" % (config.n_layers-1,0), GCNConvAdvanced(self.hidden, self.num_classes,layer_configs))        
         
         self.dropout=torch.nn.Dropout(p=self.dropout_p)
         self.linear_preds = Linear(self.hidden, self.num_classes)
@@ -138,7 +138,7 @@ class GCNConvModel2(GraphClassification):
             x = sum(xs)
         if self.graph == True:
             x = scatter_add(x, data.batch, dim=0)
-        out = self.linear_preds(x)
+        #out = self.linear_preds(x)
         #if self.classification == True:
             #x = F.log_softmax(x, dim=1)
 
