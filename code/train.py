@@ -46,26 +46,26 @@ def load_data(config):
             shuffle(data_list)
         else:
             data_list = data_list.shuffle()
-        
+
         train_dataset = data_list[:train_idx]
         valid_dataset = data_list[train_idx:valid_idx]
-        test_dataset = data_list[valid_idx:]
+        #test_dataset = data_list[valid_idx:]
 
         train_loader = DataLoader(dataset=train_dataset, batch_size=config.batch_size_train, shuffle=True)
         valid_loader = DataLoader(dataset=valid_dataset, batch_size=config.batch_size_train, shuffle=True)
-        test_loader = DataLoader(dataset=test_dataset, batch_size=config.batch_size_eval, shuffle=True)
+        #test_loader = DataLoader(dataset=test_dataset, batch_size=config.batch_size_eval, shuffle=True)
 
-        return train_dataset, valid_dataset, train_loader, valid_loader, test_loader
+        return train_dataset, valid_dataset, train_loader, valid_loader, None#test_loader
     else:
         data = dataset[0]
-        
+
 #        data.train_mask = torch.zeros(data.num_nodes, dtype=torch.uint8)
 #        data.train_mask[:(data.num_nodes - 1000)] = 1
 #        data.val_mask = torch.zeros(data.num_nodes, dtype=torch.uint8)
-#        data.val_mask[(data.num_nodes - 1000):(data.num_nodes - 500)] = 1        
+#        data.val_mask[(data.num_nodes - 1000):(data.num_nodes - 500)] = 1
 #        data.test_mask = torch.zeros(data.num_nodes, dtype=torch.uint8)
 #        data.test_mask[(data.num_nodes - 500):] = 1
-        
+
         return data, None, None, None, None
 
 def load_model(device, config):
@@ -88,7 +88,7 @@ def load_model(device, config):
         model = GATConvModel(config, num_classes, graph=graph, classification=classification)
     elif config.model == 'GCNSimp':
         model = GCNConvSimpModel(config, num_classes, graph=graph, classification=classification, residual=config.residual)
-       
+
     model = model.to(device)
 
     return model
@@ -105,10 +105,10 @@ def train_node(model, data, device, config, lr=0.001):
         config.num_features = 1
     for e in range(epochs):
         print("Epoch %d" % (e))
-        
+
         model.train()
         epoch_loss = 0.0
-        
+
         optim.zero_grad()
         data = data.to(device)
         if config.node_feature == False:
@@ -121,12 +121,12 @@ def train_node(model, data, device, config, lr=0.001):
         loss.backward()
         optim.step()
         print("loss: %f" % (epoch_loss))
-        
+
         model.eval()
         eval_loss = 0.0
         out = model(data, data.x)
         eval_loss = model.loss(out[data.test_mask], data.y[data.test_mask])
-        
+
         logits, accs = out, []
         for _, mask in data('train_mask', 'val_mask', 'test_mask'):
             pred = logits[mask].max(1)[1]
@@ -136,9 +136,9 @@ def train_node(model, data, device, config, lr=0.001):
         print("validation loss: %f" % (eval_loss))
         print("validation acc:",  accs)
         scheduler.step(accs[1])
-        
+
         early_stopping(eval_loss, model)
-        
+
         if early_stopping.early_stop:
             print("Early stopping")
             break
@@ -147,9 +147,10 @@ def train_node(model, data, device, config, lr=0.001):
 def eval(model, eval_iter, device, config):
     model.eval()
     eval_loss, eval_acc = 0.0, 0.0
+    total = 0
     for batch_idx, data in enumerate(eval_iter):
         data = data.to(device)
-        
+
         x = data.x
         if config.node_feature == False:
             x = torch.ones((len(data.batch),1)).to(device)
@@ -157,8 +158,9 @@ def eval(model, eval_iter, device, config):
 
         eval_loss += loss.item()
         eval_acc += acc
+        total += len(data.y)
 
-    return eval_loss, eval_acc / len(eval_iter)
+    return eval_loss, eval_acc / total
 
 
 def train(model, train_loader, valid_loader, device, config, train_writer, val_writer,
@@ -171,6 +173,8 @@ def train(model, train_loader, valid_loader, device, config, train_writer, val_w
         config.num_features = next(iter(train_loader)).x.shape[1]
     else:
         config.num_features = 1
+    best_val_loss = float('Inf')
+    test_acc  = 0
     for e in range(epochs):
         print("Epoch %d" % (e))
         # training
@@ -180,12 +184,12 @@ def train(model, train_loader, valid_loader, device, config, train_writer, val_w
         for batch_idx, data in enumerate(train_iter):
             optim.zero_grad()
             data = data.to(device)
-            
+
             x = data.x
             if config.node_feature == False:
                 x = torch.ones((len(data.batch),1)).to(device)
             out = model(data, x)
-            
+
             loss = model.loss(out, data.y)
             epoch_loss += loss.item()
 #            print(list(model.parameters()))
@@ -201,12 +205,15 @@ def train(model, train_loader, valid_loader, device, config, train_writer, val_w
 #        train_writer.add_figure('per_epoch/graph', fig, e)
 
         # validation
-        eval_loss, eval_acc = eval(model, iter(valid_loader), device, config) 
+        eval_loss, eval_acc = eval(model, iter(valid_loader), device, config)
+        if eval_loss <= best_val_loss:
+            test_acc = eval_acc
+            best_val_loss = eval_loss
         print("validation loss: %f" % (eval_loss))
-        print("validation acc: %f" % (eval_acc))
+        print("validation acc: %f" % (test_acc))
         val_writer.add_scalar('per_epoch/loss', eval_loss, e)
         scheduler.step(eval_acc)
-        
+
         early_stopping(eval_loss, model)
         if early_stopping.early_stop:
             print("Early stopping")
@@ -227,7 +234,6 @@ def main():
     print("loading data...")
     data_dir = '../data'
     train_dataset, valid_dataset, train_loader, valid_loader, test_loader = load_data(config)
-    
     # load model
     print("loading model...")
     model = load_model(device, config)
@@ -242,7 +248,7 @@ def main():
 
     # train
     print("start training...")
-    if task_dict[config.task]['graph']:    
+    if task_dict[config.task]['graph']:
         train(model, train_loader, valid_loader, device, config, train_writer, val_writer,
               train_dataset, valid_dataset,lr=config.lr)
     else:
@@ -253,4 +259,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

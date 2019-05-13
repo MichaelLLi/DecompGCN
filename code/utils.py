@@ -101,7 +101,7 @@ task_dict = {
         'graph': True,
         'num_classes': 3,
         'dataset': COLLAB
-    }     
+    }
 }
 
 
@@ -110,7 +110,7 @@ class LayerConfig:
         self.order = 0
         self.normalize = False
         self.edge = False
-        self.diag = False  
+        self.diag = False
 
 
 class MLP(nn.Module):
@@ -122,7 +122,7 @@ class MLP(nn.Module):
             output_dim: number of classes for prediction
             device: which device to use
         '''
-    
+
         super(MLP, self).__init__()
 
         self.linear_or_not = True #default is linear model
@@ -138,7 +138,7 @@ class MLP(nn.Module):
             self.linear_or_not = False
             self.linears = torch.nn.ModuleList()
             self.batch_norms = torch.nn.ModuleList()
-        
+
             self.linears.append(nn.Linear(input_dim, hidden_dim))
             for layer in range(num_layers - 2):
                 self.linears.append(nn.Linear(hidden_dim, hidden_dim))
@@ -146,7 +146,6 @@ class MLP(nn.Module):
 
             for layer in range(num_layers - 1):
                 self.batch_norms.append(nn.BatchNorm1d((hidden_dim)))
-
     def forward(self, x):
         if self.linear_or_not:
             #If linear model
