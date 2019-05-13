@@ -206,11 +206,11 @@ def train(model, train_loader, valid_loader, device, config, train_writer, val_w
 
         # validation
         eval_loss, eval_acc = eval(model, iter(valid_loader), device, config)
-        if eval_loss <= best_val_loss:
-            test_acc = eval_acc
-            best_val_loss = eval_loss
+#        if eval_loss <= best_val_loss:
+#            test_acc = eval_acc
+#            best_val_loss = eval_loss
         print("validation loss: %f" % (eval_loss))
-        print("validation acc: %f" % (test_acc))
+        print("validation acc: %f" % (eval_acc))
         val_writer.add_scalar('per_epoch/loss', eval_loss, e)
         scheduler.step(eval_acc)
 
