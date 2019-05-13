@@ -102,10 +102,10 @@ class GCNConvModel2(GraphClassification):
         for j in range(1,config.n_layers-1):
                 setattr(self, "conv%d%d" % (j,0), GCNConvAdvanced(self.hidden, self.hidden,layer_configs))
         
-        setattr(self, "conv%d%d" % (config.n_layers-1,0), GCNConvAdvanced(self.hidden, self.num_classes,layer_configs))        
+        setattr(self, "conv%d%d" % (config.n_layers-1,0), GCNConvAdvanced(self.hidden, self.hidden,layer_configs))        
         
         self.dropout=torch.nn.Dropout(p=self.dropout_p)
-        #self.linear_preds = Linear(self.hidden, self.num_classes)
+        self.linear_preds = Linear(self.hidden, self.num_classes)
 
     def set_layer_config(self, layer_type):
         major_type, level = layer_type[0], layer_type[1]
@@ -138,11 +138,11 @@ class GCNConvModel2(GraphClassification):
             x = sum(xs)
         if self.graph == True:
             x = scatter_add(x, data.batch, dim=0)
-#        out = self.linear_preds(x)
+        out = self.linear_preds(x)
         #if self.classification == True:
             #x = F.log_softmax(x, dim=1)
 
-        return x
+        return out
         
         
 class GCNConvSimpModel(GraphClassification):
@@ -159,9 +159,9 @@ class GCNConvSimpModel(GraphClassification):
         for j in range(1,config.n_layers-1):
                 setattr(self, "conv%d%d" % (j,0), GCNConv(self.hidden, self.hidden,bias=False))
         
-        setattr(self, "conv%d%d" % (config.n_layers-1,0), GCNConv(self.hidden, self.num_classes,bias=False))
+        setattr(self, "conv%d%d" % (config.n_layers-1,0), GCNConv(self.hidden, self.hidden,bias=False))
         self.dropout=torch.nn.Dropout(p=self.dropout_p)
-        #self.linear_preds = Linear(self.hidden, self.num_classes)
+        self.linear_preds = Linear(self.hidden, self.num_classes)
     
     def forward(self, data, x):
         edge_index = data.edge_index
@@ -178,11 +178,11 @@ class GCNConvSimpModel(GraphClassification):
             x = sum(xs)    
         if self.graph == True:
             x = scatter_add(x, data.batch, dim=0)
-        #out = self.linear_preds(x)
+        out = self.linear_preds(x)
         
         #if self.classification == True:
             #x = F.log_softmax(x, dim=1)
-        return x
+        return out
 
 
 class SGConvModel(GraphClassification):
@@ -208,15 +208,16 @@ class SGConvModel(GraphClassification):
 class GINConvModel(GraphClassification):
     def __init__(self, config, num_classes, graph=True, classification=True):
         super(GINConvModel, self).__init__(config, num_classes, graph, classification)
+        self.batch_norms = torch.nn.ModuleList()
 
         #self.linear_preds = Linear(self.hidden, self.num_classes)
         self.linears_prediction = torch.nn.ModuleList()
         for layer in range(config.n_layers):
             if layer == 0:
-                self.linears_prediction.append(nn.Linear(self.hidden, self.num_classes))
+                self.linears_prediction.append(nn.Linear(self.num_features, self.num_classes))
             else:
                 self.linears_prediction.append(nn.Linear(self.hidden, self.num_classes))
-            glorot(self.linears_prediction[layer].weight)
+            self.batch_norms.append(nn.BatchNorm1d(self.hidden))
 
         setattr(self, "conv%d" % 0, GINConv(MLP(config.n_mlp_layers,self.num_features, self.hidden, self.hidden)))
         for i in range(1,config.n_layers):
@@ -226,13 +227,14 @@ class GINConvModel(GraphClassification):
         if x is None:
             x = torch.ones((data.num_nodes, 1)).to(self.device)
         hidden_reps=[]
+        hidden_reps.append(x)
         edge_index = data.edge_index
-
         for i in range(self.n_layers):
             x = getattr(self, "conv%d" % i)(x,edge_index)
+            x = self.batch_norms[i](x)
             x = F.relu(x)
             hidden_reps.append(x)
-            x = F.dropout(x,p=self.dropout_p)
+#            x = F.dropout(x,p=self.dropout_p)
 
         output_score = 0
         for i in range(self.n_layers):
@@ -241,8 +243,7 @@ class GINConvModel(GraphClassification):
                 #x = self.linear_preds(x)
             else:
                 x = hidden_reps[i]
-            x = self.linears_prediction[i](x)
-            output_score += x
+            output_score += self.linears_prediction[i](x)
 
         #if self.classification == True:
             #output_score = F.log_softmax(output_score, dim=1)

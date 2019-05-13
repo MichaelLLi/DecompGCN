@@ -96,7 +96,7 @@ def load_model(device, config):
 
 def train_node(model, data, device, config, lr=0.001):
     epochs = config.training_epochs
-    optim = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=0.001)
+    optim = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=0)
     scheduler = ReduceLROnPlateau(optim, 'max',factor=0.5,patience=config.lrd)
     early_stopping = EarlyStopping(patience=50, verbose=True)
     if config.node_feature == True:
@@ -164,7 +164,7 @@ def eval(model, eval_iter, device, config):
 def train(model, train_loader, valid_loader, device, config, train_writer, val_writer,
             train_dataset, valid_dataset, lr=0.0001):
     epochs = config.training_epochs
-    optim = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=0.005)
+    optim = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=0)
     scheduler = ReduceLROnPlateau(optim, 'max',factor=0.5,patience=config.lrd)
     early_stopping = EarlyStopping(patience=10, verbose=True)
     if config.node_feature == True:

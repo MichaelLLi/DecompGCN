@@ -113,7 +113,7 @@ class LayerConfig:
         self.diag = False  
 
 
-class MLP(torch.nn.Module):
+class MLP(nn.Module):
     def __init__(self, num_layers, input_dim, hidden_dim, output_dim):
         '''
             num_layers: number of layers in the neural networks (EXCLUDING the input layer). If num_layers=1, this reduces to linear model.
@@ -146,11 +146,7 @@ class MLP(torch.nn.Module):
 
             for layer in range(num_layers - 1):
                 self.batch_norms.append(nn.BatchNorm1d((hidden_dim)))
-            
-#            for layer in self.linears:
-#                layer.weight = torch.nn.Parameter(torch.ones(layer.weight.shape).cuda())
-#                layer.bias = torch.nn.Parameter(torch.ones(layer.weight.shape[1]).cuda())
-    
+
     def forward(self, x):
         if self.linear_or_not:
             #If linear model
@@ -160,5 +156,4 @@ class MLP(torch.nn.Module):
             h = x
             for layer in range(self.num_layers - 1):
                 h = F.relu(self.batch_norms[layer](self.linears[layer](h)))
-#                h = F.relu(self.linears[layer](h))
-            return self.linears[self.num_layers - 1](h)        
+            return self.linears[self.num_layers - 1](h)
