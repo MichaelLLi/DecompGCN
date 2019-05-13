@@ -49,13 +49,13 @@ def load_data(config):
         
         train_dataset = data_list[:train_idx]
         valid_dataset = data_list[train_idx:valid_idx]
-        test_dataset = data_list[valid_idx:]
+        #test_dataset = data_list[valid_idx:]
 
         train_loader = DataLoader(dataset=train_dataset, batch_size=config.batch_size_train, shuffle=True)
         valid_loader = DataLoader(dataset=valid_dataset, batch_size=config.batch_size_train, shuffle=True)
-        test_loader = DataLoader(dataset=test_dataset, batch_size=config.batch_size_eval, shuffle=True)
+        #test_loader = DataLoader(dataset=test_dataset, batch_size=config.batch_size_eval, shuffle=True)
 
-        return train_dataset, valid_dataset, train_loader, valid_loader, test_loader
+        return train_dataset, valid_dataset, train_loader, valid_loader, None#test_loader
     else:
         data = dataset[0]
         
@@ -147,6 +147,7 @@ def train_node(model, data, device, config, lr=0.001):
 def eval(model, eval_iter, device, config):
     model.eval()
     eval_loss, eval_acc = 0.0, 0.0
+    total = 0
     for batch_idx, data in enumerate(eval_iter):
         data = data.to(device)
         
@@ -157,20 +158,24 @@ def eval(model, eval_iter, device, config):
 
         eval_loss += loss.item()
         eval_acc += acc
+        total += len(data.y)
 
-    return eval_loss, eval_acc / len(eval_iter)
+    return eval_loss, eval_acc / total
 
 
 def train(model, train_loader, valid_loader, device, config, train_writer, val_writer,
             train_dataset, valid_dataset, lr=0.0001):
     epochs = config.training_epochs
-    optim = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=0.005)
-    scheduler = ReduceLROnPlateau(optim, 'max',factor=0.5,patience=config.lrd)
+    optim = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=0.0005)
+    #scheduler = ReduceLROnPlateau(optim, 'max',factor=0.5,patience=config.lrd)
+    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optim, mode='min', factor=0.7, patience=5, min_lr=0.00001)
     early_stopping = EarlyStopping(patience=10, verbose=True)
     if config.node_feature == True:
         config.num_features = next(iter(train_loader)).x.shape[1]
     else:
         config.num_features = 1
+    best_val_loss = float('Inf')
+    test_acc  = 0
     for e in range(epochs):
         print("Epoch %d" % (e))
         # training
@@ -202,8 +207,11 @@ def train(model, train_loader, valid_loader, device, config, train_writer, val_w
 
         # validation
         eval_loss, eval_acc = eval(model, iter(valid_loader), device, config) 
+        if eval_loss <= best_val_loss:
+            test_acc = eval_acc
+            best_val_loss = eval_loss
         print("validation loss: %f" % (eval_loss))
-        print("validation acc: %f" % (eval_acc))
+        print("validation acc: %f" % (test_acc))
         val_writer.add_scalar('per_epoch/loss', eval_loss, e)
         scheduler.step(eval_acc)
         
@@ -227,7 +235,6 @@ def main():
     print("loading data...")
     data_dir = '../data'
     train_dataset, valid_dataset, train_loader, valid_loader, test_loader = load_data(config)
-    
     # load model
     print("loading model...")
     model = load_model(device, config)

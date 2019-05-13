@@ -227,7 +227,6 @@ class GINConvModel(GraphClassification):
             x = torch.ones((data.num_nodes, 1)).to(self.device)
         hidden_reps=[]
         edge_index = data.edge_index
-
         for i in range(self.n_layers):
             x = getattr(self, "conv%d" % i)(x,edge_index)
             x = F.relu(x)

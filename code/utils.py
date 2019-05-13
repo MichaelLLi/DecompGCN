@@ -147,9 +147,9 @@ class MLP(torch.nn.Module):
             for layer in range(num_layers - 1):
                 self.batch_norms.append(nn.BatchNorm1d((hidden_dim)))
             
-#            for layer in self.linears:
-#                layer.weight = torch.nn.Parameter(torch.ones(layer.weight.shape).cuda())
-#                layer.bias = torch.nn.Parameter(torch.ones(layer.weight.shape[1]).cuda())
+            for layer in self.linears:
+                layer.weight = torch.nn.Parameter(torch.ones(layer.weight.shape).cuda())
+                layer.bias = torch.nn.Parameter(torch.ones(layer.weight.shape[1]).cuda())
     
     def forward(self, x):
         if self.linear_or_not:

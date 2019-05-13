@@ -46,11 +46,11 @@ class GraphClassification(torch.nn.Module):
 
         out = self.forward(data, x)
         loss = self.loss(out, data.y)
-
+      
         if self.classification == True:
             _, pred =out.max(dim=1)
             correct = pred.eq(data.y).sum().item()
-            acc = correct / len(data.y)
+            acc = correct
         else:
             acc = -loss
 
