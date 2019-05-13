@@ -77,6 +77,7 @@ class GCNConvAdvanced(GCNConv):
         self.num_configs = len(configs)
         for i in range(self.num_configs):
             setattr(self, "param%d" % i, torch.nn.Parameter(torch.rand(1)-0.5).cuda()) 
+            #setattr(self, "param%d" % i, torch.nn.Parameter(torch.ones(1)).cuda())
         self.configs=configs
         self.mlp = MLP(configs[0].n_mlp_layers, self.in_channels, self.out_channels, self.out_channels).to(self.device)
 
@@ -88,8 +89,9 @@ class GCNConvAdvanced(GCNConv):
         x = sum(xs)
 #        import pdb
 #        pdb.set_trace()
-        return self.mlp(x)
-            
+        #return self.mlp(x)
+        #return x         
+   
     def forward_layer(self, config, x, edge_index, edge_weight=None):
         normalize = config.normalize
         order = config.order

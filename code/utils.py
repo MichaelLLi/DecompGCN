@@ -5,10 +5,11 @@ from graph_dataset import RandomConnectedGraph, \
 						  RandomCliqueGraph, \
         				  RandomTreeCycleGraph, \
         				  RandomTriangleGraph, \
-        				  RandomPlanarGraph,\
+        				  RandomFourCyclesGraph, \
+                          RandomPlanarGraph,\
         				  redditDataset, imdbDataset, proteinDataset, \
         				  CoraDataset, CiteSeerDataset, PubMedDataset, Karate,\
-                              QM7bD, QM9D, COLLAB
+                              QM7bD, QM9D, COLLAB, GeometricShapesDataset
 
 
 task_dict = {
@@ -41,6 +42,12 @@ task_dict = {
         'graph': True,
         'num_classes': 1,
         'dataset': RandomTriangleGraph
+    },
+    'four_cycle': {
+        'classification': False,
+        'graph': True,
+        'num_classes': 1,
+        'dataset': RandomFourCyclesGraph
     },
     'imdb-b': {
         'classification': True,
@@ -101,6 +108,12 @@ task_dict = {
         'graph': True,
         'num_classes': 3,
         'dataset': COLLAB
+    },
+    'geometric' : {
+        'classfication': True,
+        'graph': True,
+        'num_classes': 2,
+        'dataset': GeometricShapesDataset
     }
 }
 

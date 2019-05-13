@@ -1,7 +1,7 @@
 import torch
 from torch_geometric.data import Dataset
 import torch_geometric.transforms as T
-from torch_geometric.datasets import TUDataset, Planetoid, KarateClub, QM7b, QM9
+from torch_geometric.datasets import TUDataset, Planetoid, KarateClub, QM7b, QM9, GeometricShapes
 import os
 
 class RandomConnectedGraph(Dataset):
@@ -83,7 +83,30 @@ class RandomTriangleGraph(Dataset):
     def __init__(self, root="../data/triangle/", transform=None, pre_transform=None):
         super(RandomTriangleGraph, self).__init__(root, transform, pre_transform)
     def __len__(self):
-        return 500
+        return 1000
+
+    def get(self, idx):
+        data = torch.load(self.root + '/' + os.listdir(self.root)[idx])
+        return data
+
+    @property
+    def raw_file_names(self):
+        return []
+    @property
+    def processed_file_names(self):
+        return []
+
+    def _download(self):
+        pass
+
+    def _process(self):
+        pass
+
+class RandomFourCyclesGraph(Dataset):
+    def __init__(self, root="../data/4_cycle/", transform=None, pre_transform=None):
+        super(RandomFourCyclesGraph, self).__init__(root, transform, pre_transform)
+    def __len__(self):
+        return 1000
 
     def get(self, idx):
         data = torch.load(self.root + '/' + os.listdir(self.root)[idx])
@@ -177,3 +200,6 @@ def QM7bD():
 def QM9D():
     return QM9(root="/tmp/QM9")
 
+def GeometricShapesDataset():
+    d =  GeometricShapes(root="/tmp/GeometricShapes", pre_transform=T.FaceToEdge).data
+    return T.FaceToEdge().__call__(d)

@@ -96,7 +96,7 @@ def load_model(device, config):
 
 def train_node(model, data, device, config, lr=0.001):
     epochs = config.training_epochs
-    optim = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=0)
+    optim = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=0.005)
     scheduler = ReduceLROnPlateau(optim, 'max',factor=0.5,patience=config.lrd)
     early_stopping = EarlyStopping(patience=50, verbose=True)
     if config.node_feature == True:
@@ -155,7 +155,8 @@ def eval(model, eval_iter, device, config):
         if config.node_feature == False:
             x = torch.ones((len(data.batch),1)).to(device)
         loss, acc = model.eval_metric(data, x)
-
+        #import pdb
+        #pdb.set_trace() 
         eval_loss += loss.item()
         eval_acc += acc
         total += len(data.y)
@@ -166,7 +167,7 @@ def eval(model, eval_iter, device, config):
 def train(model, train_loader, valid_loader, device, config, train_writer, val_writer,
             train_dataset, valid_dataset, lr=0.0001):
     epochs = config.training_epochs
-    optim = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=0)
+    optim = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=0.0005)
     scheduler = ReduceLROnPlateau(optim, 'max',factor=0.5,patience=config.lrd)
     early_stopping = EarlyStopping(patience=10, verbose=True)
     if config.node_feature == True:

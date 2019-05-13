@@ -142,7 +142,7 @@ class GCNConvModel2(GraphClassification):
         #if self.classification == True:
             #x = F.log_softmax(x, dim=1)
 
-        return out
+        return x#out
         
         
 class GCNConvSimpModel(GraphClassification):
@@ -171,7 +171,7 @@ class GCNConvSimpModel(GraphClassification):
         for i in range(self.n_layers):
             x = getattr(self, "conv%d%d" % (i,0))(x, edge_index)
             #x = self.dropout(getattr(self, "conv%d%d" % (i,0))(x, edge_index))  
-#            x = F.relu(x)
+            x = F.relu(x)
             xs.append(x)
 
         if self.residual == True:

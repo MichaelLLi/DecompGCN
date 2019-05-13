@@ -102,7 +102,7 @@ def generate_tree_cycle():
 
 def generate_triangles():
     i=0
-    while i<500:
+    while i<1000:
         G1=nx.fast_gnp_random_graph(100,0.07)
         A = nx.adjacency_matrix(G1)
         triangles = (A@A@A).diagonal().sum()/6
@@ -114,6 +114,32 @@ def generate_triangles():
             data=Data(x=torch.ones((100,1)),edge_index=TS1._indices(),y=torch.ones(1).long()*triangles)
             torch.save(data,"../data/triangle/triangle_" + str(i) + ".pt")
             i+=1
+
+def generate_four_cycles():
+    i=0
+    while i<1000:
+        G1=nx.fast_gnp_random_graph(100,0.07)
+        A = nx.adjacency_matrix(G1)
+        dense_A = np.array(nx.to_numpy_matrix(G1))        
+
+        four_cycles = (A@A@A@A).diagonal().sum() 
+        H1 =  dense_A.sum()
+        H2 = 0
+        
+        for j in range(100):
+            H2 = H2 + dense_A[j][j] * (dense_A[j][j] - 1) / 2
+        
+        four_cycles = (four_cycles - 4 * H2 - 2 * H1) / 8 
+        
+        S1=to_numpy_array(G1)
+        T1=torch.from_numpy(S1)
+        TS1=to_sparse(T1)
+        connect=nx.edge_connectivity(G1)
+        if connect>0:
+            data=Data(x=torch.ones((100,1)),edge_index=TS1._indices(),y=torch.ones(1).long()*four_cycles)
+            torch.save(data,"../data/4_cycle/4_cycle_" + str(i) + ".pt")
+            i+=1
+
             
 def generate_planar():
     original_graphs=nx.read_graph6('../data/list_2040_graphs.g6')
@@ -163,4 +189,6 @@ def generate_COLLAB_dataset(path):
         data=Data(x=torch.ones((nnode, 1)), edge_index=TS1._indices(), y=torch.ones(1).long() * (i[1]-1))
         torch.save(data,"../data/collab/collab_" + str(i[0]) + ".pt")
 
-generate_COLLAB_dataset("COLLAB/")
+generate_four_cycles()
+#generate_triangles()
+#generate_COLLAB_dataset("COLLAB/")
