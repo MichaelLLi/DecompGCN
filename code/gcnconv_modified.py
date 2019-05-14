@@ -84,7 +84,7 @@ class GCNConvAdvanced(GCNConv):
     def forward(self, x, edge_index, edge_weight=None):
         xs = []
         for i in range(self.num_configs):
-            xs.append(getattr(self, "param%d" % i) * self.forward_layer(self.configs[i], x, edge_index))
+            xs.append(torch.nn.functional.sigmoid(getattr(self, "param%d" % i)) * self.forward_layer(self.configs[i], x, edge_index))
             #xs.append(self.forward_layer(self.configs[i], x, edge_index)) 
         x = sum(xs)
 #        import pdb
