@@ -63,6 +63,8 @@ class Config():
                                       default=False, help='If normalize')
         self.parser.add_argument('--node_feature', type=str2bool,
                                         default=False, help='If use feature')
+        self.parser.add_argument('--weight_decay', type=float,
+                                          default=0.0005, help='l2 regularizatin rate')
 
     def parse_args(self):
         return self.parser.parse_args()

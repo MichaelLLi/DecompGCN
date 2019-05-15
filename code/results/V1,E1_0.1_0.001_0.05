@@ -1,0 +1,4006 @@
+loading data...
+Task:  citeseer
+loading model...
+Model:  GCN
+start training...
+Epoch 0
+loss: 1.791561
+validation loss: 1.791463
+validation acc: [0.18333333333333332, 0.164, 0.151]
+Validation loss decreased ({self.val_loss_min:.6f} --> {val_loss:.6f}).  Saving model ...
+Epoch 1
+loss: 1.787904
+validation loss: 1.790661
+validation acc: [0.275, 0.192, 0.176]
+Epoch 2
+loss: 1.784153
+validation loss: 1.789838
+validation acc: [0.38333333333333336, 0.218, 0.196]
+Epoch 3
+loss: 1.779826
+validation loss: 1.788911
+validation acc: [0.425, 0.24, 0.234]
+Epoch 4
+loss: 1.780517
+validation loss: 1.787891
+validation acc: [0.48333333333333334, 0.278, 0.263]
+Epoch 5
+loss: 1.773630
+validation loss: 1.786798
+validation acc: [0.5333333333333333, 0.312, 0.296]
+Epoch 6
+loss: 1.770763
+validation loss: 1.785591
+validation acc: [0.575, 0.332, 0.329]
+Epoch 7
+loss: 1.764689
+validation loss: 1.784247
+validation acc: [0.6083333333333333, 0.352, 0.359]
+Epoch 8
+loss: 1.759233
+validation loss: 1.782782
+validation acc: [0.6583333333333333, 0.376, 0.371]
+Epoch 9
+loss: 1.759771
+validation loss: 1.781185
+validation acc: [0.6916666666666667, 0.386, 0.39]
+Epoch 10
+loss: 1.752687
+validation loss: 1.779410
+validation acc: [0.7083333333333334, 0.406, 0.405]
+Epoch 11
+loss: 1.746175
+validation loss: 1.777477
+validation acc: [0.7416666666666667, 0.412, 0.406]
+Epoch 12
+loss: 1.740110
+validation loss: 1.775421
+validation acc: [0.7666666666666667, 0.42, 0.422]
+Epoch 13
+loss: 1.735638
+validation loss: 1.773263
+validation acc: [0.7916666666666666, 0.438, 0.438]
+Epoch 14
+loss: 1.728640
+validation loss: 1.770982
+validation acc: [0.7916666666666666, 0.464, 0.449]
+Epoch 15
+loss: 1.728078
+validation loss: 1.768699
+validation acc: [0.8083333333333333, 0.482, 0.456]
+Epoch 16
+loss: 1.726955
+validation loss: 1.766429
+validation acc: [0.8083333333333333, 0.488, 0.464]
+Epoch 17
+loss: 1.710367
+validation loss: 1.764118
+validation acc: [0.8333333333333334, 0.49, 0.473]
+Epoch 18
+loss: 1.700359
+validation loss: 1.761800
+validation acc: [0.8416666666666667, 0.49, 0.484]
+Epoch 19
+loss: 1.703527
+validation loss: 1.759454
+validation acc: [0.85, 0.498, 0.49]
+Epoch 20
+loss: 1.701355
+validation loss: 1.757145
+validation acc: [0.85, 0.5, 0.502]
+Epoch 21
+loss: 1.692720
+validation loss: 1.754911
+validation acc: [0.8583333333333333, 0.504, 0.507]
+Epoch 22
+loss: 1.685163
+validation loss: 1.752751
+validation acc: [0.8583333333333333, 0.506, 0.505]
+Epoch 23
+loss: 1.684983
+validation loss: 1.750655
+validation acc: [0.8583333333333333, 0.508, 0.514]
+Epoch 24
+loss: 1.673230
+validation loss: 1.748570
+validation acc: [0.8583333333333333, 0.514, 0.523]
+Epoch 25
+loss: 1.676541
+validation loss: 1.746472
+validation acc: [0.8833333333333333, 0.524, 0.531]
+Epoch 26
+loss: 1.654339
+validation loss: 1.744374
+validation acc: [0.875, 0.526, 0.541]
+Epoch 27
+loss: 1.642362
+validation loss: 1.742231
+validation acc: [0.875, 0.536, 0.544]
+Epoch 28
+loss: 1.651088
+validation loss: 1.740118
+validation acc: [0.875, 0.534, 0.547]
+Epoch 29
+loss: 1.639518
+validation loss: 1.738008
+validation acc: [0.875, 0.544, 0.55]
+Epoch 30
+loss: 1.638632
+validation loss: 1.735881
+validation acc: [0.8833333333333333, 0.548, 0.555]
+Epoch 31
+loss: 1.623641
+validation loss: 1.733728
+validation acc: [0.8833333333333333, 0.548, 0.558]
+Epoch 32
+loss: 1.615151
+validation loss: 1.731565
+validation acc: [0.8833333333333333, 0.548, 0.559]
+Epoch 33
+loss: 1.629903
+validation loss: 1.729395
+validation acc: [0.8833333333333333, 0.544, 0.562]
+Epoch 34
+loss: 1.613949
+validation loss: 1.727218
+validation acc: [0.8833333333333333, 0.544, 0.565]
+Epoch 35
+loss: 1.618373
+validation loss: 1.725059
+validation acc: [0.8916666666666667, 0.544, 0.568]
+Epoch 36
+loss: 1.615629
+validation loss: 1.722902
+validation acc: [0.8916666666666667, 0.548, 0.572]
+Epoch 37
+loss: 1.584316
+validation loss: 1.720760
+validation acc: [0.8916666666666667, 0.552, 0.575]
+Epoch 38
+loss: 1.579633
+validation loss: 1.718621
+validation acc: [0.8916666666666667, 0.554, 0.577]
+Epoch 39
+loss: 1.589353
+validation loss: 1.716482
+validation acc: [0.8916666666666667, 0.554, 0.58]
+Epoch 40
+loss: 1.585419
+validation loss: 1.714371
+validation acc: [0.8916666666666667, 0.56, 0.58]
+Epoch 41
+loss: 1.559791
+validation loss: 1.712259
+validation acc: [0.8916666666666667, 0.558, 0.582]
+Epoch 42
+loss: 1.552188
+validation loss: 1.710088
+validation acc: [0.8916666666666667, 0.566, 0.585]
+Epoch 43
+loss: 1.560109
+validation loss: 1.707945
+validation acc: [0.8916666666666667, 0.568, 0.586]
+Epoch 44
+loss: 1.550783
+validation loss: 1.705800
+validation acc: [0.8916666666666667, 0.574, 0.587]
+Epoch 45
+loss: 1.547681
+validation loss: 1.703617
+validation acc: [0.8916666666666667, 0.58, 0.589]
+Epoch 46
+loss: 1.550507
+validation loss: 1.701462
+validation acc: [0.9, 0.58, 0.591]
+Epoch 47
+loss: 1.540249
+validation loss: 1.699374
+validation acc: [0.9, 0.588, 0.598]
+Epoch 48
+loss: 1.534718
+validation loss: 1.697292
+validation acc: [0.9, 0.59, 0.599]
+Epoch 49
+loss: 1.512846
+validation loss: 1.695208
+validation acc: [0.9, 0.592, 0.601]
+Epoch 50
+loss: 1.511223
+validation loss: 1.693094
+validation acc: [0.9, 0.594, 0.601]
+Epoch 51
+loss: 1.529487
+validation loss: 1.690998
+validation acc: [0.9, 0.594, 0.604]
+Epoch 52
+loss: 1.508586
+validation loss: 1.688940
+validation acc: [0.9, 0.602, 0.607]
+Epoch 53
+loss: 1.519928
+validation loss: 1.686891
+validation acc: [0.9, 0.606, 0.609]
+Epoch 54
+loss: 1.485452
+validation loss: 1.684852
+validation acc: [0.9, 0.606, 0.612]
+Epoch 55
+loss: 1.488451
+validation loss: 1.682776
+validation acc: [0.9, 0.606, 0.615]
+Epoch 56
+loss: 1.494892
+validation loss: 1.680758
+validation acc: [0.9, 0.608, 0.612]
+Epoch 57
+loss: 1.489187
+validation loss: 1.678719
+validation acc: [0.9, 0.61, 0.614]
+Epoch 58
+loss: 1.493374
+validation loss: 1.676657
+validation acc: [0.9, 0.612, 0.617]
+Epoch 59
+loss: 1.473262
+validation loss: 1.674609
+validation acc: [0.9, 0.612, 0.618]
+Epoch 60
+loss: 1.483935
+validation loss: 1.672517
+validation acc: [0.9, 0.608, 0.622]
+Epoch 61
+loss: 1.465499
+validation loss: 1.670502
+validation acc: [0.9, 0.614, 0.622]
+Epoch 62
+loss: 1.466764
+validation loss: 1.668505
+validation acc: [0.9, 0.616, 0.623]
+Epoch 63
+loss: 1.460453
+validation loss: 1.666454
+validation acc: [0.9, 0.616, 0.624]
+Epoch 64
+loss: 1.452410
+validation loss: 1.664483
+validation acc: [0.9, 0.618, 0.624]
+Epoch 65
+loss: 1.451370
+validation loss: 1.662524
+validation acc: [0.9, 0.624, 0.625]
+Epoch 66
+loss: 1.474760
+validation loss: 1.660552
+validation acc: [0.9, 0.626, 0.627]
+Epoch 67
+loss: 1.446812
+validation loss: 1.658630
+validation acc: [0.9, 0.626, 0.627]
+Epoch 68
+loss: 1.455656
+validation loss: 1.656770
+validation acc: [0.9, 0.626, 0.626]
+Epoch 69
+loss: 1.419228
+validation loss: 1.654815
+validation acc: [0.9, 0.628, 0.627]
+Epoch 70
+loss: 1.422344
+validation loss: 1.652825
+validation acc: [0.9, 0.628, 0.63]
+Epoch 71
+loss: 1.427504
+validation loss: 1.650838
+validation acc: [0.9, 0.63, 0.632]
+Epoch 72
+loss: 1.402746
+validation loss: 1.648825
+validation acc: [0.9, 0.63, 0.633]
+Epoch 73
+loss: 1.437162
+validation loss: 1.646853
+validation acc: [0.9, 0.63, 0.635]
+Epoch 74
+loss: 1.405176
+validation loss: 1.644892
+validation acc: [0.9, 0.632, 0.64]
+Epoch 75
+loss: 1.408355
+validation loss: 1.642945
+validation acc: [0.9, 0.634, 0.641]
+Epoch 76
+loss: 1.403435
+validation loss: 1.641022
+validation acc: [0.9, 0.634, 0.643]
+Epoch 77
+loss: 1.402381
+validation loss: 1.639136
+validation acc: [0.9, 0.64, 0.643]
+Epoch 78
+loss: 1.399797
+validation loss: 1.637234
+validation acc: [0.9, 0.642, 0.642]
+Epoch 79
+loss: 1.398892
+validation loss: 1.635302
+validation acc: [0.9, 0.642, 0.645]
+Epoch 80
+loss: 1.360499
+validation loss: 1.633331
+validation acc: [0.9, 0.638, 0.643]
+Epoch 81
+loss: 1.388891
+validation loss: 1.631464
+validation acc: [0.9, 0.64, 0.646]
+Epoch 82
+loss: 1.383419
+validation loss: 1.629677
+validation acc: [0.9, 0.642, 0.651]
+Epoch 83
+loss: 1.354452
+validation loss: 1.627798
+validation acc: [0.9, 0.644, 0.653]
+Epoch 84
+loss: 1.355315
+validation loss: 1.625898
+validation acc: [0.9, 0.646, 0.656]
+Epoch 85
+loss: 1.356258
+validation loss: 1.623953
+validation acc: [0.9, 0.65, 0.658]
+Epoch 86
+loss: 1.332819
+validation loss: 1.621872
+validation acc: [0.9, 0.648, 0.66]
+Epoch 87
+loss: 1.332018
+validation loss: 1.619798
+validation acc: [0.9, 0.648, 0.662]
+Epoch 88
+loss: 1.338385
+validation loss: 1.617696
+validation acc: [0.9, 0.652, 0.661]
+Epoch 89
+loss: 1.349910
+validation loss: 1.615693
+validation acc: [0.9, 0.652, 0.665]
+Epoch 90
+loss: 1.374777
+validation loss: 1.613809
+validation acc: [0.9083333333333333, 0.652, 0.665]
+Epoch 91
+loss: 1.332438
+validation loss: 1.611910
+validation acc: [0.9083333333333333, 0.658, 0.665]
+Epoch 92
+loss: 1.322435
+validation loss: 1.609975
+validation acc: [0.9083333333333333, 0.658, 0.666]
+Epoch 93
+loss: 1.316890
+validation loss: 1.607949
+validation acc: [0.9083333333333333, 0.658, 0.667]
+Epoch 94
+loss: 1.297274
+validation loss: 1.605918
+validation acc: [0.9083333333333333, 0.66, 0.669]
+Epoch 95
+loss: 1.346324
+validation loss: 1.603767
+validation acc: [0.9083333333333333, 0.662, 0.671]
+Epoch 96
+loss: 1.348979
+validation loss: 1.601707
+validation acc: [0.9083333333333333, 0.666, 0.674]
+Epoch 97
+loss: 1.307949
+validation loss: 1.599586
+validation acc: [0.9083333333333333, 0.666, 0.676]
+Epoch 98
+loss: 1.306769
+validation loss: 1.597502
+validation acc: [0.9083333333333333, 0.664, 0.68]
+Epoch 99
+loss: 1.297983
+validation loss: 1.595478
+validation acc: [0.9083333333333333, 0.666, 0.681]
+Epoch 100
+loss: 1.322462
+validation loss: 1.593434
+validation acc: [0.9083333333333333, 0.668, 0.681]
+Epoch 101
+loss: 1.318827
+validation loss: 1.591414
+validation acc: [0.9083333333333333, 0.672, 0.683]
+Epoch 102
+loss: 1.299511
+validation loss: 1.589400
+validation acc: [0.9083333333333333, 0.674, 0.682]
+Epoch 103
+loss: 1.284506
+validation loss: 1.587404
+validation acc: [0.9083333333333333, 0.672, 0.682]
+Epoch 104
+loss: 1.329701
+validation loss: 1.585570
+validation acc: [0.9083333333333333, 0.672, 0.684]
+Epoch 105
+loss: 1.280063
+validation loss: 1.583644
+validation acc: [0.9083333333333333, 0.672, 0.683]
+Epoch 106
+loss: 1.292288
+validation loss: 1.581752
+validation acc: [0.9166666666666666, 0.672, 0.683]
+Epoch 107
+loss: 1.260112
+validation loss: 1.579905
+validation acc: [0.9166666666666666, 0.672, 0.686]
+Epoch 108
+loss: 1.299713
+validation loss: 1.578081
+validation acc: [0.925, 0.676, 0.689]
+Epoch 109
+loss: 1.266916
+validation loss: 1.576336
+validation acc: [0.925, 0.676, 0.69]
+Epoch 110
+loss: 1.262502
+validation loss: 1.574580
+validation acc: [0.925, 0.68, 0.69]
+Epoch 111
+loss: 1.252132
+validation loss: 1.572793
+validation acc: [0.925, 0.68, 0.692]
+Epoch 112
+loss: 1.226077
+validation loss: 1.571099
+validation acc: [0.925, 0.68, 0.692]
+Epoch 113
+loss: 1.249254
+validation loss: 1.569375
+validation acc: [0.925, 0.68, 0.693]
+Epoch 114
+loss: 1.284962
+validation loss: 1.567732
+validation acc: [0.925, 0.682, 0.69]
+Epoch 115
+loss: 1.259090
+validation loss: 1.566017
+validation acc: [0.925, 0.688, 0.689]
+Epoch 116
+loss: 1.259064
+validation loss: 1.564436
+validation acc: [0.925, 0.688, 0.692]
+Epoch 117
+loss: 1.238557
+validation loss: 1.562745
+validation acc: [0.925, 0.688, 0.692]
+Epoch 118
+loss: 1.301640
+validation loss: 1.561156
+validation acc: [0.925, 0.688, 0.693]
+Epoch 119
+loss: 1.256298
+validation loss: 1.559623
+validation acc: [0.925, 0.686, 0.692]
+Epoch 120
+loss: 1.280280
+validation loss: 1.558077
+validation acc: [0.925, 0.688, 0.693]
+Epoch 121
+loss: 1.265697
+validation loss: 1.556492
+validation acc: [0.925, 0.686, 0.695]
+Epoch 122
+loss: 1.216856
+validation loss: 1.554898
+validation acc: [0.925, 0.686, 0.695]
+Epoch 123
+loss: 1.253029
+validation loss: 1.553314
+validation acc: [0.925, 0.688, 0.694]
+Epoch 124
+loss: 1.209308
+validation loss: 1.551726
+validation acc: [0.925, 0.686, 0.693]
+Epoch 125
+loss: 1.195592
+validation loss: 1.550077
+validation acc: [0.925, 0.692, 0.692]
+Epoch 126
+loss: 1.242939
+validation loss: 1.548405
+validation acc: [0.925, 0.696, 0.694]
+Epoch 127
+loss: 1.194565
+validation loss: 1.546844
+validation acc: [0.9333333333333333, 0.694, 0.693]
+Epoch 128
+loss: 1.209319
+validation loss: 1.545122
+validation acc: [0.9333333333333333, 0.696, 0.694]
+Epoch 129
+loss: 1.202267
+validation loss: 1.543423
+validation acc: [0.9333333333333333, 0.698, 0.693]
+Epoch 130
+loss: 1.208419
+validation loss: 1.541785
+validation acc: [0.9333333333333333, 0.698, 0.695]
+Epoch 131
+loss: 1.191203
+validation loss: 1.540115
+validation acc: [0.9333333333333333, 0.698, 0.698]
+Epoch 132
+loss: 1.191116
+validation loss: 1.538343
+validation acc: [0.9333333333333333, 0.698, 0.697]
+Epoch 133
+loss: 1.189700
+validation loss: 1.536471
+validation acc: [0.9333333333333333, 0.698, 0.698]
+Epoch 134
+loss: 1.181931
+validation loss: 1.534611
+validation acc: [0.9333333333333333, 0.698, 0.699]
+Epoch 135
+loss: 1.152053
+validation loss: 1.532664
+validation acc: [0.925, 0.698, 0.699]
+Epoch 136
+loss: 1.180188
+validation loss: 1.530763
+validation acc: [0.925, 0.698, 0.701]
+Epoch 137
+loss: 1.157657
+validation loss: 1.528762
+validation acc: [0.925, 0.7, 0.7]
+Epoch 138
+loss: 1.178633
+validation loss: 1.526835
+validation acc: [0.9333333333333333, 0.7, 0.701]
+Epoch 139
+loss: 1.162749
+validation loss: 1.525012
+validation acc: [0.9333333333333333, 0.704, 0.703]
+Epoch 140
+loss: 1.174217
+validation loss: 1.523213
+validation acc: [0.9333333333333333, 0.704, 0.703]
+Epoch 141
+loss: 1.199255
+validation loss: 1.521441
+validation acc: [0.9333333333333333, 0.704, 0.703]
+Epoch 142
+loss: 1.193082
+validation loss: 1.519705
+validation acc: [0.9333333333333333, 0.704, 0.703]
+Epoch 143
+loss: 1.167339
+validation loss: 1.517946
+validation acc: [0.9333333333333333, 0.702, 0.703]
+Epoch 144
+loss: 1.166248
+validation loss: 1.516139
+validation acc: [0.9333333333333333, 0.704, 0.704]
+Epoch 145
+loss: 1.149136
+validation loss: 1.514363
+validation acc: [0.9416666666666667, 0.704, 0.704]
+Epoch 146
+loss: 1.160726
+validation loss: 1.512623
+validation acc: [0.9333333333333333, 0.704, 0.704]
+Epoch 147
+loss: 1.124610
+validation loss: 1.510934
+validation acc: [0.9333333333333333, 0.704, 0.702]
+Epoch 148
+loss: 1.149402
+validation loss: 1.509240
+validation acc: [0.9333333333333333, 0.704, 0.702]
+Epoch 149
+loss: 1.164577
+validation loss: 1.507544
+validation acc: [0.9333333333333333, 0.704, 0.703]
+Epoch 150
+loss: 1.159115
+validation loss: 1.506006
+validation acc: [0.9333333333333333, 0.704, 0.701]
+Epoch 151
+loss: 1.136197
+validation loss: 1.504444
+validation acc: [0.9416666666666667, 0.704, 0.701]
+Epoch 152
+loss: 1.149876
+validation loss: 1.502941
+validation acc: [0.9333333333333333, 0.704, 0.702]
+Epoch 153
+loss: 1.113634
+validation loss: 1.501475
+validation acc: [0.9416666666666667, 0.706, 0.702]
+Epoch 154
+loss: 1.121258
+validation loss: 1.499878
+validation acc: [0.9416666666666667, 0.71, 0.704]
+Epoch 155
+loss: 1.097981
+validation loss: 1.498186
+validation acc: [0.9416666666666667, 0.71, 0.705]
+Epoch 156
+loss: 1.139375
+validation loss: 1.496534
+validation acc: [0.9416666666666667, 0.708, 0.704]
+Epoch 157
+loss: 1.132400
+validation loss: 1.495016
+validation acc: [0.9416666666666667, 0.708, 0.706]
+Epoch 158
+loss: 1.105165
+validation loss: 1.493421
+validation acc: [0.9416666666666667, 0.708, 0.705]
+Epoch 159
+loss: 1.149888
+validation loss: 1.491877
+validation acc: [0.9416666666666667, 0.704, 0.703]
+Epoch 160
+loss: 1.116361
+validation loss: 1.490361
+validation acc: [0.9416666666666667, 0.702, 0.703]
+Epoch 161
+loss: 1.075279
+validation loss: 1.488720
+validation acc: [0.9416666666666667, 0.7, 0.702]
+Epoch 162
+loss: 1.125501
+validation loss: 1.487105
+validation acc: [0.9416666666666667, 0.7, 0.703]
+Epoch 163
+loss: 1.072556
+validation loss: 1.485491
+validation acc: [0.9416666666666667, 0.7, 0.703]
+Epoch 164
+loss: 1.140470
+validation loss: 1.483953
+validation acc: [0.9416666666666667, 0.7, 0.703]
+Epoch 165
+loss: 1.071104
+validation loss: 1.482330
+validation acc: [0.9416666666666667, 0.7, 0.705]
+Epoch 166
+loss: 1.100888
+validation loss: 1.480748
+validation acc: [0.9416666666666667, 0.702, 0.707]
+Epoch 167
+loss: 1.082755
+validation loss: 1.479112
+validation acc: [0.9416666666666667, 0.702, 0.705]
+Epoch 168
+loss: 1.064479
+validation loss: 1.477504
+validation acc: [0.9416666666666667, 0.702, 0.705]
+Epoch 169
+loss: 1.073325
+validation loss: 1.475857
+validation acc: [0.9416666666666667, 0.702, 0.704]
+Epoch 170
+loss: 1.101459
+validation loss: 1.474094
+validation acc: [0.9416666666666667, 0.702, 0.706]
+Epoch 171
+loss: 1.060660
+validation loss: 1.472195
+validation acc: [0.9416666666666667, 0.702, 0.708]
+Epoch 172
+loss: 1.072508
+validation loss: 1.470363
+validation acc: [0.9416666666666667, 0.702, 0.709]
+Epoch 173
+loss: 1.058818
+validation loss: 1.468616
+validation acc: [0.9416666666666667, 0.702, 0.71]
+Epoch 174
+loss: 1.109878
+validation loss: 1.466962
+validation acc: [0.9416666666666667, 0.702, 0.711]
+Epoch 175
+loss: 1.081976
+validation loss: 1.465338
+validation acc: [0.9416666666666667, 0.702, 0.711]
+Epoch 176
+loss: 1.036950
+validation loss: 1.463764
+validation acc: [0.9416666666666667, 0.702, 0.711]
+Epoch 177
+loss: 1.116432
+validation loss: 1.462188
+validation acc: [0.9416666666666667, 0.702, 0.711]
+Epoch 178
+loss: 1.022917
+validation loss: 1.460611
+validation acc: [0.9416666666666667, 0.702, 0.711]
+Epoch 179
+loss: 1.099499
+validation loss: 1.459198
+validation acc: [0.9416666666666667, 0.702, 0.711]
+Epoch 180
+loss: 1.054892
+validation loss: 1.457708
+validation acc: [0.9416666666666667, 0.7, 0.71]
+Epoch 181
+loss: 1.024865
+validation loss: 1.456200
+validation acc: [0.9416666666666667, 0.7, 0.709]
+Epoch 182
+loss: 1.019314
+validation loss: 1.454558
+validation acc: [0.9416666666666667, 0.7, 0.709]
+Epoch 183
+loss: 1.055212
+validation loss: 1.452904
+validation acc: [0.9416666666666667, 0.7, 0.708]
+Epoch 184
+loss: 1.043714
+validation loss: 1.451372
+validation acc: [0.9416666666666667, 0.7, 0.708]
+Epoch 185
+loss: 1.029497
+validation loss: 1.449948
+validation acc: [0.9416666666666667, 0.7, 0.708]
+Epoch 186
+loss: 1.008662
+validation loss: 1.448430
+validation acc: [0.9416666666666667, 0.7, 0.707]
+Epoch 187
+loss: 1.022475
+validation loss: 1.446870
+validation acc: [0.9416666666666667, 0.7, 0.709]
+Epoch 188
+loss: 0.992353
+validation loss: 1.445188
+validation acc: [0.9416666666666667, 0.7, 0.709]
+Epoch 189
+loss: 1.036463
+validation loss: 1.443437
+validation acc: [0.9416666666666667, 0.7, 0.709]
+Epoch 190
+loss: 1.026008
+validation loss: 1.441823
+validation acc: [0.9416666666666667, 0.7, 0.708]
+Epoch 191
+loss: 1.076186
+validation loss: 1.440450
+validation acc: [0.9416666666666667, 0.7, 0.708]
+Epoch 192
+loss: 1.026625
+validation loss: 1.439132
+validation acc: [0.9416666666666667, 0.7, 0.708]
+Epoch 193
+loss: 1.013968
+validation loss: 1.437811
+validation acc: [0.9416666666666667, 0.7, 0.707]
+Epoch 194
+loss: 1.022115
+validation loss: 1.436444
+validation acc: [0.9416666666666667, 0.7, 0.708]
+Epoch 195
+loss: 1.017199
+validation loss: 1.435048
+validation acc: [0.95, 0.7, 0.708]
+Epoch 196
+loss: 0.995476
+validation loss: 1.433644
+validation acc: [0.95, 0.7, 0.709]
+Epoch 197
+loss: 1.055691
+validation loss: 1.432304
+validation acc: [0.95, 0.702, 0.711]
+Epoch 198
+loss: 1.012458
+validation loss: 1.430908
+validation acc: [0.95, 0.704, 0.712]
+Epoch 199
+loss: 1.008840
+validation loss: 1.429429
+validation acc: [0.95, 0.704, 0.712]
+Epoch 200
+loss: 0.982747
+validation loss: 1.428033
+validation acc: [0.95, 0.704, 0.712]
+Epoch 201
+loss: 0.945940
+validation loss: 1.426600
+validation acc: [0.95, 0.702, 0.712]
+Epoch 202
+loss: 1.005357
+validation loss: 1.425168
+validation acc: [0.95, 0.702, 0.712]
+Epoch 203
+loss: 1.040579
+validation loss: 1.423786
+validation acc: [0.95, 0.702, 0.713]
+Epoch 204
+loss: 0.931950
+validation loss: 1.422338
+validation acc: [0.95, 0.702, 0.712]
+Epoch 205
+loss: 0.956032
+validation loss: 1.420926
+validation acc: [0.95, 0.702, 0.712]
+Epoch 206
+loss: 0.977938
+validation loss: 1.419584
+validation acc: [0.95, 0.702, 0.712]
+Epoch 207
+loss: 1.038389
+validation loss: 1.418401
+validation acc: [0.9583333333333334, 0.702, 0.712]
+Epoch 208
+loss: 0.988100
+validation loss: 1.417205
+validation acc: [0.9583333333333334, 0.702, 0.712]
+Epoch 209
+loss: 1.015366
+validation loss: 1.416077
+validation acc: [0.9583333333333334, 0.702, 0.712]
+Epoch 210
+loss: 1.014383
+validation loss: 1.414897
+validation acc: [0.9583333333333334, 0.702, 0.712]
+Epoch 211
+loss: 0.991817
+validation loss: 1.413694
+validation acc: [0.9583333333333334, 0.7, 0.712]
+Epoch 212
+loss: 1.001392
+validation loss: 1.412362
+validation acc: [0.9583333333333334, 0.7, 0.714]
+Epoch 213
+loss: 0.979734
+validation loss: 1.411000
+validation acc: [0.9583333333333334, 0.7, 0.714]
+Epoch 214
+loss: 0.968501
+validation loss: 1.409702
+validation acc: [0.9583333333333334, 0.7, 0.715]
+Epoch 215
+loss: 0.981868
+validation loss: 1.408544
+validation acc: [0.9583333333333334, 0.7, 0.716]
+Epoch 216
+loss: 0.916359
+validation loss: 1.407254
+validation acc: [0.9583333333333334, 0.7, 0.716]
+Epoch 217
+loss: 1.014077
+validation loss: 1.406017
+validation acc: [0.9583333333333334, 0.7, 0.716]
+Epoch 218
+loss: 1.001575
+validation loss: 1.404710
+validation acc: [0.9583333333333334, 0.7, 0.716]
+Epoch 219
+loss: 0.937075
+validation loss: 1.403545
+validation acc: [0.9583333333333334, 0.7, 0.717]
+Epoch 220
+loss: 0.935841
+validation loss: 1.402363
+validation acc: [0.9583333333333334, 0.7, 0.717]
+Epoch 221
+loss: 0.958679
+validation loss: 1.401137
+validation acc: [0.9583333333333334, 0.7, 0.716]
+Epoch 222
+loss: 0.945610
+validation loss: 1.399865
+validation acc: [0.9583333333333334, 0.7, 0.716]
+Epoch 223
+loss: 0.955321
+validation loss: 1.398628
+validation acc: [0.9583333333333334, 0.7, 0.716]
+Epoch 224
+loss: 0.954095
+validation loss: 1.397479
+validation acc: [0.9583333333333334, 0.7, 0.716]
+Epoch 225
+loss: 0.926828
+validation loss: 1.396281
+validation acc: [0.9583333333333334, 0.7, 0.717]
+Epoch 226
+loss: 0.945892
+validation loss: 1.394975
+validation acc: [0.9583333333333334, 0.704, 0.717]
+Epoch 227
+loss: 0.983780
+validation loss: 1.393830
+validation acc: [0.9583333333333334, 0.704, 0.717]
+Epoch 228
+loss: 0.948442
+validation loss: 1.392504
+validation acc: [0.9583333333333334, 0.704, 0.717]
+Epoch 229
+loss: 0.957914
+validation loss: 1.391232
+validation acc: [0.9583333333333334, 0.706, 0.718]
+Epoch 230
+loss: 0.950351
+validation loss: 1.389965
+validation acc: [0.9583333333333334, 0.704, 0.718]
+Epoch 231
+loss: 0.966308
+validation loss: 1.388812
+validation acc: [0.9583333333333334, 0.704, 0.718]
+Epoch 232
+loss: 0.945464
+validation loss: 1.387684
+validation acc: [0.9583333333333334, 0.706, 0.718]
+Epoch 233
+loss: 0.941785
+validation loss: 1.386583
+validation acc: [0.9583333333333334, 0.706, 0.718]
+Epoch 234
+loss: 0.956463
+validation loss: 1.385485
+validation acc: [0.9583333333333334, 0.708, 0.718]
+Epoch 235
+loss: 0.897343
+validation loss: 1.384223
+validation acc: [0.9583333333333334, 0.712, 0.717]
+Epoch 236
+loss: 0.928258
+validation loss: 1.382950
+validation acc: [0.9583333333333334, 0.712, 0.717]
+Epoch 237
+loss: 0.972370
+validation loss: 1.381701
+validation acc: [0.9583333333333334, 0.712, 0.717]
+Epoch 238
+loss: 0.946439
+validation loss: 1.380567
+validation acc: [0.9583333333333334, 0.712, 0.717]
+Epoch 239
+loss: 0.921259
+validation loss: 1.379489
+validation acc: [0.9583333333333334, 0.712, 0.718]
+Epoch 240
+loss: 0.882010
+validation loss: 1.378366
+validation acc: [0.9583333333333334, 0.712, 0.718]
+Epoch 241
+loss: 0.961283
+validation loss: 1.377374
+validation acc: [0.9666666666666667, 0.714, 0.718]
+Epoch 242
+loss: 0.942497
+validation loss: 1.376403
+validation acc: [0.9666666666666667, 0.714, 0.718]
+Epoch 243
+loss: 0.880423
+validation loss: 1.375249
+validation acc: [0.9666666666666667, 0.714, 0.718]
+Epoch 244
+loss: 0.956020
+validation loss: 1.374267
+validation acc: [0.9666666666666667, 0.714, 0.718]
+Epoch 245
+loss: 0.906548
+validation loss: 1.373176
+validation acc: [0.9666666666666667, 0.716, 0.718]
+Epoch 246
+loss: 0.908876
+validation loss: 1.372127
+validation acc: [0.9666666666666667, 0.716, 0.718]
+Epoch 247
+loss: 0.888534
+validation loss: 1.370975
+validation acc: [0.9583333333333334, 0.716, 0.719]
+Epoch 248
+loss: 0.967102
+validation loss: 1.369772
+validation acc: [0.9583333333333334, 0.716, 0.719]
+Epoch 249
+loss: 0.870580
+validation loss: 1.368574
+validation acc: [0.9583333333333334, 0.716, 0.718]
+Epoch 250
+loss: 0.971762
+validation loss: 1.367480
+validation acc: [0.9583333333333334, 0.714, 0.718]
+Epoch 251
+loss: 0.964772
+validation loss: 1.366370
+validation acc: [0.9583333333333334, 0.714, 0.718]
+Epoch 252
+loss: 0.943064
+validation loss: 1.365451
+validation acc: [0.9583333333333334, 0.712, 0.718]
+Epoch 253
+loss: 0.845939
+validation loss: 1.364522
+validation acc: [0.9583333333333334, 0.712, 0.718]
+Epoch 254
+loss: 0.873734
+validation loss: 1.363397
+validation acc: [0.9583333333333334, 0.712, 0.719]
+Epoch 255
+loss: 0.929254
+validation loss: 1.362323
+validation acc: [0.9583333333333334, 0.716, 0.719]
+Epoch 256
+loss: 0.868243
+validation loss: 1.361307
+validation acc: [0.9583333333333334, 0.716, 0.719]
+Epoch 257
+loss: 0.966017
+validation loss: 1.360389
+validation acc: [0.9666666666666667, 0.714, 0.717]
+Epoch 258
+loss: 0.919071
+validation loss: 1.359464
+validation acc: [0.9666666666666667, 0.716, 0.717]
+Epoch 259
+loss: 0.921848
+validation loss: 1.358278
+validation acc: [0.9666666666666667, 0.716, 0.717]
+Epoch 260
+loss: 0.900326
+validation loss: 1.357080
+validation acc: [0.9666666666666667, 0.716, 0.717]
+Epoch 261
+loss: 0.937080
+validation loss: 1.355901
+validation acc: [0.9666666666666667, 0.714, 0.717]
+Epoch 262
+loss: 0.897707
+validation loss: 1.354921
+validation acc: [0.9666666666666667, 0.716, 0.717]
+Epoch 263
+loss: 0.968361
+validation loss: 1.354067
+validation acc: [0.9666666666666667, 0.716, 0.717]
+Epoch 264
+loss: 0.900191
+validation loss: 1.353272
+validation acc: [0.9666666666666667, 0.716, 0.717]
+Epoch 265
+loss: 0.856288
+validation loss: 1.352372
+validation acc: [0.9583333333333334, 0.716, 0.717]
+Epoch 266
+loss: 0.895736
+validation loss: 1.351318
+validation acc: [0.9583333333333334, 0.718, 0.717]
+Epoch 267
+loss: 0.894752
+validation loss: 1.350277
+validation acc: [0.9583333333333334, 0.716, 0.717]
+Epoch 268
+loss: 0.853846
+validation loss: 1.349330
+validation acc: [0.9583333333333334, 0.716, 0.717]
+Epoch 269
+loss: 0.911651
+validation loss: 1.348569
+validation acc: [0.9583333333333334, 0.716, 0.716]
+Epoch 270
+loss: 0.846695
+validation loss: 1.347825
+validation acc: [0.9583333333333334, 0.716, 0.715]
+Epoch 271
+loss: 0.930133
+validation loss: 1.347101
+validation acc: [0.9583333333333334, 0.716, 0.715]
+Epoch 272
+loss: 0.928371
+validation loss: 1.346394
+validation acc: [0.9583333333333334, 0.716, 0.715]
+Epoch 273
+loss: 0.894459
+validation loss: 1.345489
+validation acc: [0.9583333333333334, 0.716, 0.715]
+Epoch 274
+loss: 0.860312
+validation loss: 1.344684
+validation acc: [0.9583333333333334, 0.716, 0.715]
+Epoch 275
+loss: 0.870855
+validation loss: 1.343945
+validation acc: [0.9583333333333334, 0.716, 0.715]
+Epoch 276
+loss: 0.836687
+validation loss: 1.343257
+validation acc: [0.9583333333333334, 0.716, 0.716]
+Epoch 277
+loss: 0.823950
+validation loss: 1.342215
+validation acc: [0.9583333333333334, 0.716, 0.716]
+Epoch 278
+loss: 0.896384
+validation loss: 1.341381
+validation acc: [0.9583333333333334, 0.716, 0.714]
+Epoch 279
+loss: 0.876531
+validation loss: 1.340619
+validation acc: [0.9583333333333334, 0.716, 0.715]
+Epoch 280
+loss: 0.876467
+validation loss: 1.339911
+validation acc: [0.9666666666666667, 0.716, 0.714]
+Epoch 281
+loss: 0.849083
+validation loss: 1.339096
+validation acc: [0.9666666666666667, 0.712, 0.715]
+Epoch 282
+loss: 0.876826
+validation loss: 1.338127
+validation acc: [0.9666666666666667, 0.712, 0.715]
+Epoch 283
+loss: 0.884860
+validation loss: 1.337178
+validation acc: [0.9583333333333334, 0.712, 0.716]
+Epoch 284
+loss: 0.823630
+validation loss: 1.336147
+validation acc: [0.9583333333333334, 0.712, 0.716]
+Epoch 285
+loss: 0.881015
+validation loss: 1.335183
+validation acc: [0.9583333333333334, 0.712, 0.715]
+Epoch 286
+loss: 0.881758
+validation loss: 1.334149
+validation acc: [0.9583333333333334, 0.712, 0.716]
+Epoch 287
+loss: 0.837475
+validation loss: 1.333207
+validation acc: [0.9583333333333334, 0.712, 0.716]
+Epoch 288
+loss: 0.852876
+validation loss: 1.332377
+validation acc: [0.9666666666666667, 0.712, 0.716]
+Epoch 289
+loss: 0.887579
+validation loss: 1.331430
+validation acc: [0.9666666666666667, 0.712, 0.716]
+Epoch 290
+loss: 0.847965
+validation loss: 1.330567
+validation acc: [0.9666666666666667, 0.712, 0.717]
+Epoch 291
+loss: 0.875029
+validation loss: 1.329777
+validation acc: [0.9666666666666667, 0.714, 0.718]
+Epoch 292
+loss: 0.861895
+validation loss: 1.329071
+validation acc: [0.9666666666666667, 0.714, 0.718]
+Epoch 293
+loss: 0.858004
+validation loss: 1.328297
+validation acc: [0.975, 0.714, 0.718]
+Epoch 294
+loss: 0.806401
+validation loss: 1.327307
+validation acc: [0.975, 0.716, 0.717]
+Epoch 295
+loss: 0.813394
+validation loss: 1.326300
+validation acc: [0.9833333333333333, 0.718, 0.717]
+Epoch 296
+loss: 0.818454
+validation loss: 1.325380
+validation acc: [0.9833333333333333, 0.72, 0.717]
+Epoch 297
+loss: 0.840534
+validation loss: 1.324487
+validation acc: [0.9833333333333333, 0.72, 0.717]
+Epoch 298
+loss: 0.815082
+validation loss: 1.323549
+validation acc: [0.975, 0.72, 0.717]
+Epoch 299
+loss: 0.845044
+validation loss: 1.322483
+validation acc: [0.9666666666666667, 0.72, 0.717]
+Epoch 300
+loss: 0.821686
+validation loss: 1.321492
+validation acc: [0.9666666666666667, 0.72, 0.717]
+Epoch 301
+loss: 0.886454
+validation loss: 1.320498
+validation acc: [0.9666666666666667, 0.72, 0.717]
+Epoch 302
+loss: 0.831680
+validation loss: 1.319546
+validation acc: [0.9666666666666667, 0.72, 0.718]
+Epoch 303
+loss: 0.883446
+validation loss: 1.318737
+validation acc: [0.9666666666666667, 0.716, 0.718]
+Epoch 304
+loss: 0.806911
+validation loss: 1.317772
+validation acc: [0.9666666666666667, 0.72, 0.718]
+Epoch 305
+loss: 0.877835
+validation loss: 1.316692
+validation acc: [0.9666666666666667, 0.722, 0.717]
+Epoch 306
+loss: 0.886347
+validation loss: 1.315717
+validation acc: [0.9583333333333334, 0.72, 0.718]
+Epoch 307
+loss: 0.936646
+validation loss: 1.314697
+validation acc: [0.9583333333333334, 0.718, 0.718]
+Epoch 308
+loss: 0.774318
+validation loss: 1.313568
+validation acc: [0.9583333333333334, 0.72, 0.718]
+Epoch 309
+loss: 0.832132
+validation loss: 1.312609
+validation acc: [0.9583333333333334, 0.72, 0.719]
+Epoch 310
+loss: 0.838775
+validation loss: 1.311667
+validation acc: [0.9583333333333334, 0.72, 0.718]
+Epoch 311
+loss: 0.868913
+validation loss: 1.310877
+validation acc: [0.9666666666666667, 0.72, 0.717]
+Epoch 312
+loss: 0.737060
+validation loss: 1.310073
+validation acc: [0.9666666666666667, 0.72, 0.717]
+Epoch 313
+loss: 0.828423
+validation loss: 1.309301
+validation acc: [0.9666666666666667, 0.72, 0.716]
+Epoch 314
+loss: 0.812406
+validation loss: 1.308599
+validation acc: [0.9666666666666667, 0.72, 0.716]
+Epoch 315
+loss: 0.822061
+validation loss: 1.307809
+validation acc: [0.975, 0.72, 0.717]
+Epoch 316
+loss: 0.790225
+validation loss: 1.306949
+validation acc: [0.975, 0.72, 0.716]
+Epoch 317
+loss: 0.864044
+validation loss: 1.306179
+validation acc: [0.975, 0.72, 0.719]
+Epoch 318
+loss: 0.819064
+validation loss: 1.305418
+validation acc: [0.975, 0.72, 0.719]
+Epoch 319
+loss: 0.822731
+validation loss: 1.304564
+validation acc: [0.975, 0.722, 0.719]
+Epoch 320
+loss: 0.802851
+validation loss: 1.303750
+validation acc: [0.975, 0.722, 0.719]
+Epoch 321
+loss: 0.834623
+validation loss: 1.303002
+validation acc: [0.975, 0.722, 0.719]
+Epoch 322
+loss: 0.857598
+validation loss: 1.302378
+validation acc: [0.975, 0.722, 0.718]
+Epoch 323
+loss: 0.811009
+validation loss: 1.301779
+validation acc: [0.975, 0.722, 0.718]
+Epoch 324
+loss: 0.806834
+validation loss: 1.301189
+validation acc: [0.975, 0.722, 0.718]
+Epoch 325
+loss: 0.841347
+validation loss: 1.300668
+validation acc: [0.975, 0.72, 0.718]
+Epoch 326
+loss: 0.843161
+validation loss: 1.299889
+validation acc: [0.975, 0.718, 0.717]
+Epoch 327
+loss: 0.844604
+validation loss: 1.299063
+validation acc: [0.975, 0.718, 0.718]
+Epoch 328
+loss: 0.804746
+validation loss: 1.298351
+validation acc: [0.9833333333333333, 0.718, 0.718]
+Epoch 329
+loss: 0.805392
+validation loss: 1.297775
+validation acc: [0.9833333333333333, 0.718, 0.718]
+Epoch 330
+loss: 0.781710
+validation loss: 1.297187
+validation acc: [0.9833333333333333, 0.718, 0.718]
+Epoch 331
+loss: 0.759668
+validation loss: 1.296483
+validation acc: [0.9833333333333333, 0.72, 0.717]
+Epoch 332
+loss: 0.812219
+validation loss: 1.295725
+validation acc: [0.9833333333333333, 0.72, 0.717]
+Epoch 333
+loss: 0.842493
+validation loss: 1.295098
+validation acc: [0.9833333333333333, 0.718, 0.717]
+Epoch 334
+loss: 0.885076
+validation loss: 1.294479
+validation acc: [0.9833333333333333, 0.718, 0.717]
+Epoch 335
+loss: 0.783025
+validation loss: 1.293872
+validation acc: [0.9833333333333333, 0.718, 0.716]
+Epoch 336
+loss: 0.814902
+validation loss: 1.293376
+validation acc: [0.9833333333333333, 0.718, 0.716]
+Epoch 337
+loss: 0.801277
+validation loss: 1.292839
+validation acc: [0.9833333333333333, 0.714, 0.715]
+Epoch 338
+loss: 0.751610
+validation loss: 1.292301
+validation acc: [0.9833333333333333, 0.714, 0.715]
+Epoch 339
+loss: 0.799560
+validation loss: 1.291578
+validation acc: [0.9833333333333333, 0.714, 0.715]
+Epoch 340
+loss: 0.779381
+validation loss: 1.290792
+validation acc: [0.9833333333333333, 0.716, 0.715]
+Epoch 341
+loss: 0.824371
+validation loss: 1.289984
+validation acc: [0.9833333333333333, 0.716, 0.716]
+Epoch 342
+loss: 0.872249
+validation loss: 1.289175
+validation acc: [0.9833333333333333, 0.716, 0.716]
+Epoch 343
+loss: 0.851328
+validation loss: 1.288515
+validation acc: [0.9833333333333333, 0.714, 0.717]
+Epoch 344
+loss: 0.883435
+validation loss: 1.287985
+validation acc: [0.9833333333333333, 0.716, 0.716]
+Epoch 345
+loss: 0.815890
+validation loss: 1.287397
+validation acc: [0.9833333333333333, 0.716, 0.717]
+Epoch 346
+loss: 0.839265
+validation loss: 1.287050
+validation acc: [0.9833333333333333, 0.716, 0.717]
+Epoch 347
+loss: 0.833893
+validation loss: 1.286753
+validation acc: [0.9833333333333333, 0.718, 0.717]
+Epoch 348
+loss: 0.820565
+validation loss: 1.286473
+validation acc: [0.9833333333333333, 0.718, 0.717]
+Epoch 349
+loss: 0.792040
+validation loss: 1.286148
+validation acc: [0.9833333333333333, 0.718, 0.718]
+Epoch 350
+loss: 0.794979
+validation loss: 1.285683
+validation acc: [0.9833333333333333, 0.718, 0.718]
+Epoch 351
+loss: 0.754330
+validation loss: 1.285078
+validation acc: [0.9833333333333333, 0.718, 0.719]
+Epoch 352
+loss: 0.841476
+validation loss: 1.284620
+validation acc: [0.9833333333333333, 0.72, 0.719]
+Epoch 353
+loss: 0.760922
+validation loss: 1.284003
+validation acc: [0.9833333333333333, 0.722, 0.718]
+Epoch 354
+loss: 0.763720
+validation loss: 1.283386
+validation acc: [0.9833333333333333, 0.722, 0.718]
+Epoch 355
+loss: 0.831716
+validation loss: 1.282971
+validation acc: [0.9833333333333333, 0.722, 0.718]
+Epoch 356
+loss: 0.810986
+validation loss: 1.282450
+validation acc: [0.9833333333333333, 0.72, 0.718]
+Epoch 357
+loss: 0.735960
+validation loss: 1.281874
+validation acc: [0.9833333333333333, 0.722, 0.718]
+Epoch 358
+loss: 0.827112
+validation loss: 1.281465
+validation acc: [0.975, 0.72, 0.718]
+Epoch 359
+loss: 0.777087
+validation loss: 1.281033
+validation acc: [0.975, 0.72, 0.72]
+Epoch 360
+loss: 0.781278
+validation loss: 1.280442
+validation acc: [0.975, 0.72, 0.719]
+Epoch 361
+loss: 0.787063
+validation loss: 1.279805
+validation acc: [0.975, 0.716, 0.719]
+Epoch 362
+loss: 0.810029
+validation loss: 1.279260
+validation acc: [0.975, 0.716, 0.718]
+Epoch 363
+loss: 0.748966
+validation loss: 1.278840
+validation acc: [0.975, 0.716, 0.718]
+Epoch 364
+loss: 0.749187
+validation loss: 1.278325
+validation acc: [0.975, 0.716, 0.719]
+Epoch 365
+loss: 0.843793
+validation loss: 1.277793
+validation acc: [0.975, 0.716, 0.718]
+Epoch 366
+loss: 0.759277
+validation loss: 1.277079
+validation acc: [0.975, 0.716, 0.719]
+Epoch 367
+loss: 0.755029
+validation loss: 1.276287
+validation acc: [0.975, 0.718, 0.719]
+Epoch 368
+loss: 0.728979
+validation loss: 1.275489
+validation acc: [0.9833333333333333, 0.718, 0.717]
+Epoch 369
+loss: 0.702868
+validation loss: 1.274642
+validation acc: [0.9833333333333333, 0.716, 0.717]
+Epoch 370
+loss: 0.809504
+validation loss: 1.273634
+validation acc: [0.9833333333333333, 0.718, 0.717]
+Epoch 371
+loss: 0.757718
+validation loss: 1.272597
+validation acc: [0.9833333333333333, 0.718, 0.717]
+Epoch 372
+loss: 0.808792
+validation loss: 1.271664
+validation acc: [0.9833333333333333, 0.718, 0.718]
+Epoch 373
+loss: 0.810846
+validation loss: 1.270764
+validation acc: [0.9833333333333333, 0.718, 0.718]
+Epoch 374
+loss: 0.709820
+validation loss: 1.269754
+validation acc: [0.9833333333333333, 0.718, 0.718]
+Epoch 375
+loss: 0.764263
+validation loss: 1.268833
+validation acc: [0.9833333333333333, 0.718, 0.718]
+Epoch 376
+loss: 0.793910
+validation loss: 1.268036
+validation acc: [0.9833333333333333, 0.718, 0.718]
+Epoch 377
+loss: 0.760419
+validation loss: 1.267439
+validation acc: [0.9833333333333333, 0.716, 0.718]
+Epoch 378
+loss: 0.767321
+validation loss: 1.266967
+validation acc: [0.9833333333333333, 0.716, 0.719]
+Epoch 379
+loss: 0.810892
+validation loss: 1.266680
+validation acc: [0.9833333333333333, 0.718, 0.719]
+Epoch 380
+loss: 0.753736
+validation loss: 1.266553
+validation acc: [0.9833333333333333, 0.72, 0.718]
+Epoch 381
+loss: 0.726304
+validation loss: 1.266442
+validation acc: [0.9833333333333333, 0.72, 0.718]
+Epoch 382
+loss: 0.740326
+validation loss: 1.266070
+validation acc: [0.9833333333333333, 0.72, 0.718]
+Epoch 383
+loss: 0.833163
+validation loss: 1.265727
+validation acc: [0.9833333333333333, 0.718, 0.719]
+Epoch 384
+loss: 0.787912
+validation loss: 1.265401
+validation acc: [0.9833333333333333, 0.718, 0.72]
+Epoch 385
+loss: 0.707316
+validation loss: 1.264870
+validation acc: [0.9833333333333333, 0.72, 0.72]
+Epoch 386
+loss: 0.809349
+validation loss: 1.264440
+validation acc: [0.9833333333333333, 0.72, 0.72]
+Epoch 387
+loss: 0.733555
+validation loss: 1.263887
+validation acc: [0.9833333333333333, 0.718, 0.72]
+Epoch 388
+loss: 0.738251
+validation loss: 1.263351
+validation acc: [0.9833333333333333, 0.718, 0.719]
+Epoch 389
+loss: 0.745727
+validation loss: 1.262808
+validation acc: [0.9833333333333333, 0.718, 0.72]
+Epoch 390
+loss: 0.758872
+validation loss: 1.262284
+validation acc: [0.9833333333333333, 0.718, 0.721]
+Epoch 391
+loss: 0.751310
+validation loss: 1.261737
+validation acc: [0.9833333333333333, 0.718, 0.721]
+Epoch 392
+loss: 0.750292
+validation loss: 1.261009
+validation acc: [0.9833333333333333, 0.718, 0.72]
+Epoch 393
+loss: 0.704739
+validation loss: 1.260254
+validation acc: [0.9833333333333333, 0.72, 0.72]
+Epoch 394
+loss: 0.747379
+validation loss: 1.259477
+validation acc: [0.9833333333333333, 0.72, 0.721]
+Epoch 395
+loss: 0.667872
+validation loss: 1.258641
+validation acc: [0.9833333333333333, 0.722, 0.721]
+Epoch 396
+loss: 0.745775
+validation loss: 1.257835
+validation acc: [0.9833333333333333, 0.722, 0.722]
+Epoch 397
+loss: 0.748521
+validation loss: 1.257156
+validation acc: [0.9833333333333333, 0.722, 0.721]
+Epoch 398
+loss: 0.696425
+validation loss: 1.256462
+validation acc: [0.9833333333333333, 0.72, 0.721]
+Epoch 399
+loss: 0.791172
+validation loss: 1.255819
+validation acc: [0.9833333333333333, 0.72, 0.721]
+Epoch 400
+loss: 0.834321
+validation loss: 1.255343
+validation acc: [0.9833333333333333, 0.72, 0.721]
+Epoch 401
+loss: 0.753913
+validation loss: 1.254918
+validation acc: [0.9833333333333333, 0.72, 0.721]
+Epoch 402
+loss: 0.737690
+validation loss: 1.254406
+validation acc: [0.9833333333333333, 0.72, 0.722]
+Epoch 403
+loss: 0.780052
+validation loss: 1.253852
+validation acc: [0.9833333333333333, 0.72, 0.722]
+Epoch 404
+loss: 0.732222
+validation loss: 1.253376
+validation acc: [0.9833333333333333, 0.72, 0.722]
+Epoch 405
+loss: 0.718521
+validation loss: 1.252903
+validation acc: [0.9833333333333333, 0.722, 0.723]
+Epoch 406
+loss: 0.768612
+validation loss: 1.252422
+validation acc: [0.9833333333333333, 0.722, 0.724]
+Epoch 407
+loss: 0.734501
+validation loss: 1.252162
+validation acc: [0.9833333333333333, 0.722, 0.724]
+Epoch 408
+loss: 0.747228
+validation loss: 1.251866
+validation acc: [0.9833333333333333, 0.722, 0.724]
+Epoch 409
+loss: 0.734262
+validation loss: 1.251621
+validation acc: [0.9833333333333333, 0.722, 0.724]
+Epoch 410
+loss: 0.673294
+validation loss: 1.251394
+validation acc: [0.9833333333333333, 0.722, 0.724]
+Epoch 411
+loss: 0.730736
+validation loss: 1.251102
+validation acc: [0.9833333333333333, 0.722, 0.725]
+Epoch 412
+loss: 0.676707
+validation loss: 1.250768
+validation acc: [0.9833333333333333, 0.722, 0.725]
+Epoch 413
+loss: 0.790060
+validation loss: 1.250491
+validation acc: [0.9833333333333333, 0.722, 0.725]
+Epoch 414
+loss: 0.742134
+validation loss: 1.250232
+validation acc: [0.9833333333333333, 0.722, 0.725]
+Epoch 415
+loss: 0.731629
+validation loss: 1.249940
+validation acc: [0.9833333333333333, 0.722, 0.725]
+Epoch 416
+loss: 0.738974
+validation loss: 1.249665
+validation acc: [0.9833333333333333, 0.722, 0.725]
+Epoch 417
+loss: 0.716282
+validation loss: 1.249363
+validation acc: [0.9833333333333333, 0.722, 0.725]
+Epoch 418
+loss: 0.699696
+validation loss: 1.249024
+validation acc: [0.9833333333333333, 0.722, 0.725]
+Epoch 419
+loss: 0.653156
+validation loss: 1.248645
+validation acc: [0.9833333333333333, 0.722, 0.725]
+Epoch 420
+loss: 0.695495
+validation loss: 1.248266
+validation acc: [0.9833333333333333, 0.722, 0.726]
+Epoch 421
+loss: 0.722113
+validation loss: 1.247934
+validation acc: [0.9833333333333333, 0.722, 0.726]
+Epoch 422
+loss: 0.724747
+validation loss: 1.247673
+validation acc: [0.9833333333333333, 0.722, 0.726]
+Epoch 423
+loss: 0.811771
+validation loss: 1.247430
+validation acc: [0.9833333333333333, 0.722, 0.725]
+Epoch 424
+loss: 0.756729
+validation loss: 1.247124
+validation acc: [0.9833333333333333, 0.722, 0.725]
+Epoch 425
+loss: 0.777621
+validation loss: 1.246862
+validation acc: [0.9833333333333333, 0.722, 0.726]
+Epoch 426
+loss: 0.802760
+validation loss: 1.246618
+validation acc: [0.9833333333333333, 0.722, 0.726]
+Epoch 427
+loss: 0.763946
+validation loss: 1.246389
+validation acc: [0.9833333333333333, 0.72, 0.726]
+Epoch 428
+loss: 0.754792
+validation loss: 1.246183
+validation acc: [0.9833333333333333, 0.72, 0.726]
+Epoch 429
+loss: 0.714294
+validation loss: 1.245947
+validation acc: [0.975, 0.72, 0.726]
+Epoch 430
+loss: 0.736917
+validation loss: 1.245796
+validation acc: [0.975, 0.72, 0.726]
+Epoch 431
+loss: 0.720939
+validation loss: 1.245661
+validation acc: [0.975, 0.72, 0.725]
+Epoch 432
+loss: 0.742775
+validation loss: 1.245630
+validation acc: [0.975, 0.72, 0.726]
+Epoch 433
+loss: 0.742900
+validation loss: 1.245528
+validation acc: [0.975, 0.72, 0.727]
+Epoch 434
+loss: 0.730307
+validation loss: 1.245382
+validation acc: [0.975, 0.722, 0.727]
+Epoch 435
+loss: 0.752096
+validation loss: 1.245288
+validation acc: [0.975, 0.722, 0.727]
+Epoch 436
+loss: 0.705436
+validation loss: 1.245175
+validation acc: [0.975, 0.722, 0.727]
+Epoch 437
+loss: 0.787645
+validation loss: 1.245133
+validation acc: [0.975, 0.722, 0.726]
+Epoch 438
+loss: 0.696862
+validation loss: 1.245143
+validation acc: [0.975, 0.72, 0.726]
+Epoch 439
+loss: 0.701865
+validation loss: 1.245103
+validation acc: [0.975, 0.72, 0.726]
+Epoch 440
+loss: 0.708498
+validation loss: 1.245042
+validation acc: [0.975, 0.72, 0.725]
+Epoch 441
+loss: 0.731088
+validation loss: 1.245072
+validation acc: [0.975, 0.72, 0.725]
+Epoch 442
+loss: 0.707294
+validation loss: 1.245112
+validation acc: [0.975, 0.718, 0.725]
+Epoch 443
+loss: 0.749678
+validation loss: 1.245021
+validation acc: [0.975, 0.718, 0.725]
+Epoch 444
+loss: 0.708174
+validation loss: 1.244924
+validation acc: [0.975, 0.716, 0.725]
+Epoch 445
+loss: 0.812848
+validation loss: 1.244641
+validation acc: [0.975, 0.718, 0.725]
+Epoch 446
+loss: 0.740773
+validation loss: 1.244524
+validation acc: [0.975, 0.716, 0.725]
+Epoch 447
+loss: 0.707047
+validation loss: 1.244365
+validation acc: [0.975, 0.716, 0.725]
+Epoch 448
+loss: 0.670714
+validation loss: 1.244162
+validation acc: [0.975, 0.716, 0.725]
+Epoch 449
+loss: 0.760426
+validation loss: 1.243956
+validation acc: [0.975, 0.716, 0.725]
+Epoch 450
+loss: 0.710676
+validation loss: 1.243763
+validation acc: [0.975, 0.716, 0.726]
+Epoch 451
+loss: 0.718109
+validation loss: 1.243527
+validation acc: [0.975, 0.716, 0.726]
+Epoch 452
+loss: 0.720430
+validation loss: 1.243269
+validation acc: [0.975, 0.716, 0.726]
+Epoch 453
+loss: 0.838886
+validation loss: 1.243054
+validation acc: [0.975, 0.716, 0.726]
+Epoch 454
+loss: 0.684184
+validation loss: 1.242898
+validation acc: [0.975, 0.716, 0.726]
+Epoch 455
+loss: 0.741428
+validation loss: 1.242772
+validation acc: [0.975, 0.716, 0.726]
+Epoch 456
+loss: 0.670857
+validation loss: 1.242591
+validation acc: [0.975, 0.718, 0.726]
+Epoch 457
+loss: 0.672313
+validation loss: 1.242376
+validation acc: [0.975, 0.718, 0.725]
+Epoch 458
+loss: 0.714918
+validation loss: 1.242084
+validation acc: [0.975, 0.718, 0.725]
+Epoch 459
+loss: 0.768527
+validation loss: 1.241805
+validation acc: [0.975, 0.718, 0.725]
+Epoch 460
+loss: 0.710478
+validation loss: 1.241468
+validation acc: [0.975, 0.718, 0.725]
+Epoch 461
+loss: 0.693823
+validation loss: 1.241129
+validation acc: [0.975, 0.72, 0.725]
+Epoch 462
+loss: 0.704796
+validation loss: 1.240786
+validation acc: [0.975, 0.722, 0.725]
+Epoch 463
+loss: 0.819564
+validation loss: 1.240540
+validation acc: [0.975, 0.722, 0.725]
+Epoch 464
+loss: 0.788228
+validation loss: 1.240341
+validation acc: [0.975, 0.722, 0.725]
+Epoch 465
+loss: 0.675853
+validation loss: 1.240113
+validation acc: [0.975, 0.722, 0.725]
+Epoch 466
+loss: 0.693171
+validation loss: 1.239831
+validation acc: [0.975, 0.722, 0.725]
+Epoch 467
+loss: 0.735497
+validation loss: 1.239543
+validation acc: [0.975, 0.722, 0.725]
+Epoch 468
+loss: 0.755895
+validation loss: 1.239283
+validation acc: [0.975, 0.722, 0.725]
+Epoch 469
+loss: 0.704174
+validation loss: 1.239044
+validation acc: [0.975, 0.722, 0.725]
+Epoch 470
+loss: 0.733037
+validation loss: 1.238869
+validation acc: [0.975, 0.722, 0.725]
+Epoch 471
+loss: 0.771087
+validation loss: 1.238683
+validation acc: [0.975, 0.722, 0.724]
+Epoch 472
+loss: 0.715918
+validation loss: 1.238415
+validation acc: [0.975, 0.722, 0.724]
+Epoch 473
+loss: 0.718248
+validation loss: 1.238208
+validation acc: [0.975, 0.722, 0.724]
+Epoch 474
+loss: 0.744224
+validation loss: 1.237963
+validation acc: [0.975, 0.722, 0.725]
+Epoch 475
+loss: 0.729618
+validation loss: 1.237865
+validation acc: [0.975, 0.724, 0.725]
+Epoch 476
+loss: 0.650501
+validation loss: 1.237767
+validation acc: [0.975, 0.724, 0.725]
+Epoch 477
+loss: 0.821603
+validation loss: 1.237680
+validation acc: [0.975, 0.726, 0.724]
+Epoch 478
+loss: 0.810915
+validation loss: 1.237620
+validation acc: [0.975, 0.726, 0.723]
+Epoch 479
+loss: 0.725375
+validation loss: 1.237552
+validation acc: [0.975, 0.726, 0.723]
+Epoch 480
+loss: 0.665916
+validation loss: 1.237461
+validation acc: [0.9833333333333333, 0.724, 0.723]
+Epoch 481
+loss: 0.734006
+validation loss: 1.237405
+validation acc: [0.9833333333333333, 0.724, 0.722]
+Epoch 482
+loss: 0.803506
+validation loss: 1.237463
+validation acc: [0.9833333333333333, 0.724, 0.722]
+Epoch 483
+loss: 0.765229
+validation loss: 1.237504
+validation acc: [0.9833333333333333, 0.724, 0.722]
+Epoch 484
+loss: 0.745005
+validation loss: 1.237448
+validation acc: [0.9833333333333333, 0.722, 0.723]
+Epoch 485
+loss: 0.752336
+validation loss: 1.237366
+validation acc: [0.9833333333333333, 0.722, 0.723]
+Epoch 486
+loss: 0.721951
+validation loss: 1.237200
+validation acc: [0.9833333333333333, 0.724, 0.723]
+Epoch 487
+loss: 0.731997
+validation loss: 1.236968
+validation acc: [0.9833333333333333, 0.724, 0.723]
+Epoch 488
+loss: 0.750992
+validation loss: 1.236703
+validation acc: [0.9833333333333333, 0.724, 0.723]
+Epoch 489
+loss: 0.754380
+validation loss: 1.236488
+validation acc: [0.9833333333333333, 0.724, 0.723]
+Epoch 490
+loss: 0.746095
+validation loss: 1.236253
+validation acc: [0.9833333333333333, 0.724, 0.722]
+Epoch 491
+loss: 0.761680
+validation loss: 1.236043
+validation acc: [0.9833333333333333, 0.724, 0.723]
+Epoch 492
+loss: 0.710142
+validation loss: 1.235894
+validation acc: [0.9833333333333333, 0.724, 0.723]
+Epoch 493
+loss: 0.752199
+validation loss: 1.235721
+validation acc: [0.9833333333333333, 0.726, 0.723]
+Epoch 494
+loss: 0.750320
+validation loss: 1.235566
+validation acc: [0.9833333333333333, 0.724, 0.723]
+Epoch 495
+loss: 0.740624
+validation loss: 1.235361
+validation acc: [0.9833333333333333, 0.724, 0.723]
+Epoch 496
+loss: 0.816965
+validation loss: 1.235169
+validation acc: [0.9833333333333333, 0.724, 0.723]
+Epoch 497
+loss: 0.663822
+validation loss: 1.234947
+validation acc: [0.9833333333333333, 0.724, 0.723]
+Epoch 498
+loss: 0.673587
+validation loss: 1.234694
+validation acc: [0.9833333333333333, 0.726, 0.723]
+Epoch 499
+loss: 0.769608
+validation loss: 1.234372
+validation acc: [0.9833333333333333, 0.726, 0.723]
+Epoch 500
+loss: 0.693204
+validation loss: 1.234019
+validation acc: [0.9833333333333333, 0.726, 0.723]
+Epoch 501
+loss: 0.717709
+validation loss: 1.233740
+validation acc: [0.9833333333333333, 0.726, 0.724]
+Epoch 502
+loss: 0.705248
+validation loss: 1.233516
+validation acc: [0.9833333333333333, 0.726, 0.724]
+Epoch 503
+loss: 0.702855
+validation loss: 1.233317
+validation acc: [0.9833333333333333, 0.726, 0.724]
+Epoch 504
+loss: 0.717307
+validation loss: 1.233169
+validation acc: [0.9833333333333333, 0.726, 0.724]
+Epoch 505
+loss: 0.686520
+validation loss: 1.232959
+validation acc: [0.9833333333333333, 0.726, 0.724]
+Epoch 506
+loss: 0.708822
+validation loss: 1.232671
+validation acc: [0.9833333333333333, 0.726, 0.725]
+Epoch 507
+loss: 0.729921
+validation loss: 1.232466
+validation acc: [0.9833333333333333, 0.726, 0.724]
+Epoch 508
+loss: 0.703524
+validation loss: 1.232153
+validation acc: [0.9833333333333333, 0.726, 0.724]
+Epoch 509
+loss: 0.756202
+validation loss: 1.231815
+validation acc: [0.9833333333333333, 0.724, 0.724]
+Epoch 510
+loss: 0.743315
+validation loss: 1.231485
+validation acc: [0.9833333333333333, 0.724, 0.725]
+Epoch 511
+loss: 0.665933
+validation loss: 1.231137
+validation acc: [0.9833333333333333, 0.724, 0.726]
+Epoch 512
+loss: 0.687948
+validation loss: 1.230709
+validation acc: [0.9833333333333333, 0.724, 0.727]
+Epoch 513
+loss: 0.713906
+validation loss: 1.230355
+validation acc: [0.9833333333333333, 0.724, 0.727]
+Epoch 514
+loss: 0.722158
+validation loss: 1.230042
+validation acc: [0.9833333333333333, 0.724, 0.727]
+Epoch 515
+loss: 0.720438
+validation loss: 1.229782
+validation acc: [0.9833333333333333, 0.724, 0.727]
+Epoch 516
+loss: 0.687579
+validation loss: 1.229489
+validation acc: [0.9833333333333333, 0.724, 0.727]
+Epoch 517
+loss: 0.730403
+validation loss: 1.229207
+validation acc: [0.9833333333333333, 0.724, 0.727]
+Epoch 518
+loss: 0.819883
+validation loss: 1.229041
+validation acc: [0.9833333333333333, 0.724, 0.727]
+Epoch 519
+loss: 0.750677
+validation loss: 1.228907
+validation acc: [0.9833333333333333, 0.724, 0.727]
+Epoch 520
+loss: 0.700561
+validation loss: 1.228768
+validation acc: [0.9833333333333333, 0.724, 0.726]
+Epoch 521
+loss: 0.657572
+validation loss: 1.228645
+validation acc: [0.9833333333333333, 0.724, 0.726]
+Epoch 522
+loss: 0.727342
+validation loss: 1.228468
+validation acc: [0.9833333333333333, 0.722, 0.726]
+Epoch 523
+loss: 0.797872
+validation loss: 1.228322
+validation acc: [0.9833333333333333, 0.722, 0.726]
+Epoch 524
+loss: 0.784891
+validation loss: 1.228205
+validation acc: [0.9833333333333333, 0.722, 0.726]
+Epoch 525
+loss: 0.754690
+validation loss: 1.228134
+validation acc: [0.9833333333333333, 0.722, 0.726]
+Epoch 526
+loss: 0.662085
+validation loss: 1.228053
+validation acc: [0.9833333333333333, 0.722, 0.725]
+Epoch 527
+loss: 0.705576
+validation loss: 1.227943
+validation acc: [0.9833333333333333, 0.722, 0.725]
+Epoch 528
+loss: 0.757937
+validation loss: 1.227931
+validation acc: [0.9833333333333333, 0.722, 0.725]
+Epoch 529
+loss: 0.728232
+validation loss: 1.227858
+validation acc: [0.9833333333333333, 0.722, 0.725]
+Epoch 530
+loss: 0.749462
+validation loss: 1.227779
+validation acc: [0.9833333333333333, 0.722, 0.725]
+Epoch 531
+loss: 0.747672
+validation loss: 1.227627
+validation acc: [0.9833333333333333, 0.72, 0.725]
+Epoch 532
+loss: 0.766426
+validation loss: 1.227412
+validation acc: [0.9833333333333333, 0.72, 0.725]
+Epoch 533
+loss: 0.669570
+validation loss: 1.227185
+validation acc: [0.9833333333333333, 0.72, 0.724]
+Epoch 534
+loss: 0.703200
+validation loss: 1.226966
+validation acc: [0.9833333333333333, 0.72, 0.725]
+Epoch 535
+loss: 0.734159
+validation loss: 1.226807
+validation acc: [0.9833333333333333, 0.72, 0.726]
+Epoch 536
+loss: 0.701016
+validation loss: 1.226747
+validation acc: [0.9833333333333333, 0.72, 0.724]
+Epoch 537
+loss: 0.707843
+validation loss: 1.226664
+validation acc: [0.9833333333333333, 0.72, 0.725]
+Epoch 538
+loss: 0.705492
+validation loss: 1.226555
+validation acc: [0.9833333333333333, 0.72, 0.724]
+Epoch 539
+loss: 0.678991
+validation loss: 1.226412
+validation acc: [0.9833333333333333, 0.72, 0.723]
+Epoch 540
+loss: 0.677545
+validation loss: 1.226138
+validation acc: [0.9833333333333333, 0.72, 0.723]
+Epoch 541
+loss: 0.711072
+validation loss: 1.225805
+validation acc: [0.9833333333333333, 0.72, 0.723]
+Epoch 542
+loss: 0.716733
+validation loss: 1.225436
+validation acc: [0.9833333333333333, 0.722, 0.725]
+Epoch 543
+loss: 0.770145
+validation loss: 1.225087
+validation acc: [0.9833333333333333, 0.722, 0.724]
+Epoch 544
+loss: 0.688515
+validation loss: 1.224667
+validation acc: [0.9833333333333333, 0.722, 0.725]
+Epoch 545
+loss: 0.726679
+validation loss: 1.224299
+validation acc: [0.9833333333333333, 0.722, 0.725]
+Epoch 546
+loss: 0.710039
+validation loss: 1.223965
+validation acc: [0.9833333333333333, 0.722, 0.725]
+Epoch 547
+loss: 0.690007
+validation loss: 1.223628
+validation acc: [0.9833333333333333, 0.724, 0.724]
+Epoch 548
+loss: 0.752232
+validation loss: 1.223396
+validation acc: [0.9833333333333333, 0.724, 0.724]
+Epoch 549
+loss: 0.678659
+validation loss: 1.223175
+validation acc: [0.9833333333333333, 0.724, 0.725]
+Epoch 550
+loss: 0.687032
+validation loss: 1.223042
+validation acc: [0.9833333333333333, 0.724, 0.726]
+Epoch 551
+loss: 0.763099
+validation loss: 1.222884
+validation acc: [0.9833333333333333, 0.724, 0.726]
+Epoch 552
+loss: 0.731917
+validation loss: 1.222713
+validation acc: [0.9833333333333333, 0.724, 0.725]
+Epoch 553
+loss: 0.719827
+validation loss: 1.222610
+validation acc: [0.9833333333333333, 0.724, 0.725]
+Epoch 554
+loss: 0.745375
+validation loss: 1.222394
+validation acc: [0.9833333333333333, 0.724, 0.725]
+Epoch 555
+loss: 0.735409
+validation loss: 1.222220
+validation acc: [0.9833333333333333, 0.724, 0.725]
+Epoch 556
+loss: 0.712866
+validation loss: 1.222021
+validation acc: [0.9833333333333333, 0.724, 0.726]
+Epoch 557
+loss: 0.726467
+validation loss: 1.221748
+validation acc: [0.9833333333333333, 0.724, 0.726]
+Epoch 558
+loss: 0.677321
+validation loss: 1.221437
+validation acc: [0.9833333333333333, 0.724, 0.726]
+Epoch 559
+loss: 0.679641
+validation loss: 1.221163
+validation acc: [0.9833333333333333, 0.724, 0.726]
+Epoch 560
+loss: 0.680635
+validation loss: 1.220893
+validation acc: [0.9833333333333333, 0.724, 0.726]
+Epoch 561
+loss: 0.686658
+validation loss: 1.220600
+validation acc: [0.9833333333333333, 0.722, 0.726]
+Epoch 562
+loss: 0.643475
+validation loss: 1.220281
+validation acc: [0.9833333333333333, 0.722, 0.726]
+Epoch 563
+loss: 0.733061
+validation loss: 1.220012
+validation acc: [0.9833333333333333, 0.722, 0.726]
+Epoch 564
+loss: 0.737773
+validation loss: 1.219814
+validation acc: [0.9833333333333333, 0.722, 0.725]
+Epoch 565
+loss: 0.721944
+validation loss: 1.219633
+validation acc: [0.9833333333333333, 0.722, 0.726]
+Epoch 566
+loss: 0.664676
+validation loss: 1.219438
+validation acc: [0.9833333333333333, 0.722, 0.726]
+Epoch 567
+loss: 0.647926
+validation loss: 1.219281
+validation acc: [0.9833333333333333, 0.722, 0.726]
+Epoch 568
+loss: 0.759445
+validation loss: 1.219207
+validation acc: [0.9833333333333333, 0.722, 0.726]
+Epoch 569
+loss: 0.716054
+validation loss: 1.219112
+validation acc: [0.9833333333333333, 0.724, 0.725]
+Epoch 570
+loss: 0.743814
+validation loss: 1.218995
+validation acc: [0.9833333333333333, 0.724, 0.725]
+Epoch 571
+loss: 0.666196
+validation loss: 1.218899
+validation acc: [0.9833333333333333, 0.724, 0.724]
+Epoch 572
+loss: 0.680350
+validation loss: 1.218783
+validation acc: [0.9833333333333333, 0.722, 0.724]
+Epoch 573
+loss: 0.686179
+validation loss: 1.218631
+validation acc: [0.9833333333333333, 0.722, 0.724]
+Epoch 574
+loss: 0.719202
+validation loss: 1.218429
+validation acc: [0.9833333333333333, 0.722, 0.725]
+Epoch 575
+loss: 0.745085
+validation loss: 1.218398
+validation acc: [0.9833333333333333, 0.724, 0.725]
+Epoch 576
+loss: 0.733378
+validation loss: 1.218434
+validation acc: [0.9833333333333333, 0.724, 0.725]
+Epoch 577
+loss: 0.680940
+validation loss: 1.218411
+validation acc: [0.9833333333333333, 0.724, 0.725]
+Epoch 578
+loss: 0.689510
+validation loss: 1.218332
+validation acc: [0.9833333333333333, 0.724, 0.724]
+Epoch 579
+loss: 0.651386
+validation loss: 1.218277
+validation acc: [0.9833333333333333, 0.724, 0.724]
+Epoch 580
+loss: 0.611680
+validation loss: 1.218216
+validation acc: [0.9833333333333333, 0.724, 0.724]
+Epoch 581
+loss: 0.639711
+validation loss: 1.218137
+validation acc: [0.9833333333333333, 0.724, 0.724]
+Epoch 582
+loss: 0.746743
+validation loss: 1.218024
+validation acc: [0.9833333333333333, 0.724, 0.724]
+Epoch 583
+loss: 0.745903
+validation loss: 1.217929
+validation acc: [0.9833333333333333, 0.724, 0.724]
+Epoch 584
+loss: 0.737150
+validation loss: 1.217817
+validation acc: [0.9833333333333333, 0.726, 0.725]
+Epoch 585
+loss: 0.740815
+validation loss: 1.217705
+validation acc: [0.9833333333333333, 0.726, 0.725]
+Epoch 586
+loss: 0.757098
+validation loss: 1.217629
+validation acc: [0.9833333333333333, 0.726, 0.725]
+Epoch 587
+loss: 0.663140
+validation loss: 1.217533
+validation acc: [0.9833333333333333, 0.726, 0.725]
+Epoch 588
+loss: 0.732912
+validation loss: 1.217471
+validation acc: [0.9833333333333333, 0.726, 0.725]
+Epoch 589
+loss: 0.654369
+validation loss: 1.217396
+validation acc: [0.9833333333333333, 0.726, 0.725]
+Epoch 590
+loss: 0.716416
+validation loss: 1.217366
+validation acc: [0.9833333333333333, 0.726, 0.725]
+Epoch 591
+loss: 0.740265
+validation loss: 1.217318
+validation acc: [0.9833333333333333, 0.726, 0.724]
+Epoch 592
+loss: 0.656542
+validation loss: 1.217261
+validation acc: [0.9833333333333333, 0.726, 0.725]
+Epoch 593
+loss: 0.685980
+validation loss: 1.217231
+validation acc: [0.9833333333333333, 0.726, 0.725]
+Epoch 594
+loss: 0.707086
+validation loss: 1.217224
+validation acc: [0.9833333333333333, 0.726, 0.724]
+Epoch 595
+loss: 0.748739
+validation loss: 1.217199
+validation acc: [0.9833333333333333, 0.726, 0.724]
+Epoch 596
+loss: 0.857341
+validation loss: 1.217199
+validation acc: [0.9833333333333333, 0.726, 0.724]
+Epoch 597
+loss: 0.670526
+validation loss: 1.217201
+validation acc: [0.9833333333333333, 0.726, 0.724]
+Epoch 598
+loss: 0.735881
+validation loss: 1.217207
+validation acc: [0.9833333333333333, 0.726, 0.724]
+Epoch 599
+loss: 0.721465
+validation loss: 1.217211
+validation acc: [0.9833333333333333, 0.726, 0.724]
+Epoch 600
+loss: 0.817766
+validation loss: 1.217159
+validation acc: [0.9833333333333333, 0.726, 0.724]
+Epoch 601
+loss: 0.621644
+validation loss: 1.217065
+validation acc: [0.9833333333333333, 0.726, 0.724]
+Epoch 602
+loss: 0.735971
+validation loss: 1.217054
+validation acc: [0.9833333333333333, 0.726, 0.724]
+Epoch 603
+loss: 0.703550
+validation loss: 1.217058
+validation acc: [0.9833333333333333, 0.728, 0.725]
+Epoch 604
+loss: 0.690747
+validation loss: 1.217095
+validation acc: [0.9833333333333333, 0.728, 0.725]
+Epoch 605
+loss: 0.657296
+validation loss: 1.217117
+validation acc: [0.9833333333333333, 0.728, 0.725]
+Epoch 606
+loss: 0.693813
+validation loss: 1.217098
+validation acc: [0.9833333333333333, 0.728, 0.725]
+Epoch 607
+loss: 0.688126
+validation loss: 1.217097
+validation acc: [0.9833333333333333, 0.728, 0.725]
+Epoch 608
+loss: 0.660959
+validation loss: 1.217074
+validation acc: [0.9833333333333333, 0.728, 0.726]
+Epoch 609
+loss: 0.675710
+validation loss: 1.217064
+validation acc: [0.9833333333333333, 0.728, 0.726]
+Epoch 610
+loss: 0.781680
+validation loss: 1.217077
+validation acc: [0.9833333333333333, 0.73, 0.726]
+Epoch 611
+loss: 0.673448
+validation loss: 1.217106
+validation acc: [0.9833333333333333, 0.73, 0.726]
+Epoch 612
+loss: 0.695632
+validation loss: 1.217110
+validation acc: [0.9833333333333333, 0.728, 0.726]
+Epoch 613
+loss: 0.771582
+validation loss: 1.217125
+validation acc: [0.9833333333333333, 0.728, 0.726]
+Epoch 614
+loss: 0.636931
+validation loss: 1.217119
+validation acc: [0.9833333333333333, 0.728, 0.726]
+Epoch 615
+loss: 0.671698
+validation loss: 1.217072
+validation acc: [0.9833333333333333, 0.728, 0.725]
+Epoch 616
+loss: 0.722692
+validation loss: 1.217002
+validation acc: [0.9833333333333333, 0.728, 0.725]
+Epoch 617
+loss: 0.675596
+validation loss: 1.216899
+validation acc: [0.9833333333333333, 0.728, 0.725]
+Epoch 618
+loss: 0.662605
+validation loss: 1.216787
+validation acc: [0.9833333333333333, 0.728, 0.725]
+Epoch 619
+loss: 0.687496
+validation loss: 1.216674
+validation acc: [0.9833333333333333, 0.728, 0.725]
+Epoch 620
+loss: 0.756379
+validation loss: 1.216576
+validation acc: [0.9833333333333333, 0.728, 0.725]
+Epoch 621
+loss: 0.718902
+validation loss: 1.216457
+validation acc: [0.9833333333333333, 0.728, 0.725]
+Epoch 622
+loss: 0.682595
+validation loss: 1.216402
+validation acc: [0.9833333333333333, 0.728, 0.725]
+Epoch 623
+loss: 0.645827
+validation loss: 1.216332
+validation acc: [0.9833333333333333, 0.728, 0.725]
+Epoch 624
+loss: 0.715729
+validation loss: 1.216221
+validation acc: [0.9833333333333333, 0.728, 0.725]
+Epoch 625
+loss: 0.639588
+validation loss: 1.216126
+validation acc: [0.9833333333333333, 0.728, 0.725]
+Epoch 626
+loss: 0.685200
+validation loss: 1.216037
+validation acc: [0.9833333333333333, 0.728, 0.725]
+Epoch 627
+loss: 0.794244
+validation loss: 1.216025
+validation acc: [0.9833333333333333, 0.728, 0.725]
+Epoch 628
+loss: 0.700828
+validation loss: 1.216045
+validation acc: [0.9833333333333333, 0.728, 0.725]
+Epoch 629
+loss: 0.687305
+validation loss: 1.215998
+validation acc: [0.9833333333333333, 0.728, 0.725]
+Epoch 630
+loss: 0.735269
+validation loss: 1.216003
+validation acc: [0.9833333333333333, 0.728, 0.724]
+Epoch 631
+loss: 0.749975
+validation loss: 1.216073
+validation acc: [0.9833333333333333, 0.728, 0.724]
+Epoch 632
+loss: 0.734940
+validation loss: 1.216134
+validation acc: [0.9833333333333333, 0.728, 0.724]
+Epoch 633
+loss: 0.649728
+validation loss: 1.216153
+validation acc: [0.9833333333333333, 0.728, 0.724]
+Epoch 634
+loss: 0.771703
+validation loss: 1.216137
+validation acc: [0.9833333333333333, 0.728, 0.724]
+Epoch 635
+loss: 0.680638
+validation loss: 1.216062
+validation acc: [0.9833333333333333, 0.728, 0.725]
+Epoch 636
+loss: 0.654947
+validation loss: 1.215983
+validation acc: [0.9833333333333333, 0.728, 0.725]
+Epoch 637
+loss: 0.691876
+validation loss: 1.215913
+validation acc: [0.9833333333333333, 0.728, 0.725]
+Epoch 638
+loss: 0.748627
+validation loss: 1.215822
+validation acc: [0.9833333333333333, 0.728, 0.725]
+Epoch 639
+loss: 0.739770
+validation loss: 1.215693
+validation acc: [0.9833333333333333, 0.728, 0.725]
+Epoch 640
+loss: 0.706157
+validation loss: 1.215584
+validation acc: [0.9833333333333333, 0.728, 0.725]
+Epoch 641
+loss: 0.719808
+validation loss: 1.215566
+validation acc: [0.9833333333333333, 0.728, 0.725]
+Epoch 642
+loss: 0.729106
+validation loss: 1.215529
+validation acc: [0.9833333333333333, 0.728, 0.725]
+Epoch 643
+loss: 0.705813
+validation loss: 1.215494
+validation acc: [0.9833333333333333, 0.728, 0.725]
+Epoch 644
+loss: 0.709442
+validation loss: 1.215418
+validation acc: [0.9833333333333333, 0.728, 0.725]
+Epoch 645
+loss: 0.682573
+validation loss: 1.215328
+validation acc: [0.9833333333333333, 0.728, 0.726]
+Epoch 646
+loss: 0.659235
+validation loss: 1.215237
+validation acc: [0.9833333333333333, 0.728, 0.727]
+Epoch 647
+loss: 0.711937
+validation loss: 1.215152
+validation acc: [0.9833333333333333, 0.728, 0.727]
+Epoch 648
+loss: 0.695208
+validation loss: 1.215049
+validation acc: [0.9833333333333333, 0.728, 0.727]
+Epoch 649
+loss: 0.671170
+validation loss: 1.214964
+validation acc: [0.9833333333333333, 0.728, 0.727]
+Epoch 650
+loss: 0.762806
+validation loss: 1.214910
+validation acc: [0.9833333333333333, 0.728, 0.727]
+Epoch 651
+loss: 0.635852
+validation loss: 1.214848
+validation acc: [0.9833333333333333, 0.728, 0.727]
+Epoch 652
+loss: 0.647125
+validation loss: 1.214773
+validation acc: [0.9833333333333333, 0.728, 0.727]
+Epoch 653
+loss: 0.665052
+validation loss: 1.214686
+validation acc: [0.9833333333333333, 0.728, 0.727]
+Epoch 654
+loss: 0.691194
+validation loss: 1.214568
+validation acc: [0.9833333333333333, 0.728, 0.727]
+Epoch 655
+loss: 0.706578
+validation loss: 1.214439
+validation acc: [0.975, 0.728, 0.727]
+Epoch 656
+loss: 0.781973
+validation loss: 1.214364
+validation acc: [0.975, 0.728, 0.727]
+Epoch 657
+loss: 0.700857
+validation loss: 1.214312
+validation acc: [0.975, 0.728, 0.727]
+Epoch 658
+loss: 0.664424
+validation loss: 1.214242
+validation acc: [0.975, 0.726, 0.726]
+Epoch 659
+loss: 0.699499
+validation loss: 1.214154
+validation acc: [0.975, 0.726, 0.726]
+Epoch 660
+loss: 0.606718
+validation loss: 1.214079
+validation acc: [0.975, 0.726, 0.726]
+Epoch 661
+loss: 0.708547
+validation loss: 1.214023
+validation acc: [0.975, 0.726, 0.726]
+Epoch 662
+loss: 0.746273
+validation loss: 1.213947
+validation acc: [0.975, 0.726, 0.726]
+Epoch 663
+loss: 0.657654
+validation loss: 1.213881
+validation acc: [0.975, 0.726, 0.726]
+Epoch 664
+loss: 0.647672
+validation loss: 1.213817
+validation acc: [0.975, 0.726, 0.726]
+Epoch 665
+loss: 0.657239
+validation loss: 1.213737
+validation acc: [0.975, 0.726, 0.727]
+Epoch 666
+loss: 0.717558
+validation loss: 1.213627
+validation acc: [0.975, 0.726, 0.728]
+Epoch 667
+loss: 0.685204
+validation loss: 1.213537
+validation acc: [0.975, 0.728, 0.728]
+Epoch 668
+loss: 0.641202
+validation loss: 1.213467
+validation acc: [0.975, 0.728, 0.728]
+Epoch 669
+loss: 0.686465
+validation loss: 1.213346
+validation acc: [0.975, 0.728, 0.728]
+Epoch 670
+loss: 0.690516
+validation loss: 1.213243
+validation acc: [0.975, 0.728, 0.728]
+Epoch 671
+loss: 0.749952
+validation loss: 1.213160
+validation acc: [0.975, 0.728, 0.728]
+Epoch 672
+loss: 0.650024
+validation loss: 1.213065
+validation acc: [0.975, 0.728, 0.728]
+Epoch 673
+loss: 0.698242
+validation loss: 1.212951
+validation acc: [0.975, 0.728, 0.728]
+Epoch 674
+loss: 0.663655
+validation loss: 1.212822
+validation acc: [0.975, 0.726, 0.728]
+Epoch 675
+loss: 0.773457
+validation loss: 1.212703
+validation acc: [0.975, 0.726, 0.728]
+Epoch 676
+loss: 0.737591
+validation loss: 1.212592
+validation acc: [0.975, 0.728, 0.729]
+Epoch 677
+loss: 0.670855
+validation loss: 1.212460
+validation acc: [0.975, 0.728, 0.729]
+Epoch 678
+loss: 0.642452
+validation loss: 1.212330
+validation acc: [0.975, 0.728, 0.729]
+Epoch 679
+loss: 0.696846
+validation loss: 1.212232
+validation acc: [0.975, 0.728, 0.729]
+Epoch 680
+loss: 0.705694
+validation loss: 1.212127
+validation acc: [0.975, 0.728, 0.729]
+Epoch 681
+loss: 0.725508
+validation loss: 1.212057
+validation acc: [0.975, 0.726, 0.729]
+Epoch 682
+loss: 0.760854
+validation loss: 1.212005
+validation acc: [0.975, 0.726, 0.729]
+Epoch 683
+loss: 0.691291
+validation loss: 1.211982
+validation acc: [0.975, 0.726, 0.729]
+Epoch 684
+loss: 0.702950
+validation loss: 1.211943
+validation acc: [0.975, 0.726, 0.729]
+Epoch 685
+loss: 0.709125
+validation loss: 1.211904
+validation acc: [0.975, 0.726, 0.728]
+Epoch 686
+loss: 0.712300
+validation loss: 1.211894
+validation acc: [0.975, 0.726, 0.728]
+Epoch 687
+loss: 0.727243
+validation loss: 1.211852
+validation acc: [0.975, 0.726, 0.728]
+Epoch 688
+loss: 0.733258
+validation loss: 1.211841
+validation acc: [0.975, 0.726, 0.728]
+Epoch 689
+loss: 0.704315
+validation loss: 1.211816
+validation acc: [0.975, 0.726, 0.728]
+Epoch 690
+loss: 0.705895
+validation loss: 1.211799
+validation acc: [0.975, 0.726, 0.728]
+Epoch 691
+loss: 0.678421
+validation loss: 1.211732
+validation acc: [0.975, 0.726, 0.728]
+Epoch 692
+loss: 0.701666
+validation loss: 1.211681
+validation acc: [0.975, 0.728, 0.728]
+Epoch 693
+loss: 0.694860
+validation loss: 1.211633
+validation acc: [0.975, 0.732, 0.728]
+Epoch 694
+loss: 0.678957
+validation loss: 1.211619
+validation acc: [0.975, 0.732, 0.727]
+Epoch 695
+loss: 0.659801
+validation loss: 1.211538
+validation acc: [0.975, 0.732, 0.727]
+Epoch 696
+loss: 0.702788
+validation loss: 1.211459
+validation acc: [0.975, 0.732, 0.726]
+Epoch 697
+loss: 0.665376
+validation loss: 1.211407
+validation acc: [0.975, 0.732, 0.725]
+Epoch 698
+loss: 0.753368
+validation loss: 1.211339
+validation acc: [0.975, 0.73, 0.725]
+Epoch 699
+loss: 0.730645
+validation loss: 1.211282
+validation acc: [0.9833333333333333, 0.73, 0.725]
+Epoch 700
+loss: 0.745177
+validation loss: 1.211272
+validation acc: [0.9833333333333333, 0.728, 0.725]
+Epoch 701
+loss: 0.679187
+validation loss: 1.211250
+validation acc: [0.9833333333333333, 0.728, 0.724]
+Epoch 702
+loss: 0.688639
+validation loss: 1.211275
+validation acc: [0.9833333333333333, 0.728, 0.724]
+Epoch 703
+loss: 0.731548
+validation loss: 1.211330
+validation acc: [0.9833333333333333, 0.728, 0.724]
+Epoch 704
+loss: 0.644582
+validation loss: 1.211350
+validation acc: [0.9833333333333333, 0.728, 0.724]
+Epoch 705
+loss: 0.668173
+validation loss: 1.211381
+validation acc: [0.9833333333333333, 0.728, 0.724]
+Epoch 706
+loss: 0.661027
+validation loss: 1.211386
+validation acc: [0.9833333333333333, 0.728, 0.723]
+Epoch 707
+loss: 0.701853
+validation loss: 1.211375
+validation acc: [0.9833333333333333, 0.728, 0.723]
+Epoch 708
+loss: 0.678693
+validation loss: 1.211332
+validation acc: [0.9833333333333333, 0.728, 0.723]
+Epoch 709
+loss: 0.704373
+validation loss: 1.211272
+validation acc: [0.9833333333333333, 0.728, 0.722]
+Epoch 710
+loss: 0.661899
+validation loss: 1.211201
+validation acc: [0.9833333333333333, 0.728, 0.722]
+Epoch 711
+loss: 0.678895
+validation loss: 1.211116
+validation acc: [0.9833333333333333, 0.728, 0.723]
+Epoch 712
+loss: 0.701228
+validation loss: 1.211033
+validation acc: [0.9833333333333333, 0.726, 0.723]
+Epoch 713
+loss: 0.668119
+validation loss: 1.210961
+validation acc: [0.9833333333333333, 0.726, 0.723]
+Epoch 714
+loss: 0.706102
+validation loss: 1.210898
+validation acc: [0.9833333333333333, 0.724, 0.723]
+Epoch 715
+loss: 0.701847
+validation loss: 1.210818
+validation acc: [0.9833333333333333, 0.724, 0.723]
+Epoch 716
+loss: 0.633685
+validation loss: 1.210728
+validation acc: [0.9833333333333333, 0.724, 0.723]
+Epoch 717
+loss: 0.658403
+validation loss: 1.210636
+validation acc: [0.9833333333333333, 0.724, 0.723]
+Epoch 718
+loss: 0.720707
+validation loss: 1.210557
+validation acc: [0.9833333333333333, 0.724, 0.724]
+Epoch 719
+loss: 0.680769
+validation loss: 1.210474
+validation acc: [0.9833333333333333, 0.724, 0.724]
+Epoch 720
+loss: 0.584644
+validation loss: 1.210350
+validation acc: [0.9833333333333333, 0.724, 0.723]
+Epoch 721
+loss: 0.723223
+validation loss: 1.210220
+validation acc: [0.9833333333333333, 0.722, 0.723]
+Epoch 722
+loss: 0.778510
+validation loss: 1.210130
+validation acc: [0.9833333333333333, 0.722, 0.723]
+Epoch 723
+loss: 0.669908
+validation loss: 1.210018
+validation acc: [0.9833333333333333, 0.722, 0.723]
+Epoch 724
+loss: 0.663026
+validation loss: 1.209916
+validation acc: [0.9833333333333333, 0.722, 0.723]
+Epoch 725
+loss: 0.696277
+validation loss: 1.209813
+validation acc: [0.9833333333333333, 0.722, 0.723]
+Epoch 726
+loss: 0.646302
+validation loss: 1.209746
+validation acc: [0.9833333333333333, 0.722, 0.723]
+Epoch 727
+loss: 0.725752
+validation loss: 1.209676
+validation acc: [0.9833333333333333, 0.722, 0.723]
+Epoch 728
+loss: 0.679292
+validation loss: 1.209596
+validation acc: [0.9833333333333333, 0.722, 0.723]
+Epoch 729
+loss: 0.738430
+validation loss: 1.209551
+validation acc: [0.9833333333333333, 0.722, 0.723]
+Epoch 730
+loss: 0.707700
+validation loss: 1.209480
+validation acc: [0.9833333333333333, 0.722, 0.723]
+Epoch 731
+loss: 0.701156
+validation loss: 1.209424
+validation acc: [0.9833333333333333, 0.722, 0.723]
+Epoch 732
+loss: 0.675963
+validation loss: 1.209387
+validation acc: [0.9833333333333333, 0.722, 0.724]
+Epoch 733
+loss: 0.620854
+validation loss: 1.209344
+validation acc: [0.9833333333333333, 0.722, 0.724]
+Epoch 734
+loss: 0.720210
+validation loss: 1.209261
+validation acc: [0.9833333333333333, 0.72, 0.724]
+Epoch 735
+loss: 0.695011
+validation loss: 1.209162
+validation acc: [0.9833333333333333, 0.722, 0.724]
+Epoch 736
+loss: 0.733108
+validation loss: 1.209097
+validation acc: [0.9833333333333333, 0.722, 0.724]
+Epoch 737
+loss: 0.787561
+validation loss: 1.208937
+validation acc: [0.9833333333333333, 0.726, 0.724]
+Epoch 738
+loss: 0.690814
+validation loss: 1.208796
+validation acc: [0.9833333333333333, 0.726, 0.724]
+Epoch 739
+loss: 0.677725
+validation loss: 1.208635
+validation acc: [0.9833333333333333, 0.724, 0.724]
+Epoch 740
+loss: 0.638927
+validation loss: 1.208491
+validation acc: [0.9833333333333333, 0.724, 0.725]
+Epoch 741
+loss: 0.629605
+validation loss: 1.208404
+validation acc: [0.9833333333333333, 0.724, 0.725]
+Epoch 742
+loss: 0.632353
+validation loss: 1.208324
+validation acc: [0.9833333333333333, 0.724, 0.724]
+Epoch 743
+loss: 0.681926
+validation loss: 1.208230
+validation acc: [0.9833333333333333, 0.724, 0.724]
+Epoch 744
+loss: 0.737618
+validation loss: 1.208127
+validation acc: [0.9833333333333333, 0.724, 0.724]
+Epoch 745
+loss: 0.734226
+validation loss: 1.208038
+validation acc: [0.9833333333333333, 0.724, 0.724]
+Epoch 746
+loss: 0.691004
+validation loss: 1.207953
+validation acc: [0.9833333333333333, 0.726, 0.724]
+Epoch 747
+loss: 0.652711
+validation loss: 1.207824
+validation acc: [0.9833333333333333, 0.724, 0.725]
+Epoch 748
+loss: 0.754664
+validation loss: 1.207729
+validation acc: [0.9833333333333333, 0.724, 0.726]
+Epoch 749
+loss: 0.725396
+validation loss: 1.207606
+validation acc: [0.9833333333333333, 0.724, 0.726]
+Epoch 750
+loss: 0.664802
+validation loss: 1.207496
+validation acc: [0.9833333333333333, 0.724, 0.726]
+Epoch 751
+loss: 0.686847
+validation loss: 1.207383
+validation acc: [0.9833333333333333, 0.724, 0.726]
+Epoch 752
+loss: 0.696491
+validation loss: 1.207260
+validation acc: [0.9833333333333333, 0.724, 0.726]
+Epoch 753
+loss: 0.748084
+validation loss: 1.207169
+validation acc: [0.9833333333333333, 0.724, 0.726]
+Epoch 754
+loss: 0.695611
+validation loss: 1.207076
+validation acc: [0.9833333333333333, 0.724, 0.726]
+Epoch 755
+loss: 0.738154
+validation loss: 1.207006
+validation acc: [0.9833333333333333, 0.724, 0.727]
+Epoch 756
+loss: 0.660176
+validation loss: 1.206938
+validation acc: [0.9833333333333333, 0.724, 0.727]
+Epoch 757
+loss: 0.648361
+validation loss: 1.206879
+validation acc: [0.9833333333333333, 0.724, 0.727]
+Epoch 758
+loss: 0.667253
+validation loss: 1.206788
+validation acc: [0.9833333333333333, 0.724, 0.727]
+Epoch 759
+loss: 0.693511
+validation loss: 1.206674
+validation acc: [0.9833333333333333, 0.724, 0.727]
+Epoch 760
+loss: 0.708566
+validation loss: 1.206595
+validation acc: [0.9833333333333333, 0.726, 0.727]
+Epoch 761
+loss: 0.693761
+validation loss: 1.206519
+validation acc: [0.9833333333333333, 0.726, 0.727]
+Epoch 762
+loss: 0.622003
+validation loss: 1.206419
+validation acc: [0.9833333333333333, 0.726, 0.728]
+Epoch 763
+loss: 0.602158
+validation loss: 1.206310
+validation acc: [0.9833333333333333, 0.726, 0.728]
+Epoch 764
+loss: 0.758214
+validation loss: 1.206270
+validation acc: [0.9833333333333333, 0.726, 0.727]
+Epoch 765
+loss: 0.670320
+validation loss: 1.206225
+validation acc: [0.9833333333333333, 0.726, 0.727]
+Epoch 766
+loss: 0.725379
+validation loss: 1.206143
+validation acc: [0.9833333333333333, 0.726, 0.728]
+Epoch 767
+loss: 0.685577
+validation loss: 1.206051
+validation acc: [0.9833333333333333, 0.726, 0.728]
+Epoch 768
+loss: 0.632598
+validation loss: 1.205974
+validation acc: [0.9833333333333333, 0.726, 0.728]
+Epoch 769
+loss: 0.679508
+validation loss: 1.205923
+validation acc: [0.9833333333333333, 0.726, 0.728]
+Epoch 770
+loss: 0.649751
+validation loss: 1.205822
+validation acc: [0.9833333333333333, 0.726, 0.728]
+Epoch 771
+loss: 0.645643
+validation loss: 1.205674
+validation acc: [0.9833333333333333, 0.726, 0.728]
+Epoch 772
+loss: 0.634007
+validation loss: 1.205490
+validation acc: [0.9833333333333333, 0.726, 0.728]
+Epoch 773
+loss: 0.698028
+validation loss: 1.205273
+validation acc: [0.9833333333333333, 0.724, 0.728]
+Epoch 774
+loss: 0.681190
+validation loss: 1.205079
+validation acc: [0.9833333333333333, 0.724, 0.728]
+Epoch 775
+loss: 0.650894
+validation loss: 1.204884
+validation acc: [0.9833333333333333, 0.724, 0.728]
+Epoch 776
+loss: 0.670850
+validation loss: 1.204685
+validation acc: [0.9833333333333333, 0.724, 0.728]
+Epoch 777
+loss: 0.662736
+validation loss: 1.204519
+validation acc: [0.9833333333333333, 0.726, 0.728]
+Epoch 778
+loss: 0.723029
+validation loss: 1.204402
+validation acc: [0.9833333333333333, 0.728, 0.728]
+Epoch 779
+loss: 0.632218
+validation loss: 1.204295
+validation acc: [0.9833333333333333, 0.728, 0.729]
+Epoch 780
+loss: 0.660585
+validation loss: 1.204180
+validation acc: [0.9833333333333333, 0.728, 0.729]
+Epoch 781
+loss: 0.723376
+validation loss: 1.204070
+validation acc: [0.9833333333333333, 0.728, 0.729]
+Epoch 782
+loss: 0.724891
+validation loss: 1.203959
+validation acc: [0.9833333333333333, 0.728, 0.729]
+Epoch 783
+loss: 0.700389
+validation loss: 1.203849
+validation acc: [0.9833333333333333, 0.728, 0.729]
+Epoch 784
+loss: 0.665130
+validation loss: 1.203762
+validation acc: [0.9833333333333333, 0.728, 0.729]
+Epoch 785
+loss: 0.667748
+validation loss: 1.203699
+validation acc: [0.9833333333333333, 0.728, 0.728]
+Epoch 786
+loss: 0.658221
+validation loss: 1.203634
+validation acc: [0.9833333333333333, 0.728, 0.728]
+Epoch 787
+loss: 0.657905
+validation loss: 1.203580
+validation acc: [0.9833333333333333, 0.728, 0.728]
+Epoch 788
+loss: 0.760166
+validation loss: 1.203588
+validation acc: [0.9833333333333333, 0.728, 0.728]
+Epoch 789
+loss: 0.660710
+validation loss: 1.203594
+validation acc: [0.9833333333333333, 0.728, 0.728]
+Epoch 790
+loss: 0.660946
+validation loss: 1.203600
+validation acc: [0.9833333333333333, 0.728, 0.728]
+Epoch 791
+loss: 0.625159
+validation loss: 1.203578
+validation acc: [0.9833333333333333, 0.726, 0.728]
+Epoch 792
+loss: 0.635514
+validation loss: 1.203560
+validation acc: [0.9833333333333333, 0.726, 0.729]
+Epoch 793
+loss: 0.724040
+validation loss: 1.203549
+validation acc: [0.9833333333333333, 0.726, 0.729]
+Epoch 794
+loss: 0.678573
+validation loss: 1.203566
+validation acc: [0.9833333333333333, 0.728, 0.729]
+Epoch 795
+loss: 0.660625
+validation loss: 1.203581
+validation acc: [0.9833333333333333, 0.728, 0.729]
+Epoch 796
+loss: 0.682566
+validation loss: 1.203600
+validation acc: [0.9833333333333333, 0.728, 0.729]
+Epoch 797
+loss: 0.713955
+validation loss: 1.203607
+validation acc: [0.9833333333333333, 0.728, 0.729]
+Epoch 798
+loss: 0.704522
+validation loss: 1.203610
+validation acc: [0.9833333333333333, 0.726, 0.729]
+Epoch 799
+loss: 0.689086
+validation loss: 1.203585
+validation acc: [0.9833333333333333, 0.726, 0.729]
+Epoch 800
+loss: 0.749932
+validation loss: 1.203559
+validation acc: [0.9833333333333333, 0.726, 0.729]
+Epoch 801
+loss: 0.716086
+validation loss: 1.203529
+validation acc: [0.9833333333333333, 0.726, 0.729]
+Epoch 802
+loss: 0.728940
+validation loss: 1.203510
+validation acc: [0.9833333333333333, 0.726, 0.729]
+Epoch 803
+loss: 0.676203
+validation loss: 1.203487
+validation acc: [0.9833333333333333, 0.726, 0.729]
+Epoch 804
+loss: 0.684496
+validation loss: 1.203454
+validation acc: [0.9833333333333333, 0.726, 0.729]
+Epoch 805
+loss: 0.639610
+validation loss: 1.203427
+validation acc: [0.9833333333333333, 0.726, 0.729]
+Epoch 806
+loss: 0.756830
+validation loss: 1.203403
+validation acc: [0.9833333333333333, 0.726, 0.729]
+Epoch 807
+loss: 0.677373
+validation loss: 1.203389
+validation acc: [0.9833333333333333, 0.726, 0.729]
+Epoch 808
+loss: 0.670262
+validation loss: 1.203350
+validation acc: [0.9833333333333333, 0.726, 0.729]
+Epoch 809
+loss: 0.596870
+validation loss: 1.203323
+validation acc: [0.9833333333333333, 0.726, 0.729]
+Epoch 810
+loss: 0.717235
+validation loss: 1.203293
+validation acc: [0.9833333333333333, 0.726, 0.729]
+Epoch 811
+loss: 0.635658
+validation loss: 1.203282
+validation acc: [0.9833333333333333, 0.726, 0.728]
+Epoch 812
+loss: 0.687710
+validation loss: 1.203260
+validation acc: [0.9833333333333333, 0.726, 0.728]
+Epoch 813
+loss: 0.613489
+validation loss: 1.203233
+validation acc: [0.9833333333333333, 0.726, 0.728]
+Epoch 814
+loss: 0.737582
+validation loss: 1.203213
+validation acc: [0.9833333333333333, 0.728, 0.728]
+Epoch 815
+loss: 0.697654
+validation loss: 1.203181
+validation acc: [0.9833333333333333, 0.728, 0.728]
+Epoch 816
+loss: 0.588736
+validation loss: 1.203148
+validation acc: [0.9833333333333333, 0.728, 0.727]
+Epoch 817
+loss: 0.609479
+validation loss: 1.203080
+validation acc: [0.9833333333333333, 0.728, 0.727]
+Epoch 818
+loss: 0.701484
+validation loss: 1.203007
+validation acc: [0.9833333333333333, 0.728, 0.728]
+Epoch 819
+loss: 0.650012
+validation loss: 1.202923
+validation acc: [0.9833333333333333, 0.728, 0.728]
+Epoch 820
+loss: 0.638730
+validation loss: 1.202826
+validation acc: [0.9833333333333333, 0.728, 0.728]
+Epoch 821
+loss: 0.730684
+validation loss: 1.202762
+validation acc: [0.9833333333333333, 0.73, 0.728]
+Epoch 822
+loss: 0.705450
+validation loss: 1.202691
+validation acc: [0.9833333333333333, 0.73, 0.728]
+Epoch 823
+loss: 0.724333
+validation loss: 1.202622
+validation acc: [0.9833333333333333, 0.73, 0.728]
+Epoch 824
+loss: 0.673409
+validation loss: 1.202578
+validation acc: [0.9833333333333333, 0.73, 0.728]
+Epoch 825
+loss: 0.688591
+validation loss: 1.202524
+validation acc: [0.9833333333333333, 0.728, 0.728]
+Epoch 826
+loss: 0.666194
+validation loss: 1.202473
+validation acc: [0.9833333333333333, 0.728, 0.728]
+Epoch 827
+loss: 0.588000
+validation loss: 1.202413
+validation acc: [0.9833333333333333, 0.728, 0.728]
+Epoch 828
+loss: 0.699260
+validation loss: 1.202379
+validation acc: [0.9833333333333333, 0.728, 0.728]
+Epoch 829
+loss: 0.731906
+validation loss: 1.202377
+validation acc: [0.9833333333333333, 0.728, 0.728]
+Epoch 830
+loss: 0.693759
+validation loss: 1.202368
+validation acc: [0.9833333333333333, 0.728, 0.729]
+Epoch 831
+loss: 0.737543
+validation loss: 1.202374
+validation acc: [0.9833333333333333, 0.73, 0.729]
+Epoch 832
+loss: 0.708153
+validation loss: 1.202391
+validation acc: [0.9833333333333333, 0.73, 0.729]
+Epoch 833
+loss: 0.691111
+validation loss: 1.202409
+validation acc: [0.9833333333333333, 0.73, 0.729]
+Epoch 834
+loss: 0.708503
+validation loss: 1.202404
+validation acc: [0.9833333333333333, 0.728, 0.729]
+Epoch 835
+loss: 0.646679
+validation loss: 1.202368
+validation acc: [0.9833333333333333, 0.728, 0.729]
+Epoch 836
+loss: 0.731823
+validation loss: 1.202385
+validation acc: [0.9833333333333333, 0.728, 0.728]
+Epoch 837
+loss: 0.636613
+validation loss: 1.202409
+validation acc: [0.9833333333333333, 0.728, 0.728]
+Epoch 838
+loss: 0.743276
+validation loss: 1.202430
+validation acc: [0.9833333333333333, 0.728, 0.728]
+Epoch 839
+loss: 0.606183
+validation loss: 1.202430
+validation acc: [0.9833333333333333, 0.728, 0.728]
+Epoch 840
+loss: 0.657746
+validation loss: 1.202399
+validation acc: [0.9833333333333333, 0.728, 0.728]
+Epoch 841
+loss: 0.694308
+validation loss: 1.202378
+validation acc: [0.9833333333333333, 0.726, 0.728]
+Epoch 842
+loss: 0.682394
+validation loss: 1.202378
+validation acc: [0.9833333333333333, 0.726, 0.728]
+Epoch 843
+loss: 0.610455
+validation loss: 1.202381
+validation acc: [0.9833333333333333, 0.726, 0.727]
+Epoch 844
+loss: 0.664354
+validation loss: 1.202380
+validation acc: [0.9833333333333333, 0.726, 0.727]
+Epoch 845
+loss: 0.613212
+validation loss: 1.202347
+validation acc: [0.9833333333333333, 0.726, 0.727]
+Epoch 846
+loss: 0.680418
+validation loss: 1.202308
+validation acc: [0.9833333333333333, 0.726, 0.727]
+Epoch 847
+loss: 0.651976
+validation loss: 1.202249
+validation acc: [0.9833333333333333, 0.726, 0.727]
+Epoch 848
+loss: 0.668315
+validation loss: 1.202209
+validation acc: [0.9833333333333333, 0.726, 0.727]
+Epoch 849
+loss: 0.648568
+validation loss: 1.202185
+validation acc: [0.9833333333333333, 0.726, 0.727]
+Epoch 850
+loss: 0.589523
+validation loss: 1.202142
+validation acc: [0.9833333333333333, 0.726, 0.727]
+Epoch 851
+loss: 0.689461
+validation loss: 1.202128
+validation acc: [0.9833333333333333, 0.726, 0.727]
+Epoch 852
+loss: 0.758995
+validation loss: 1.202159
+validation acc: [0.9833333333333333, 0.726, 0.727]
+Epoch 853
+loss: 0.699891
+validation loss: 1.202141
+validation acc: [0.9833333333333333, 0.726, 0.728]
+Epoch 854
+loss: 0.638900
+validation loss: 1.202107
+validation acc: [0.9833333333333333, 0.726, 0.728]
+Epoch 855
+loss: 0.685427
+validation loss: 1.202079
+validation acc: [0.9833333333333333, 0.726, 0.727]
+Epoch 856
+loss: 0.700640
+validation loss: 1.202033
+validation acc: [0.9833333333333333, 0.726, 0.728]
+Epoch 857
+loss: 0.705207
+validation loss: 1.201979
+validation acc: [0.9833333333333333, 0.726, 0.728]
+Epoch 858
+loss: 0.588271
+validation loss: 1.201907
+validation acc: [0.9833333333333333, 0.726, 0.728]
+Epoch 859
+loss: 0.699440
+validation loss: 1.201830
+validation acc: [0.9833333333333333, 0.726, 0.728]
+Epoch 860
+loss: 0.717560
+validation loss: 1.201753
+validation acc: [0.9833333333333333, 0.726, 0.728]
+Epoch 861
+loss: 0.713052
+validation loss: 1.201708
+validation acc: [0.9833333333333333, 0.726, 0.728]
+Epoch 862
+loss: 0.686439
+validation loss: 1.201641
+validation acc: [0.9833333333333333, 0.726, 0.728]
+Epoch 863
+loss: 0.736737
+validation loss: 1.201602
+validation acc: [0.9833333333333333, 0.726, 0.728]
+Epoch 864
+loss: 0.583349
+validation loss: 1.201550
+validation acc: [0.9833333333333333, 0.728, 0.728]
+Epoch 865
+loss: 0.676554
+validation loss: 1.201482
+validation acc: [0.9833333333333333, 0.726, 0.728]
+Epoch 866
+loss: 0.738731
+validation loss: 1.201423
+validation acc: [0.9833333333333333, 0.728, 0.729]
+Epoch 867
+loss: 0.666165
+validation loss: 1.201363
+validation acc: [0.9833333333333333, 0.728, 0.729]
+Epoch 868
+loss: 0.641920
+validation loss: 1.201282
+validation acc: [0.9833333333333333, 0.728, 0.729]
+Epoch 869
+loss: 0.601884
+validation loss: 1.201193
+validation acc: [0.9833333333333333, 0.728, 0.729]
+Epoch 870
+loss: 0.671726
+validation loss: 1.201136
+validation acc: [0.9833333333333333, 0.728, 0.729]
+Epoch 871
+loss: 0.621218
+validation loss: 1.201070
+validation acc: [0.9833333333333333, 0.728, 0.729]
+Epoch 872
+loss: 0.721621
+validation loss: 1.201032
+validation acc: [0.9833333333333333, 0.728, 0.728]
+Epoch 873
+loss: 0.707819
+validation loss: 1.200999
+validation acc: [0.9833333333333333, 0.728, 0.728]
+Epoch 874
+loss: 0.631012
+validation loss: 1.200982
+validation acc: [0.9833333333333333, 0.728, 0.728]
+Epoch 875
+loss: 0.652598
+validation loss: 1.200965
+validation acc: [0.9833333333333333, 0.728, 0.728]
+Epoch 876
+loss: 0.639431
+validation loss: 1.200942
+validation acc: [0.9833333333333333, 0.728, 0.728]
+Epoch 877
+loss: 0.637527
+validation loss: 1.200901
+validation acc: [0.9833333333333333, 0.728, 0.728]
+Epoch 878
+loss: 0.644328
+validation loss: 1.200870
+validation acc: [0.9833333333333333, 0.728, 0.728]
+Epoch 879
+loss: 0.688318
+validation loss: 1.200835
+validation acc: [0.9833333333333333, 0.728, 0.728]
+Epoch 880
+loss: 0.670895
+validation loss: 1.200798
+validation acc: [0.9833333333333333, 0.728, 0.728]
+Epoch 881
+loss: 0.702085
+validation loss: 1.200771
+validation acc: [0.9833333333333333, 0.728, 0.728]
+Epoch 882
+loss: 0.782999
+validation loss: 1.200755
+validation acc: [0.9833333333333333, 0.728, 0.727]
+Epoch 883
+loss: 0.612120
+validation loss: 1.200734
+validation acc: [0.9833333333333333, 0.728, 0.727]
+Epoch 884
+loss: 0.598969
+validation loss: 1.200712
+validation acc: [0.9833333333333333, 0.728, 0.727]
+Epoch 885
+loss: 0.609276
+validation loss: 1.200678
+validation acc: [0.9833333333333333, 0.728, 0.727]
+Epoch 886
+loss: 0.682354
+validation loss: 1.200636
+validation acc: [0.9833333333333333, 0.728, 0.727]
+Epoch 887
+loss: 0.635313
+validation loss: 1.200602
+validation acc: [0.9833333333333333, 0.728, 0.727]
+Epoch 888
+loss: 0.721572
+validation loss: 1.200565
+validation acc: [0.9833333333333333, 0.73, 0.726]
+Epoch 889
+loss: 0.743246
+validation loss: 1.200540
+validation acc: [0.9833333333333333, 0.73, 0.726]
+Epoch 890
+loss: 0.677186
+validation loss: 1.200516
+validation acc: [0.9833333333333333, 0.73, 0.726]
+Epoch 891
+loss: 0.780455
+validation loss: 1.200479
+validation acc: [0.9833333333333333, 0.73, 0.726]
+Epoch 892
+loss: 0.643623
+validation loss: 1.200449
+validation acc: [0.9833333333333333, 0.73, 0.726]
+Epoch 893
+loss: 0.647424
+validation loss: 1.200408
+validation acc: [0.9833333333333333, 0.73, 0.726]
+Epoch 894
+loss: 0.702973
+validation loss: 1.200387
+validation acc: [0.9833333333333333, 0.73, 0.726]
+Epoch 895
+loss: 0.656111
+validation loss: 1.200366
+validation acc: [0.9833333333333333, 0.73, 0.726]
+Epoch 896
+loss: 0.767977
+validation loss: 1.200360
+validation acc: [0.9833333333333333, 0.73, 0.726]
+Epoch 897
+loss: 0.720529
+validation loss: 1.200357
+validation acc: [0.9833333333333333, 0.73, 0.726]
+Epoch 898
+loss: 0.709548
+validation loss: 1.200354
+validation acc: [0.9833333333333333, 0.728, 0.726]
+Epoch 899
+loss: 0.687331
+validation loss: 1.200348
+validation acc: [0.9833333333333333, 0.728, 0.726]
+Epoch 900
+loss: 0.674618
+validation loss: 1.200334
+validation acc: [0.9833333333333333, 0.726, 0.726]
+Epoch 901
+loss: 0.644384
+validation loss: 1.200320
+validation acc: [0.9833333333333333, 0.726, 0.727]
+Epoch 902
+loss: 0.666606
+validation loss: 1.200297
+validation acc: [0.9833333333333333, 0.726, 0.727]
+Epoch 903
+loss: 0.721249
+validation loss: 1.200278
+validation acc: [0.9833333333333333, 0.726, 0.727]
+Epoch 904
+loss: 0.652311
+validation loss: 1.200254
+validation acc: [0.9833333333333333, 0.726, 0.727]
+Epoch 905
+loss: 0.660125
+validation loss: 1.200241
+validation acc: [0.9833333333333333, 0.726, 0.727]
+Epoch 906
+loss: 0.675858
+validation loss: 1.200229
+validation acc: [0.9833333333333333, 0.728, 0.727]
+Epoch 907
+loss: 0.646235
+validation loss: 1.200204
+validation acc: [0.9833333333333333, 0.728, 0.727]
+Epoch 908
+loss: 0.660150
+validation loss: 1.200181
+validation acc: [0.9833333333333333, 0.728, 0.727]
+Epoch 909
+loss: 0.642938
+validation loss: 1.200150
+validation acc: [0.9833333333333333, 0.728, 0.727]
+Epoch 910
+loss: 0.588209
+validation loss: 1.200117
+validation acc: [0.9833333333333333, 0.728, 0.726]
+Epoch 911
+loss: 0.669134
+validation loss: 1.200087
+validation acc: [0.9833333333333333, 0.728, 0.726]
+Epoch 912
+loss: 0.615230
+validation loss: 1.200047
+validation acc: [0.9833333333333333, 0.728, 0.726]
+Epoch 913
+loss: 0.678126
+validation loss: 1.200022
+validation acc: [0.9833333333333333, 0.728, 0.726]
+Epoch 914
+loss: 0.688962
+validation loss: 1.200001
+validation acc: [0.9833333333333333, 0.728, 0.726]
+Epoch 915
+loss: 0.636389
+validation loss: 1.199982
+validation acc: [0.9833333333333333, 0.728, 0.726]
+Epoch 916
+loss: 0.689957
+validation loss: 1.199970
+validation acc: [0.9833333333333333, 0.728, 0.726]
+Epoch 917
+loss: 0.654585
+validation loss: 1.199963
+validation acc: [0.9833333333333333, 0.728, 0.726]
+Epoch 918
+loss: 0.712745
+validation loss: 1.199946
+validation acc: [0.9833333333333333, 0.728, 0.726]
+Epoch 919
+loss: 0.680144
+validation loss: 1.199926
+validation acc: [0.9833333333333333, 0.728, 0.726]
+Epoch 920
+loss: 0.646400
+validation loss: 1.199902
+validation acc: [0.9833333333333333, 0.728, 0.726]
+Epoch 921
+loss: 0.726485
+validation loss: 1.199885
+validation acc: [0.9833333333333333, 0.728, 0.726]
+Epoch 922
+loss: 0.749343
+validation loss: 1.199870
+validation acc: [0.9833333333333333, 0.728, 0.726]
+Epoch 923
+loss: 0.680108
+validation loss: 1.199847
+validation acc: [0.9833333333333333, 0.728, 0.726]
+Epoch 924
+loss: 0.730846
+validation loss: 1.199829
+validation acc: [0.9833333333333333, 0.728, 0.726]
+Epoch 925
+loss: 0.784223
+validation loss: 1.199822
+validation acc: [0.9833333333333333, 0.728, 0.726]
+Epoch 926
+loss: 0.713683
+validation loss: 1.199814
+validation acc: [0.9833333333333333, 0.728, 0.726]
+Epoch 927
+loss: 0.691779
+validation loss: 1.199817
+validation acc: [0.9833333333333333, 0.728, 0.726]
+Epoch 928
+loss: 0.631014
+validation loss: 1.199815
+validation acc: [0.9833333333333333, 0.728, 0.726]
+Epoch 929
+loss: 0.649393
+validation loss: 1.199817
+validation acc: [0.9833333333333333, 0.728, 0.726]
+Epoch 930
+loss: 0.645442
+validation loss: 1.199814
+validation acc: [0.9833333333333333, 0.728, 0.726]
+Epoch 931
+loss: 0.714000
+validation loss: 1.199819
+validation acc: [0.9833333333333333, 0.728, 0.726]
+Epoch 932
+loss: 0.713827
+validation loss: 1.199833
+validation acc: [0.9833333333333333, 0.728, 0.726]
+Epoch 933
+loss: 0.706827
+validation loss: 1.199848
+validation acc: [0.9833333333333333, 0.728, 0.726]
+Epoch 934
+loss: 0.665935
+validation loss: 1.199854
+validation acc: [0.9833333333333333, 0.728, 0.726]
+Epoch 935
+loss: 0.712484
+validation loss: 1.199855
+validation acc: [0.9833333333333333, 0.728, 0.726]
+Epoch 936
+loss: 0.656117
+validation loss: 1.199850
+validation acc: [0.9833333333333333, 0.728, 0.726]
+Epoch 937
+loss: 0.736254
+validation loss: 1.199854
+validation acc: [0.9833333333333333, 0.728, 0.726]
+Epoch 938
+loss: 0.714730
+validation loss: 1.199859
+validation acc: [0.9833333333333333, 0.728, 0.726]
+Epoch 939
+loss: 0.683832
+validation loss: 1.199870
+validation acc: [0.9833333333333333, 0.728, 0.726]
+Epoch 940
+loss: 0.692249
+validation loss: 1.199870
+validation acc: [0.9833333333333333, 0.726, 0.726]
+Epoch 941
+loss: 0.675663
+validation loss: 1.199873
+validation acc: [0.9833333333333333, 0.726, 0.726]
+Epoch 942
+loss: 0.639394
+validation loss: 1.199869
+validation acc: [0.9833333333333333, 0.726, 0.726]
+Epoch 943
+loss: 0.567492
+validation loss: 1.199852
+validation acc: [0.9833333333333333, 0.726, 0.726]
+Epoch 944
+loss: 0.701675
+validation loss: 1.199841
+validation acc: [0.9833333333333333, 0.726, 0.726]
+Epoch 945
+loss: 0.636326
+validation loss: 1.199826
+validation acc: [0.9833333333333333, 0.726, 0.726]
+Epoch 946
+loss: 0.735749
+validation loss: 1.199812
+validation acc: [0.9833333333333333, 0.726, 0.726]
+Epoch 947
+loss: 0.699057
+validation loss: 1.199801
+validation acc: [0.9833333333333333, 0.726, 0.726]
+Epoch 948
+loss: 0.702852
+validation loss: 1.199797
+validation acc: [0.9833333333333333, 0.726, 0.726]
+Epoch 949
+loss: 0.670802
+validation loss: 1.199805
+validation acc: [0.9833333333333333, 0.726, 0.726]
+Epoch 950
+loss: 0.703833
+validation loss: 1.199816
+validation acc: [0.9833333333333333, 0.726, 0.726]
+Epoch 951
+loss: 0.746715
+validation loss: 1.199830
+validation acc: [0.9833333333333333, 0.726, 0.726]
+Epoch 952
+loss: 0.698968
+validation loss: 1.199823
+validation acc: [0.9833333333333333, 0.726, 0.726]
+Epoch 953
+loss: 0.665787
+validation loss: 1.199797
+validation acc: [0.9833333333333333, 0.726, 0.726]
+Epoch 954
+loss: 0.734171
+validation loss: 1.199785
+validation acc: [0.9833333333333333, 0.726, 0.726]
+Epoch 955
+loss: 0.740633
+validation loss: 1.199767
+validation acc: [0.9833333333333333, 0.726, 0.726]
+Epoch 956
+loss: 0.699855
+validation loss: 1.199754
+validation acc: [0.9833333333333333, 0.726, 0.726]
+Epoch 957
+loss: 0.664393
+validation loss: 1.199743
+validation acc: [0.9833333333333333, 0.726, 0.726]
+Epoch 958
+loss: 0.726731
+validation loss: 1.199723
+validation acc: [0.9833333333333333, 0.726, 0.726]
+Epoch 959
+loss: 0.696360
+validation loss: 1.199705
+validation acc: [0.9833333333333333, 0.726, 0.726]
+Epoch 960
+loss: 0.640606
+validation loss: 1.199689
+validation acc: [0.9833333333333333, 0.724, 0.726]
+Epoch 961
+loss: 0.634510
+validation loss: 1.199665
+validation acc: [0.9833333333333333, 0.724, 0.726]
+Epoch 962
+loss: 0.618960
+validation loss: 1.199651
+validation acc: [0.9833333333333333, 0.724, 0.726]
+Epoch 963
+loss: 0.718287
+validation loss: 1.199644
+validation acc: [0.9833333333333333, 0.724, 0.726]
+Epoch 964
+loss: 0.631755
+validation loss: 1.199630
+validation acc: [0.9833333333333333, 0.722, 0.726]
+Epoch 965
+loss: 0.659402
+validation loss: 1.199608
+validation acc: [0.9833333333333333, 0.722, 0.726]
+Epoch 966
+loss: 0.643313
+validation loss: 1.199596
+validation acc: [0.9833333333333333, 0.722, 0.726]
+Epoch 967
+loss: 0.663973
+validation loss: 1.199582
+validation acc: [0.9833333333333333, 0.722, 0.726]
+Epoch 968
+loss: 0.624480
+validation loss: 1.199559
+validation acc: [0.9833333333333333, 0.722, 0.726]
+Epoch 969
+loss: 0.697500
+validation loss: 1.199528
+validation acc: [0.9833333333333333, 0.722, 0.726]
+Epoch 970
+loss: 0.661833
+validation loss: 1.199503
+validation acc: [0.9833333333333333, 0.722, 0.726]
+Epoch 971
+loss: 0.635909
+validation loss: 1.199479
+validation acc: [0.9833333333333333, 0.722, 0.727]
+Epoch 972
+loss: 0.644757
+validation loss: 1.199446
+validation acc: [0.9833333333333333, 0.722, 0.727]
+Epoch 973
+loss: 0.695237
+validation loss: 1.199413
+validation acc: [0.9833333333333333, 0.722, 0.727]
+Epoch 974
+loss: 0.693372
+validation loss: 1.199387
+validation acc: [0.9833333333333333, 0.722, 0.727]
+Epoch 975
+loss: 0.632424
+validation loss: 1.199362
+validation acc: [0.9833333333333333, 0.722, 0.727]
+Epoch 976
+loss: 0.652874
+validation loss: 1.199340
+validation acc: [0.9833333333333333, 0.722, 0.727]
+Epoch 977
+loss: 0.650243
+validation loss: 1.199332
+validation acc: [0.9833333333333333, 0.722, 0.727]
+Epoch 978
+loss: 0.777753
+validation loss: 1.199332
+validation acc: [0.9833333333333333, 0.722, 0.727]
+Epoch 979
+loss: 0.676089
+validation loss: 1.199329
+validation acc: [0.9833333333333333, 0.722, 0.727]
+Epoch 980
+loss: 0.706674
+validation loss: 1.199326
+validation acc: [0.9833333333333333, 0.722, 0.727]
+Epoch 981
+loss: 0.692787
+validation loss: 1.199314
+validation acc: [0.9833333333333333, 0.722, 0.727]
+Epoch 982
+loss: 0.608889
+validation loss: 1.199289
+validation acc: [0.9833333333333333, 0.722, 0.727]
+Epoch 983
+loss: 0.667949
+validation loss: 1.199251
+validation acc: [0.9833333333333333, 0.722, 0.727]
+Epoch 984
+loss: 0.654290
+validation loss: 1.199231
+validation acc: [0.9833333333333333, 0.722, 0.727]
+Epoch 985
+loss: 0.701244
+validation loss: 1.199217
+validation acc: [0.9833333333333333, 0.722, 0.727]
+Epoch 986
+loss: 0.681698
+validation loss: 1.199196
+validation acc: [0.9833333333333333, 0.722, 0.727]
+Epoch 987
+loss: 0.689040
+validation loss: 1.199184
+validation acc: [0.9833333333333333, 0.722, 0.727]
+Epoch 988
+loss: 0.653868
+validation loss: 1.199157
+validation acc: [0.9833333333333333, 0.724, 0.727]
+Epoch 989
+loss: 0.712654
+validation loss: 1.199141
+validation acc: [0.9833333333333333, 0.724, 0.727]
+Epoch 990
+loss: 0.622003
+validation loss: 1.199128
+validation acc: [0.9833333333333333, 0.724, 0.727]
+Epoch 991
+loss: 0.742875
+validation loss: 1.199112
+validation acc: [0.9833333333333333, 0.724, 0.727]
+Epoch 992
+loss: 0.615378
+validation loss: 1.199100
+validation acc: [0.9833333333333333, 0.724, 0.727]
+Epoch 993
+loss: 0.671248
+validation loss: 1.199084
+validation acc: [0.9833333333333333, 0.724, 0.727]
+Epoch 994
+loss: 0.594949
+validation loss: 1.199057
+validation acc: [0.9833333333333333, 0.724, 0.727]
+Epoch 995
+loss: 0.601229
+validation loss: 1.199018
+validation acc: [0.9833333333333333, 0.724, 0.727]
+Epoch 996
+loss: 0.650319
+validation loss: 1.198966
+validation acc: [0.9833333333333333, 0.724, 0.727]
+Epoch 997
+loss: 0.625095
+validation loss: 1.198942
+validation acc: [0.9833333333333333, 0.724, 0.726]
+Epoch 998
+loss: 0.656525
+validation loss: 1.198910
+validation acc: [0.9833333333333333, 0.724, 0.726]
+Epoch 999
+loss: 0.633635
+validation loss: 1.198884
+validation acc: [0.9833333333333333, 0.724, 0.726]
