@@ -96,7 +96,7 @@ def load_model(device, config):
 
 def train_node(model, data, device, config, lr=0.001):
     epochs = config.training_epochs
-    optim = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=0.01)
+    optim = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=config.weight_decay)
     scheduler = ReduceLROnPlateau(optim, 'max',factor=0.5,patience=config.lrd)
     early_stopping = EarlyStopping(patience=50, verbose=True)
     if config.node_feature == True:
