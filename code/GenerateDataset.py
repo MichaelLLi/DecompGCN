@@ -214,7 +214,7 @@ def build_NCI1_dataset(path):
         T1=torch.from_numpy(S1)
         TS1=to_sparse(T1)
         nnode = g.nx_graph.number_of_nodes()
-        data=Data(x=torch.from_numpy(X1), edge_index=TS1._indices(), y=torch.ones(1).long() * (i[1]))
+        data=Data(x=torch.from_numpy(X1).float(), edge_index=TS1._indices(), y=torch.ones(1).long() * (i[1]))
         data.num_nodes=nnode
         torch.save(data,"../data/nci1/nci1_" + str(i[0]) + ".pt")               
         print(i[0])
