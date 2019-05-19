@@ -253,6 +253,8 @@ def main():
 
     # train
     print("start training...")
+    import pdb
+    pdb.set_trace()
     if task_dict[config.task]['graph']:
         train(model, train_loader, valid_loader, device, config, train_writer, val_writer,
               train_dataset, valid_dataset,lr=config.lr)

@@ -110,19 +110,19 @@ task_dict = {
         'dataset': COLLAB
     },
     'geometric' : {
-        'classfication': True,
+        'classification': True,
         'graph': True,
         'num_classes': 2,
         'dataset': GeometricShapesDataset
     },
     'mutag' : {
-        'classfication': True,
+        'classification': True,
         'graph': True,
         'num_classes': 2,
         'dataset': MUTAG
     },
     'nci1' : {
-        'classfication': True,
+        'classification': True,
         'graph': True,
         'num_classes': 3,
         'dataset': NCI1
