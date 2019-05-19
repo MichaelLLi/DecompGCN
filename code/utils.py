@@ -9,7 +9,7 @@ from graph_dataset import RandomConnectedGraph, \
                           RandomPlanarGraph,\
         				  redditDataset, imdbDataset, proteinDataset, \
         				  CoraDataset, CiteSeerDataset, PubMedDataset, Karate,\
-                              QM7bD, QM9D, COLLAB, GeometricShapesDataset, MUTAG
+                              QM7bD, QM9D, COLLAB, GeometricShapesDataset, MUTAG,NCI1
 
 
 task_dict = {
@@ -120,6 +120,12 @@ task_dict = {
         'graph': True,
         'num_classes': 2,
         'dataset': MUTAG
+    },
+    'nci1' : {
+        'classfication': True,
+        'graph': True,
+        'num_classes': 3,
+        'dataset': NCI1
     }
 }
 
