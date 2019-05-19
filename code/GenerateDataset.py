@@ -189,6 +189,35 @@ def generate_COLLAB_dataset(path):
         data=Data(x=torch.ones((nnode, 1)), edge_index=TS1._indices(), y=torch.ones(1).long() * (i[1]-1))
         torch.save(data,"../data/collab/collab_" + str(i[0]) + ".pt")
 
+def build_NCI1_dataset(path):
+    node_dic=node_labels_dic(path,'NCI1_node_labels.txt')
+    node_dic2={}
+    for k,v in node_dic.items():
+        node_dic2[k]=v-1
+    node_dic=node_dic2
+    graphs=graph_label_list(path,'NCI1_graph_labels.txt')
+    adjency=compute_adjency(path,'NCI1_A.txt')
+    data_dict=graph_indicator(path,'NCI1_graph_indicator.txt')
+    data=[]
+    for i in graphs:
+        g=Graph()
+        for node in data_dict[i[0]]:
+            g.name=i[0]
+            g.add_vertex(node)
+            g.add_one_attribute(node,node_dic[node])
+            
+            for node2 in adjency[node]:
+                g.add_edge((node,node2))
+        D1=nx.get_node_attributes(g.nx_graph,'attr_name')
+        X1=np.eye(40)[np.array(list(D1.values()))]
+        S1=to_numpy_array(g.nx_graph)
+        T1=torch.from_numpy(S1)
+        TS1=to_sparse(T1)
+        nnode = g.nx_graph.number_of_nodes()
+        data=Data(x=X1, edge_index=TS1._indices(), y=torch.ones(1).long() * (i[1]))
+        data.num_nodes=nnode
+        torch.save(data,"../data/nci1/nci1_" + str(i[0]) + ".pt")               
+        print(i[0])
 generate_four_cycles()
 #generate_triangles()
 #generate_COLLAB_dataset("COLLAB/")

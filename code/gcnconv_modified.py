@@ -4,6 +4,7 @@ from torch_geometric.utils import scatter_
 from torch_scatter import scatter_add
 from torch_geometric.nn.inits import glorot
 from torch.nn import Linear
+from torch_sparse import spspmm
 
 from utils import MLP
 
@@ -46,6 +47,7 @@ class GCNConvModified(GCNConv):
 
         index = edge_index
         value = torch.ones(edge_index.shape[1]).to(self.device)
+        print(spspmm(index,value,index,value,n,n,n))
         dense_adj = torch.sparse.FloatTensor(index, value).to_dense()
         dense_adj_k = dense_adj
 
@@ -76,7 +78,7 @@ class GCNConvAdvanced(GCNConv):
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.num_configs = len(configs)
         for i in range(self.num_configs):
-            setattr(self, "param%d" % i, torch.nn.Parameter(torch.rand(1)-0.5).cuda()) 
+            setattr(self, "param%d" % i, torch.nn.Parameter(torch.rand(1)-0.5,requires_grad=True)) 
             #setattr(self, "param%d" % i, torch.nn.Parameter(torch.ones(1)).cuda())
         self.configs=configs
         self.mlp = MLP(configs[0].n_mlp_layers, self.in_channels, self.out_channels, self.out_channels).to(self.device)
@@ -84,20 +86,20 @@ class GCNConvAdvanced(GCNConv):
     def forward(self, x, edge_index, edge_weight=None):
         xs = []
         for i in range(self.num_configs):
-            xs.append(torch.nn.functional.sigmoid(getattr(self, "param%d" % i)) * self.forward_layer(self.configs[i], x, edge_index))
+            xs.append(torch.sigmoid(getattr(self, "param%d" % i)) * self.forward_layer(self.configs[i], x, edge_index))
             #xs.append(self.forward_layer(self.configs[i], x, edge_index)) 
         x = sum(xs)
 #        import pdb
 #        pdb.set_trace()
-        #return self.mlp(x)
-        return x         
+        return self.mlp(x)
+#        return x         
    
     def forward_layer(self, config, x, edge_index, edge_weight=None):
         normalize = config.normalize
         order = config.order
         edge = config.edge
         diag = config.diag
-        x = torch.matmul(x, self.weight)
+        #x = torch.matmul(x, self.weight)
         #mlp = MLP(2, x.shape[1], 32, self.out_channels).to(self.device)        
         #x = mlp(x)        
 

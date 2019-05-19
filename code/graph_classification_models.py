@@ -97,12 +97,17 @@ class GCNConvModel2(GraphClassification):
         layertypes = config.layertype.split(",")
         layer_configs = [self.set_layer_config(layer_type) for layer_type in layertypes]
         
-        setattr(self, "conv%d%d" % (0,0), GCNConvAdvanced(self.num_features, self.hidden,layer_configs))
-        
+        if config.n_layers>1:
+            setattr(self, "conv%d%d" % (0,0), GCNConvAdvanced(self.num_features, self.hidden,layer_configs))
+        else:
+            setattr(self, "conv%d%d" % (0,0), GCNConvAdvanced(self.num_features, self.num_classes,layer_configs))            
         for j in range(1,config.n_layers-1):
                 setattr(self, "conv%d%d" % (j,0), GCNConvAdvanced(self.hidden, self.hidden,layer_configs))
-        
-        setattr(self, "conv%d%d" % (config.n_layers-1,0), GCNConvAdvanced(self.hidden, self.num_classes,layer_configs))        
+        if self.residual == True and config.n_layers>1:
+            setattr(self, "conv%d%d" % (config.n_layers-1,0), GCNConvAdvanced(self.hidden, self.hidden,layer_configs))
+        elif config.n_layers>1:
+            setattr(self, "conv%d%d" % (config.n_layers-1,0), GCNConvAdvanced(self.hidden, self.num_classes,layer_configs))
+            
         
         self.dropout=torch.nn.Dropout(p=self.dropout_p)
         self.linear_preds = Linear(self.hidden, self.num_classes)
@@ -132,17 +137,18 @@ class GCNConvModel2(GraphClassification):
         
         for i in range(self.n_layers):
             x = self.dropout(getattr(self, "conv%d%d" % (i,0))(x, edge_index))
-            x = F.leaky_relu(x,0.2)
+#            x = F.leaky_relu(x,0.2)
             xs.append(x)
         if self.residual == True:
             x = sum(xs)
         if self.graph == True:
             x = scatter_add(x, data.batch, dim=0)
-        #out = self.linear_preds(x)
+        if self.residual == True:
+            x = self.linear_preds(x)
         #if self.classification == True:
             #x = F.log_softmax(x, dim=1)
 
-        return x#out
+        return x
         
         
 class GCNConvSimpModel(GraphClassification):
@@ -290,7 +296,7 @@ class GATConvModel(GraphClassification):
         edge_index = data.edge_index
         for i in range(self.n_layers):
             x = getattr(self, "conv%d" % i)(x,edge_index)
-            x = F.relu(x)
+            x = F.leaky_relu(x,0.2)
 
         if self.graph == True:
             x = scatter_add(x, data.batch, dim=0)

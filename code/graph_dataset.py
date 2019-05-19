@@ -1,7 +1,7 @@
 import torch
 from torch_geometric.data import Dataset
 import torch_geometric.transforms as T
-from torch_geometric.datasets import TUDataset, Planetoid, KarateClub, QM7b, QM9, GeometricShapes
+from torch_geometric.datasets import TUDataset, Planetoid, KarateClub, QM7b, QM9, GeometricShapes, Entities
 import os
 
 class RandomConnectedGraph(Dataset):
@@ -203,3 +203,8 @@ def QM9D():
 def GeometricShapesDataset():
     d =  GeometricShapes(root="/tmp/GeometricShapes", pre_transform=T.FaceToEdge).data
     return T.FaceToEdge().__call__(d)
+
+def MUTAG():
+    d =  Entities(root="/tmp/MUTAG", name="MUTAG")
+    return d
+    

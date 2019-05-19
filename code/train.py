@@ -135,11 +135,13 @@ def train_node(model, data, device, config, lr=0.001):
 
         print("validation loss: %f" % (eval_loss))
         print("validation acc:",  accs)
-        scheduler.step(accs[1])
+        scheduler.step(eval_loss)
 
         early_stopping(eval_loss, model)
 
         if early_stopping.early_stop:
+            print("validation loss: %f" % (eval_loss))
+            print("validation acc:",  accs)            
             print("Early stopping")
             break
 
@@ -169,7 +171,7 @@ def train(model, train_loader, valid_loader, device, config, train_writer, val_w
     epochs = config.training_epochs
     optim = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=config.weight_decay)
     scheduler = ReduceLROnPlateau(optim, 'max',factor=0.5,patience=config.lrd)
-    early_stopping = EarlyStopping(patience=10, verbose=True)
+    early_stopping = EarlyStopping(patience=100, verbose=True)
     if config.node_feature == True:
         config.num_features = next(iter(train_loader)).x.shape[1]
     else:
@@ -217,6 +219,8 @@ def train(model, train_loader, valid_loader, device, config, train_writer, val_w
 
         early_stopping(eval_loss, model)
         if early_stopping.early_stop:
+            print("validation loss: %f" % (eval_loss))
+            print("validation acc:",  eval_acc)           
             print("Early stopping")
             break
 
