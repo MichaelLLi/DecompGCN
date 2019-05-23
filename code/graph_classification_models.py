@@ -16,7 +16,7 @@ from utils import LayerConfig, MLP
 
 class GCNConvModel(GraphClassification):
     def __init__(self, config, num_classes, graph=True, classification=True, residual=False):
-        super(GCNConvModel2, self).__init__(config, num_classes, graph, classification)
+        super(GCNConvModel, self).__init__(config, num_classes, graph, classification)
         
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")        
         self.residual = config.residual

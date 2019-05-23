@@ -13,7 +13,6 @@ from utils import task_dict
 from graph_classification_models import GCNConvModel, \
                                         SGConvModel, \
                                         GINConvModel, \
-                                        SGINConvModel, \
                                         GATConvModel, \
                                         GCNConvSimpModel
 from random import shuffle

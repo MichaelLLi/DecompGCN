@@ -41,13 +41,15 @@ class GCNConvAdvanced(GCNConv):
             xs.append(torch.sigmoid(getattr(self, "param%d" % i)) * self.forward_layer(self.configs[i], x, edge_index))
         x = sum(xs)
 
-        return self.mlp(x)
+#        return self.mlp(x)
+        return x
    
     def forward_layer(self, config, x, edge_index, edge_weight=None):
         normalize = config.normalize
         order = config.order
         edge = config.edge
-        diag = config.diag        
+        diag = config.diag
+        x = torch.mm(x, self.weight)        
 
         if normalize == True:
             if not self.cached or self.cached_result is None:
@@ -61,14 +63,14 @@ class GCNConvAdvanced(GCNConv):
 
                 row, col = edge_index
                 deg = scatter_add(edge_weight, row, dim=0, dim_size=num_nodes)
-                deg_inv_sqrt = deg.pow(-0.5)
-                deg_inv_sqrt[deg_inv_sqrt == float('inf')] = 0
+                deg_inv = deg.pow(-1)
+                deg_inv[deg_inv == float('inf')] = 0
                 
                 index = edge_index
                 value = torch.ones(edge_index.shape[1]).to(self.device)
                 dense_adj = torch.sparse.FloatTensor(index, value).to_dense()    
                 
-                dense_adj = deg_inv_sqrt * dense_adj * deg_inv_sqrt.view(-1, 1)
+                dense_adj = deg_inv * dense_adj
                 self.cached_result = dense_adj
                 
             dense_adj = self.cached_result
