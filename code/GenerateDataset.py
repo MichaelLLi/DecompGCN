@@ -218,6 +218,4 @@ def build_NCI1_dataset(path):
         data.num_nodes=nnode
         torch.save(data,"../data/nci1/nci1_" + str(i[0]) + ".pt")               
         print(i[0])
-generate_four_cycles()
-#generate_triangles()
-#generate_COLLAB_dataset("COLLAB/")
+
