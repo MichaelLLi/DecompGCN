@@ -9,7 +9,7 @@ from torch_sparse import spmm, spspmm
 
 from torch_geometric.nn import GINConv, SGConv, GCNConv
 from gcnconv_modified import GCNConvAdvanced
-from GAT_modified import GATConv
+from gat_modified import GATConv
 from base import GraphClassification
 from utils import LayerConfig, MLP
 
