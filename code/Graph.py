@@ -1,92 +1,103 @@
-import torch
-from torch_geometric.data import Data
-
+""" A Python Class
+Compatible networkx VERSION 2
+https://github.com/tvayer/PSCN
+@author: vayer 
+"""
 import networkx as nx
-import matplotlib.pyplot as plt
-import matplotlib as mpl
-mpl.use('TkAgg')
-import os
+import numpy as np
+import time
+
+
+class NoAttrMatrix(Exception):
+    pass
+
+class NoPathException(Exception):
+    pass
+
 
 class Graph():
-    def __init__(self, config, data=None):
-        self.data = data
-        self.config = config
 
-        self.num_dimensions = config.euclidian_dimensionality
-        self.num_features = config.num_features
-        self.num_nodes = config.num_nodes
-        self.theta_max = config.theta_max
-        self.theta_pred = config.theta_pred
+    def __init__(self):
+        self.nx_graph=nx.Graph()
+        self.name='A graph as no name'
 
-    def create_graph(self):
-        pos = torch.rand(self.num_nodes, self.num_dimensions)
+    def __eq__(self, other) : 
+        #print('yo method')
+        return self.nx_graph == other.nx_graph
 
-        edges = []
-        y = torch.zeros(self.num_nodes, dtype=torch.long)
-        for i in range(self.num_nodes):
-            for j in range(i+1, self.num_nodes):
-                node1, node2 = pos[i], pos[j]
+    def __hash__(self):
+        return hash(str(self))
 
-                if torch.dist(node1, node2) < self.theta_max:
-                    edges.append([i, j])
-                    edges.append([j, i])
+    def nodes(self):
+        return dict(self.nx_graph.nodes())
 
-                    if torch.dist(node1, node2) < self.theta_pred:
-                        y[i] += 1
-                        y[j] += 1
+    def edges(self):
+        return self.nx_graph.edges()
 
-        edge_index = torch.tensor(edges, dtype=torch.long).transpose(0,1)
-        x = torch.ones(self.num_nodes, self.num_features)
+    def add_vertex(self, vertex):
+        if vertex not in self.nodes():
+            self.nx_graph.add_node(vertex)
 
-        # Data(x=None, edge_index=None, edge_attr=None, y=None, pos=None)
-        self.data = Data(x=x, edge_index=edge_index, y=y, pos=pos)
+    def values(self):
+        return [v for (k,v) in nx.get_node_attributes(self.nx_graph,'attr_name').items()]
 
-    def plot(self):
-        g = nx.Graph(incoming_graph_data=self.data.edge_index.transpose(0,1).tolist())
-        pos_dict = {}
-        # prepare the targets to be displayed
+    def add_nodes(self, nodes):
+        self.nx_graph.add_nodes_from(nodes)
 
-        for i in range(self.data.x.size(0)):
-            pos_dict[i] = self.data.x[i].tolist()
-            labels_dict[i] = int(self.data.y[i].item())
+    def add_edge(self, edge):
+        (vertex1, vertex2) = tuple(edge)
+        self.nx_graph.add_edge(vertex1,vertex2)
 
-        self.set_plotting_style()
-        nx.draw_networkx(g, pos_dict, labels=labels_dict)
-        plt.title("Number of neighbors within euclidian distance {}".format(
-            self.config.theta))
-        plt.savefig(os.path.join(self.config.temp_dir, 'graph.png'))
+    def add_one_attribute(self,node,attr,attr_name='attr_name'):
+        self.nx_graph.add_node(node,attr_name=attr)
 
-    def plot_predictions(self, pred):
-        g = nx.Graph(incoming_graph_data=self.data.edge_index.transpose(0,1).tolist())
-        pos_dict = {}
-        labels_dict = {}
+    def add_attibutes(self,attributes):
+        attributes=dict(attributes)
+        for node,attr in attributes.items():
+            self.add_one_attribute(node,attr)
 
-        for i in range(self.data.pos.size(0)):
-            pos_dict[i] = self.data.pos[i].tolist()
-            labels_dict[i] = '{};{}'.format(int(pred[i]), int(self.data.y[i].item()))
-
-        fig = self.set_plotting_style()
-        nx.draw_networkx(g, pos_dict, labels=labels_dict, font_size=10)
-        fig.suptitle("Number of neighbors within euclidian distance {}.\nEach node displays 'pred:target'".format(
-            self.config.theta_pred))
-
-        img_path = os.path.join(self.config.temp_dir, 'graph_with_predictions.png')
-        if os.path.isfile(img_path):
-            os.remove(img_path)
-        fig.savefig(img_path)
-        print('plotted the graph with predictions to {}'.format(img_path))
-        return fig
-
-    def set_plotting_style(self):
-        fig = plt.figure(figsize=(8, 8))
-        plt.xlabel('x (euclidian)')
-        plt.ylabel('y (euclidian)')
-
-        return fig
+    def get_attr(self,vertex):
+        return self.nx_graph.node[vertex]
 
 
+    def find_leaf(self,beginwith): #assez nulle comme recherche
+        nodes=self.nodes()
+        returnlist=list()
+        for nodename in nodes :
+            if str(nodename).startswith(beginwith):
+                returnlist.append(nodename)
+        return returnlist
+    
+    def smallest_path(self,start_vertex, end_vertex):
+        try:
+            pathtime=time.time()
+            shtpath=nx.shortest_path(self.nx_graph,start_vertex,end_vertex)
+            endpathtime=time.time()
+            self.log['pathtime'].append(endpathtime-pathtime)
+            return shtpath
+        except nx.exception.NetworkXNoPath:
+            raise NoPathException('No path between two nodes, graph name : ',self.name)
 
+    def reshaper(self,x):
+        try:
+            a=x.shape[1]
+            return x
+        except IndexError:
+            return x.reshape(-1,1)
 
-
-
-
+    def all_matrix_attr(self,return_invd=False):
+        d=dict((k, v) for k, v in self.nx_graph.node.items())
+        x=[]
+        invd={}
+        try :
+            j=0
+            for k,v in d.items():
+                x.append(v['attr_name'])
+                invd[k]=j
+                j=j+1
+            if return_invd:
+                return np.array(x),invd
+            else:
+                return np.array(x)
+        except KeyError:
+            raise NoAttrMatrix

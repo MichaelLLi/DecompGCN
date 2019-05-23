@@ -8,7 +8,6 @@ from tensorboardX import SummaryWriter
 import shutil
 from pytorchtools import EarlyStopping
 
-#from Graph import Graph
 from config import Config
 from utils import task_dict
 from graph_classification_models import GCNConvModel, \
@@ -16,8 +15,7 @@ from graph_classification_models import GCNConvModel, \
                                         GINConvModel, \
                                         SGINConvModel, \
                                         GATConvModel, \
-                                        GCNConvSimpModel, \
-                                        GCNConvModel2
+                                        GCNConvSimpModel
 from random import shuffle
 
 def get_device():
@@ -30,8 +28,7 @@ def load_data(config):
     dataset = task_dict[task]['dataset']()
     graph = task_dict[task]['graph']
 
-    if task not in  ['reddit-b', 'proteins', 'imdb-b', \
-                        'cora', 'citeseer', 'pubmed']:
+    if task not in  ['QM7b', 'proteins', 'imdb-b', 'cora', 'citeseer']:
         data_list=[]
         for i in range(dataset.__len__()):
             data_list.append(dataset[i])
@@ -41,8 +38,7 @@ def load_data(config):
         train_idx = int(len(data_list) * (1 - config.test_split -
                                             config.validation_split))
         valid_idx = int(len(data_list) * (1 - config.test_split))
-        if task not in  ['reddit-b', 'proteins', 'imdb-b', \
-                             'cora', 'citeseer', 'pubmed']:
+        if task not in  ['QM7b', 'proteins', 'imdb-b', 'cora', 'citeseer']:
             shuffle(data_list)
         else:
             data_list = data_list.shuffle()
@@ -59,13 +55,6 @@ def load_data(config):
     else:
         data = dataset[0]
 
-#        data.train_mask = torch.zeros(data.num_nodes, dtype=torch.uint8)
-#        data.train_mask[:(data.num_nodes - 1000)] = 1
-#        data.val_mask = torch.zeros(data.num_nodes, dtype=torch.uint8)
-#        data.val_mask[(data.num_nodes - 1000):(data.num_nodes - 500)] = 1
-#        data.test_mask = torch.zeros(data.num_nodes, dtype=torch.uint8)
-#        data.test_mask[(data.num_nodes - 500):] = 1
-
         return data, None, None, None, None
 
 def load_model(device, config):
@@ -77,7 +66,7 @@ def load_model(device, config):
     classification = task_dict[task]['classification']
 
     if config.model == 'GCN':
-        model = GCNConvModel2(config, num_classes, graph=graph, classification=classification, residual=config.residual)
+        model = GCNConvModel(config, num_classes, graph=graph, classification=classification, residual=config.residual)
     elif config.model == "GIN":
         model = GINConvModel(config, num_classes, graph=graph, classification=classification)
     elif config.model == "SGConv":
@@ -157,8 +146,7 @@ def eval(model, eval_iter, device, config):
         if config.node_feature == False:
             x = torch.ones((len(data.batch),1)).to(device)
         loss, acc = model.eval_metric(data, x)
-        #import pdb
-        #pdb.set_trace() 
+ 
         eval_loss += loss.item()
         eval_acc += acc
         total += len(data.y)
@@ -195,23 +183,15 @@ def train(model, train_loader, valid_loader, device, config, train_writer, val_w
 
             loss = model.loss(out, data.y)
             epoch_loss += loss.item()
-#            print(list(model.parameters()))
             loss.backward()
             optim.step()
 
         print("loss: %f" % (epoch_loss))
         train_writer.add_scalar('per_epoch/loss', epoch_loss, e)
 
-#        g = Graph(config, train_dataset[0])
-#        fig = g.plot_predictions(model.predictions_to_list( \
-#                model.out_to_predictions(model(train_dataset[0].to(device)))))
-#        train_writer.add_figure('per_epoch/graph', fig, e)
-
         # validation
         eval_loss, eval_acc = eval(model, iter(valid_loader), device, config)
-#        if eval_loss <= best_val_loss:
-#            test_acc = eval_acc
-#            best_val_loss = eval_loss
+
         print("validation loss: %f" % (eval_loss))
         print("validation acc: %f" % (eval_acc))
         val_writer.add_scalar('per_epoch/loss', eval_loss, e)
@@ -223,11 +203,6 @@ def train(model, train_loader, valid_loader, device, config, train_writer, val_w
             print("validation acc:",  eval_acc)           
             print("Early stopping")
             break
-
-#        g = Graph(config, valid_dataset[0])
-#        fig = g.plot_predictions(model.predictions_to_list( \
-#                model.out_to_predictions(model(valid_dataset[0].to(device)))))
-#        val_writer.add_figure('per_epoch/graph', fig, e)
 
 
 def main():
@@ -243,11 +218,6 @@ def main():
     print("loading model...")
     model = load_model(device, config)
 
-#    summary_dir = os.path.join(config.temp_dir, config.summary_dir)
-#    if os.path.isdir(summary_dir):
-#        shutil.rmtree(summary_dir)
-#    os.makedirs(summary_dir)
-
     train_writer = SummaryWriter(os.path.join(config.temp_dir, 'summary', 'training'))
     val_writer = SummaryWriter(os.path.join(config.temp_dir, 'summary', 'validation'))
 
@@ -258,8 +228,6 @@ def main():
               train_dataset, valid_dataset,lr=config.lr)
     else:
         train_node(model, train_dataset, device, config,lr=config.lr)
-
-    # predict
 
 
 if __name__ == "__main__":

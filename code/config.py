@@ -38,7 +38,7 @@ class Config():
 
 
         self.parser.add_argument('--model', type=str,
-                                 default='GCN', help='GIN | GCN | SGConv | SGIN | GAT | SGConv_Modified')
+                                 default='GCN', help='GIN | GCN | SGConv | GAT')
         self.parser.add_argument('--training_epochs', type=int,
                                  default=1000, help='number of training epochs')
         self.parser.add_argument('--validation_split', type=float,
@@ -50,7 +50,7 @@ class Config():
         self.parser.add_argument('--batch_size_eval', type=int,
                                  default=32, help='batch size for evaluation')
         self.parser.add_argument('--task', type=str,
-                                 default='cora', help='clique | connectivity | reddit-b | tree_cycle | triangle | planar')
+                                 default='cora', help='triangle | four_cycle | cora | citeseer | imdb-b | proteins | QM7b | nci1')
         self.parser.add_argument('--residual', type=str2bool,
                                       default=True, help='residual connections')
         self.parser.add_argument('--lr', type=float,

@@ -1,42 +1,13 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from graph_dataset import RandomConnectedGraph, \
-						  RandomCliqueGraph, \
-        				  RandomTreeCycleGraph, \
-        				  RandomTriangleGraph, \
+from graph_dataset import RandomTriangleGraph, \
         				  RandomFourCyclesGraph, \
-                          RandomPlanarGraph,\
-        				  redditDataset, imdbDataset, proteinDataset, \
-        				  CoraDataset, CiteSeerDataset, PubMedDataset, Karate,\
-                              QM7bD, QM9D, COLLAB, GeometricShapesDataset, MUTAG,NCI1
+        				  imdbDataset, proteinDataset, \
+        				  CoraDataset, CiteSeerDataset, QM7bD, NCI1
 
 
 task_dict = {
-    'clique': {
-        'classification': True,
-        'graph': True,
-        'num_classes': 2,
-        'dataset': RandomCliqueGraph
-    },
-    'connectivity': {
-        'classification': True,
-        'graph': True,
-        'num_classes': 2,
-        'dataset': RandomConnectedGraph
-    },
-    'tree_cycle': {
-        'classification': True,
-        'graph': True,
-        'num_classes': 2,
-        'dataset': RandomCliqueGraph
-    },
-    'planar': {
-        'classification': True,
-        'graph': True,
-        'num_classes': 2,
-        'dataset': RandomPlanarGraph
-    },
     'triangle': {
         'classification': False,
         'graph': True,
@@ -61,18 +32,6 @@ task_dict = {
         'num_classes': 2,
         'dataset': proteinDataset
     },
-    'reddit-b': {
-        'classification': True,
-        'graph': True,
-        'num_classes': 2,
-        'dataset': redditDataset
-    },
-    'karate': {
-        'classification': True,
-        'graph': False,
-        'num_classes': 2,
-        'dataset': Karate
-    },
     'cora': {
         'classification': True,
         'graph': False,
@@ -85,41 +44,11 @@ task_dict = {
         'num_classes': 6,
         'dataset': CiteSeerDataset
     },
-    'pubmed': {
-        'classification': True,
-        'graph': False,
-        'num_classes': 3,
-        'dataset': PubMedDataset
-    },
-        'QM7b': {
+    'QM7b': {
         'classification': False,
         'graph': True,
         'num_classes': 14,
         'dataset': QM7bD
-    },
-        'QM9': {
-        'classification': False,
-        'graph': True,
-        'num_classes': 12,
-        'dataset': QM9D
-    },
-    'collab': {
-        'classification': True,
-        'graph': True,
-        'num_classes': 3,
-        'dataset': COLLAB
-    },
-    'geometric' : {
-        'classification': True,
-        'graph': True,
-        'num_classes': 2,
-        'dataset': GeometricShapesDataset
-    },
-    'mutag' : {
-        'classification': True,
-        'graph': True,
-        'num_classes': 2,
-        'dataset': MUTAG
     },
     'nci1' : {
         'classification': True,
@@ -172,6 +101,7 @@ class MLP(nn.Module):
 
             for layer in range(num_layers - 1):
                 self.batch_norms.append(nn.BatchNorm1d((hidden_dim)))
+    
     def forward(self, x):
         if self.linear_or_not:
             #If linear model
@@ -182,3 +112,5 @@ class MLP(nn.Module):
             for layer in range(self.num_layers - 1):
                 h = F.relu(self.batch_norms[layer](self.linears[layer](h)))
             return self.linears[self.num_layers - 1](h)
+
+            

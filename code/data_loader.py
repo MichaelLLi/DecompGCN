@@ -1,9 +1,10 @@
 """
+https://github.com/tvayer/PSCN
 Created on Tue Oct 23 14:54:17 2018
 Load data
-@author: vayer
+@author: vayer 
 """
-from graph_new import Graph
+from graph import Graph
 import networkx as nx
 from collections import defaultdict
 import numpy as np
