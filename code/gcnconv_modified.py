@@ -4,7 +4,7 @@ from torch_geometric.utils import scatter_
 from torch_scatter import scatter_add
 from torch_geometric.nn.inits import glorot
 from torch.nn import Linear
-from torch_sparse import spmm, spspmm
+from torch_sparse import spspmm
 
 from utils import MLP
 
@@ -26,7 +26,7 @@ def add_self_loops(edge_index, edge_weight=None, fill_value=1, num_nodes=None):
 class GCNConvModified(GCNConv):
     def __init__(self, in_channels, out_channels,config):
         super(GCNConvModified, self).__init__(in_channels, out_channels)
-
+        
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.normalize = config.normalize
         self.order = config.order
@@ -69,16 +69,16 @@ class GCNConvModified(GCNConv):
                 return torch.mm(torch.eye(n).to(self.device) * dense_adj_k2, x)
 
             return  torch.mm(dense_adj_k, x)
-
+            
 
 class GCNConvAdvanced(GCNConv):
     def __init__(self, in_channels, out_channels, configs):
         super(GCNConvAdvanced, self).__init__(in_channels, out_channels)
-
+        
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.num_configs = len(configs)
         for i in range(self.num_configs):
-            setattr(self, "param%d" % i, torch.nn.Parameter(torch.rand(1)-0.5,requires_grad=True))
+            setattr(self, "param%d" % i, torch.nn.Parameter(torch.rand(1)-0.5,requires_grad=True)) 
             #setattr(self, "param%d" % i, torch.nn.Parameter(torch.ones(1)).cuda())
         self.configs=configs
         self.mlp = MLP(configs[0].n_mlp_layers, self.in_channels, self.out_channels, self.out_channels).to(self.device)
@@ -87,60 +87,72 @@ class GCNConvAdvanced(GCNConv):
         xs = []
         for i in range(self.num_configs):
             xs.append(torch.sigmoid(getattr(self, "param%d" % i)) * self.forward_layer(self.configs[i], x, edge_index))
-            #xs.append(self.forward_layer(self.configs[i], x, edge_index))
+            #xs.append(self.forward_layer(self.configs[i], x, edge_index)) 
         x = sum(xs)
 #        import pdb
 #        pdb.set_trace()
         return self.mlp(x)
-#        return x
-
+#        return x         
+   
     def forward_layer(self, config, x, edge_index, edge_weight=None):
         normalize = config.normalize
         order = config.order
         edge = config.edge
         diag = config.diag
         #x = torch.matmul(x, self.weight)
-        #mlp = MLP(2, x.shape[1], 32, self.out_channels).to(self.device)
-        #x = mlp(x)
+        #mlp = MLP(2, x.shape[1], 32, self.out_channels).to(self.device)        
+        #x = mlp(x)        
 
         if normalize == True:
-            edge_weight = torch.ones((edge_index.size(1), ),
-                                 dtype=None,
-                                 device=edge_index.device)
-            fill_value = 1
-            num_nodes = x.size(0)
-            edge_index, edge_weight = add_self_loops(
-                edge_index, edge_weight, fill_value, num_nodes)
+            if not self.cached or self.cached_result is None:
+                edge_weight = torch.ones((edge_index.size(1), ),
+                                     dtype=None,
+                                     device=edge_index.device)
+                fill_value = 1 
+                num_nodes = x.size(0)
+                edge_index, edge_weight = add_self_loops(
+                    edge_index, edge_weight, fill_value, num_nodes)
 
-            row, col = edge_index
-            deg = scatter_add(edge_weight, row, dim=0, dim_size=num_nodes)
-            deg_inv_sqrt = deg.pow(-0.5)
-            deg_inv_sqrt[deg_inv_sqrt == float('inf')] = 0
-            edge_weight = deg_inv_sqrt[row] * edge_weight *  deg_inv_sqrt[col]
-            index = edge_index
-            value = edge_weight
+                row, col = edge_index
+                deg = scatter_add(edge_weight, row, dim=0, dim_size=num_nodes)
+                deg_inv_sqrt = deg.pow(-0.5)
+                deg_inv_sqrt[deg_inv_sqrt == float('inf')] = 0
+                
+                index = edge_index
+                value = torch.ones(edge_index.shape[1]).to(self.device)
+                dense_adj = torch.sparse.FloatTensor(index, value).to_dense()    
+                
+                dense_adj = deg_inv_sqrt * dense_adj * deg_inv_sqrt.view(-1, 1)
+                #norm = deg_inv_sqrt[row] * deg_inv_sqrt[col]
+                self.cached_result = dense_adj
+                
+            dense_adj = self.cached_result
+        
         n = x.shape[0]
         
         if normalize == False:
-            edge_index, edge_weight = add_self_loops(
-                edge_index, edge_weight, fill_value, num_nodes)
             index = edge_index
-            value = edge_weight
+            value = torch.ones(edge_index.shape[1]).to(self.device)
+            dense_adj = torch.sparse.FloatTensor(index, value).to_dense()
+            dense_adj = dense_adj + torch.eye(dense_adj.shape[0]).cuda()
+        dense_adj_k = dense_adj
+
         i = 1
-        indexk = index
-        valuek = value
         while i < order:
-            indexk, valuek = spspmm(indexk,valuek,index,value,n,n,n,coalesced=True)
+            dense_adj_k = torch.mm(dense_adj_k, dense_adj)
             i += 1
-        if edge == True or diag == True:
-            index2k, value2k = spspmm(indexk,valuek,indexk,valuek,n,n,n,coalesced=True)
+
+        dense_adj_2k = torch.mm(dense_adj_k, dense_adj_k)
 
         if edge == True:
             # order * 2 + 1
-            index2k, value2k = spspmm(index2k,value2k,index,value,n,n,n,coalesced=True)
-            return spmm(index2k, value2k,n,n,x)
+            dense_adj_k = torch.mm(dense_adj_2k, dense_adj)
+            return torch.mm(torch.eye(n).to(self.device) * dense_adj_k, x)
         else:
             # order, order * 2
             if diag == True:
-                return spmm(index2k, value2k,n,n,x)
-            return  spmm(indexk, valuek,n,n,x)
+                dense_adj_k2 = dense_adj_2k
+                return torch.mm(torch.eye(n).to(self.device) * dense_adj_k2, x)
+            return  torch.mm(dense_adj_k, x)
+
+
