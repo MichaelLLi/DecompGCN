@@ -9,8 +9,8 @@ from graph_dataset import RandomConnectedGraph, \
                           RandomPlanarGraph,\
         				  redditDataset, imdbDataset, proteinDataset, \
         				  CoraDataset, CiteSeerDataset, PubMedDataset, Karate,\
-                              QM7bD, QM9D, COLLAB, GeometricShapesDataset, MUTAG,NCI1
-
+                          QM7bD, QM9D, COLLAB, GeometricShapesDataset, MUTAG, NCI1, \
+                          PTC_MR
 
 task_dict = {
     'clique': {
@@ -126,6 +126,12 @@ task_dict = {
         'graph': True,
         'num_classes': 3,
         'dataset': NCI1
+    },
+    'ptc_mr' : {
+        'classification': True,
+        'graph': True,
+        'num_classes': 2,
+        'dataset': PTC_MR
     }
 }
 

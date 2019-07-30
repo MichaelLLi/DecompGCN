@@ -197,6 +197,30 @@ class MUTAG(Dataset):
     def _process(self):
         pass
 
+class PTC_MR(Dataset):
+    def __init__(self, root="../data/ptc_mr/", transform=None, pre_transform=None):
+        super(PTC_MR, self).__init__(root, transform, pre_transform)
+    
+    def __len__(self):
+        return 344
+
+    def get(self, idx):
+        data = torch.load(self.root + '/' + os.listdir(self.root)[idx])
+        return data
+
+    @property
+    def raw_file_names(self):
+        return []
+    @property
+    def processed_file_names(self):
+        return []
+
+    def _download(self):
+        pass
+
+    def _process(self):
+        pass
+
 class NCI1(Dataset):
     def __init__(self, root="../data/nci1/", transform=None, pre_transform=None):
         super(NCI1, self).__init__(root, transform, pre_transform)
