@@ -4,7 +4,7 @@ from torch_geometric.utils import scatter_
 from torch_scatter import scatter_add
 from torch_geometric.nn.inits import glorot
 from torch.nn import Linear
-from torch_sparse import spspmm
+from torch_sparse import spmm
 
 from utils import MLP
 
@@ -104,55 +104,42 @@ class GCNConvAdvanced(GCNConv):
         #x = mlp(x)        
 
         if normalize == True:
-            if not self.cached or self.cached_result is None:
-                edge_weight = torch.ones((edge_index.size(1), ),
-                                     dtype=None,
-                                     device=edge_index.device)
-                fill_value = 1 
-                num_nodes = x.size(0)
-                edge_index, edge_weight = add_self_loops(
-                    edge_index, edge_weight, fill_value, num_nodes)
+            edge_weight = torch.ones((edge_index.size(1), ),
+                                 dtype=None,
+                                 device=edge_index.device)
+            fill_value = 1 
+            num_nodes = x.size(0)
+            edge_index, edge_weight = add_self_loops(
+                edge_index, edge_weight, fill_value, num_nodes)
 
-                row, col = edge_index
-                deg = scatter_add(edge_weight, row, dim=0, dim_size=num_nodes)
-                deg_inv_sqrt = deg.pow(-0.5)
-                deg_inv_sqrt[deg_inv_sqrt == float('inf')] = 0
+            row, col = edge_index
+            deg = scatter_add(edge_weight, row, dim=0, dim_size=num_nodes)
+            deg_inv_sqrt = deg.pow(-0.5)
+            deg_inv_sqrt[deg_inv_sqrt == float('inf')] = 0
+            
+            index = edge_index            
+            edge_weight = deg_inv_sqrt[row] * edge_weight * deg_inv_sqrt[col]
+            value = edge_weight
+
+            #norm = deg_inv_sqrt[row] * deg_inv_sqrt[col]
                 
-                index = edge_index
-                value = torch.ones(edge_index.shape[1]).to(self.device)
-                dense_adj = torch.sparse.FloatTensor(index, value).to_dense()    
-                
-                dense_adj = deg_inv_sqrt * dense_adj * deg_inv_sqrt.view(-1, 1)
-                #norm = deg_inv_sqrt[row] * deg_inv_sqrt[col]
-                self.cached_result = dense_adj
-                
-            dense_adj = self.cached_result
         
         n = x.shape[0]
         
         if normalize == False:
             index = edge_index
             value = torch.ones(edge_index.shape[1]).to(self.device)
-            dense_adj = torch.sparse.FloatTensor(index, value).to_dense()
-            dense_adj = dense_adj + torch.eye(dense_adj.shape[0]).cuda()
-        dense_adj_k = dense_adj
-
+        indexk = index
+        valuek = value
+        if edge == True:
+            order = order * 2 +1
+        elif diag == True:
+            order = order * 2
+        output = spmm(indexk, valuek, n, n, x)
         i = 1
         while i < order:
-            dense_adj_k = torch.mm(dense_adj_k, dense_adj)
+            output = spmm(indexk, valuek, n, n, output)
             i += 1
-
-        dense_adj_2k = torch.mm(dense_adj_k, dense_adj_k)
-
-        if edge == True:
-            # order * 2 + 1
-            dense_adj_k = torch.mm(dense_adj_2k, dense_adj)
-            return torch.mm(torch.eye(n).to(self.device) * dense_adj_k, x)
-        else:
-            # order, order * 2
-            if diag == True:
-                dense_adj_k2 = dense_adj_2k
-                return torch.mm(torch.eye(n).to(self.device) * dense_adj_k2, x)
-            return  torch.mm(dense_adj_k, x)
+        return output
 
 
