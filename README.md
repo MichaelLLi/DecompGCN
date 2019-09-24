@@ -6,6 +6,4 @@ To start the program, run:
 
 `python code/train.py`
 
-Parameters include (range of possible values contained in `config.py`):
-
-+ `task`: The selected dataset. 
+Parameters are contained in `config.py`.
